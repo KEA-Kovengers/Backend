@@ -1,4 +1,4 @@
-package com.newcord.articleservice.clip;
+package com.newcord.articleservice.clip.entity;
 
 import lombok.Builder;
 

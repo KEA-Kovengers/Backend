@@ -1,4 +1,4 @@
-package com.newcord.articleservice.block;
+package com.newcord.articleservice.block.entity;
 
 import lombok.Builder;
 
