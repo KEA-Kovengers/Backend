@@ -11,13 +11,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
 
-@Data
+
 @Entity
 @Table(name="USERS")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EntityListeners(AuditingEntityListener.class)
 public class Users extends BaseTimeEntity {
 
     @Id
@@ -36,9 +35,9 @@ public class Users extends BaseTimeEntity {
 
     @Column(length = 300)
     private String profileImg;
-
-    @OneToMany(mappedBy = "friends")
-    private List<Friend> friendList;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<Friend> friendList;
 
 //    @CreatedDate
 //    @Column(name="created_at")

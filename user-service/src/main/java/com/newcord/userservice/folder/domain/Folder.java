@@ -14,16 +14,16 @@ import java.util.List;
 public class Folder extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 폴더 아이디
 
-    @Column(nullable = false)
+    @Column()
     private Long user_id; // 유저 아이디
 
-    @Column(nullable = false)
+    @Column()
     private String folderName; // 폴더명
 
     //FK
-    @OneToMany(mappedBy = "folder")
-    private List<FolderPost> folderPosts;
+//    @OneToMany(mappedBy = "folder")
+//    private List<FolderPost> folderPosts;
 }
