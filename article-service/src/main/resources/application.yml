@@ -20,5 +20,5 @@ spring:
   data:
     mongodb:
       uri: mongodb://localhost:27017
-      database: newcord_articel_db
+      database: newcord_article_db
       authentication-database: admin # 인증에 사용할 MongoDB의 데이터베이스
