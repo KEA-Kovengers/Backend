@@ -1,0 +1,27 @@
+#spring.application.name=userservice
+#
+#spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+#spring.datasource.url=jdbc:mysql://localhost:3306/newcord_userservice_db
+#spring.datasource.username=kovengers
+#spring.datasource.password=kovengers1234
+#
+#spring.jpa.properties.hibernate.show_sql=true
+#spring.jpa.properties.hibernate.format_sql=true
+#spring.jpa.hibernate.ddl-auto=create
+#
+#spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/newcord_userservice_db
+    username: kovengers
+    password: kovengers1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    generate-ddl: true
+    properties:
+      hibernate:
+        format_sql: true
