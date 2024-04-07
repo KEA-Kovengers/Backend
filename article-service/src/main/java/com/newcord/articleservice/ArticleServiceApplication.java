@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableMongoRepositories(basePackages = "com.newcord.articleservice")
 public class ArticleServiceApplication {
 	//Test for independent CI/CD
+	//젠킨스가 여러개의 커밋을 확인하는지 테스트용 코드
 	public static void main(String[] args) {
 		SpringApplication.run(ArticleServiceApplication.class, args);
 	}
