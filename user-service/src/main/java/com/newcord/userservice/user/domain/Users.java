@@ -1,21 +1,26 @@
 package com.newcord.userservice.user.domain;
 
 import com.newcord.userservice.BaseTimeEntity;
-import com.newcord.userservice.folder.domain.FolderPost;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 
 @Entity
 @Table(name="USERS")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter @Setter
 @Builder
 public class Users extends BaseTimeEntity {
 
@@ -35,17 +40,5 @@ public class Users extends BaseTimeEntity {
 
     @Column(length = 300)
     private String profileImg;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Friend> friendList;
-
-//    @CreatedDate
-//    @Column(name="created_at")
-//    private LocalDateTime created;
-//
-//    @Column(name = "updated_at")
-//    private LocalDateTime updated;
-//
-
 
 }
