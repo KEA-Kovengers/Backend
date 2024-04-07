@@ -11,18 +11,17 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
-                    script {
-                        def lastBuildCommit = 'HEAD^'
-                        if (fileExists('.last_build_commit')) {
-                            lastBuildCommit = readFile('.last_build_commit').trim()
-                            echo "Last Build Commit: ${lastBuildCommit}"
-                        } else {
-                            echo "No last build commit file found. Assuming first build."
-                        }
-                        def changes = sh(script: 'git diff --name-only ${lastBuildCommit} HEAD', returnStdout: true).trim()
-                        env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
-                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
+                    def lastBuildCommit = 'HEAD^'
+                    if (fileExists('.last_build_commit')) {
+                        lastBuildCommit = readFile('.last_build_commit').trim()
+                        echo "Last Build Commit: ${lastBuildCommit}"
+                    } else {
+                        echo 'No last build commit file found. Assuming first build.'
                     }
+                    def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
+                    env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
+                    env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
+                }
             }
         }
         stage('Build Spring Boot Project') {
@@ -31,13 +30,13 @@ pipeline {
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                         dir('article-service') {
                             sh './gradlew build'
-                            echo "Build article-service"
+                            echo 'Build article-service'
                         }
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         dir('user-service') {
                             sh './gradlew build'
-                            echo "Build user-service"
+                            echo 'Build user-service'
                         }
                     }
                 }
@@ -82,7 +81,7 @@ pipeline {
             steps {
                 script {
                     // 현재 커밋 해시를 파일에 저장
-                    sh "git rev-parse HEAD > .last_build_commit"
+                    sh 'git rev-parse HEAD > .last_build_commit'
                 }
             }
         }
