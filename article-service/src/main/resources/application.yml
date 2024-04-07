@@ -1,9 +1,9 @@
 spring:
   datasource:
     # JPA 데이터 소스 설정
-    url: jdbc:mysql://localhost:3306/newcord_article_db
-    username: admin
-    password: 12345678
+    url: jdbc:mysql://172.16.211.101:3306/newcord_article_db
+    username: root
+    password: kovengers1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -19,6 +19,8 @@ spring:
   # MongoDB 설정
   data:
     mongodb:
-      uri: mongodb://localhost:27017
+      uri: mongodb://172.16.211.101:27017
       database: newcord_article_db
       authentication-database: admin # 인증에 사용할 MongoDB의 데이터베이스
+      username: admin
+      password: kovengers1234
