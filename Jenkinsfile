@@ -11,17 +11,18 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
-                    def lastBuildCommit = 'HEAD^'
-                    if (fileExists('.last_build_commit')) {
-                        lastBuildCommit = readFile('.last_build_commit').trim()
-                        echo "Last Build Commit: ${lastBuildCommit}"
-                    } else {
-                        echo "No last build commit file found. Assuming first build."
+                    script {
+                        def lastBuildCommit = 'HEAD^'
+                        if (fileExists('.last_build_commit')) {
+                            lastBuildCommit = readFile('.last_build_commit').trim()
+                            echo "Last Build Commit: ${lastBuildCommit}"
+                        } else {
+                            echo "No last build commit file found. Assuming first build."
+                        }
+                        def changes = sh(script: 'git diff --name-only ${lastBuildCommit} HEAD', returnStdout: true).trim()
+                        env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
+                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
                     }
-                    def changes = sh(script: 'git diff --name-only '+lastBuildCommit+' HEAD', returnStdout: true).trim()
-                    env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
-                    env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
-                }
             }
         }
         stage('Build Spring Boot Project') {
