@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @EnableJpaAuditing
 @EnableMongoRepositories(basePackages = "com.newcord.articleservice")
 public class ArticleServiceApplication {
-	// Test Comment
 	public static void main(String[] args) {
 		SpringApplication.run(ArticleServiceApplication.class, args);
 	}
