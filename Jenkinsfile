@@ -11,7 +11,11 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
-                    def changes = sh(script: 'git diff --name-only HEAD^ HEAD', returnStdout: true).trim()
+                    def lastBuildCommit = readFile('.last_build_commit').trim()
+                    if (lastBuildCommit == '') {
+                        lastBuildCommit = 'HEAD^'
+                    }
+                    def changes = sh(script: 'git diff --name-only ${lastBuildCommit} HEAD', returnStdout: true).trim()
                     env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
                     env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
                 }
@@ -60,6 +64,15 @@ pipeline {
                             docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}").push("${VERSION}")
                         }
                     }
+                }
+            }
+        }
+
+        stage('Save Last Commit Hash') {
+            steps {
+                script {
+                    // 현재 커밋 해시를 파일에 저장
+                    sh "git rev-parse HEAD > .last_build_commit"
                 }
             }
         }
