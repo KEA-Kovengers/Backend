@@ -18,7 +18,7 @@ pipeline {
                     } else {
                         echo "No last build commit file found. Assuming first build."
                     }
-                    def changes = sh(script: 'git diff --name-only ${lastBuildCommit} HEAD', returnStdout: true).trim()
+                    def changes = sh(script: 'git diff --name-only '+lastBuildCommit+' HEAD', returnStdout: true).trim()
                     env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
                     env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
                 }
@@ -30,11 +30,13 @@ pipeline {
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                         dir('article-service') {
                             sh './gradlew build'
+                            echo "Build article-service"
                         }
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         dir('user-service') {
                             sh './gradlew build'
+                            echo "Build user-service"
                         }
                     }
                 }
@@ -46,11 +48,13 @@ pipeline {
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                         dir('article-service') {
                             docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}")
+                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}"
                         }
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         dir('user-service') {
                             docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}")
+                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}"
                         }
                     }
                 }
@@ -62,9 +66,11 @@ pipeline {
                     docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_CREDENTIAL_ID}") {
                         if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                             docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}").push("${VERSION}")
+                            echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
                         }
                         if (env.USER_SERVICE_CHANGED == 'true') {
                             docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}").push("${VERSION}")
+                            echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
                     }
                 }
