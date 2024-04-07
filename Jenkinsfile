@@ -19,6 +19,7 @@ pipeline {
                         echo 'No last build commit file found. Assuming first build.'
                     }
                     def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
+                    echo "Changes: ${changes}"
                     env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
                     env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
                 }
