@@ -1,0 +1,25 @@
+package com.newcord.userservice.auth.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
+
+@EnableWebSecurity
+@EnableMethodSecurity(securedEnabled = true,prePostEnabled = true)
+public class SecurityConfig {
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity)throws Exception {
+        httpSecurity
+                .authorizeHttpRequests((authorizeRequests) ->
+                        authorizeRequests
+                            .anyRequest().permitAll()
+                )
+                .formLogin(AbstractHttpConfigurer::disable
+                );
+        return httpSecurity.build();
+    }
+}
