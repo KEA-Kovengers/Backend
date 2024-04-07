@@ -11,13 +11,12 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
+                    def lastBuildCommit = 'HEAD^'
                     if (fileExists('.last_build_commit')) {
                         def lastBuildCommit = readFile('.last_build_commit').trim()
                         echo "Last Build Commit: ${lastBuildCommit}"
                     } else {
                         echo "No last build commit file found. Assuming first build."
-                        // 필요한 경우, 여기서 기본 동작을 정의할 수 있습니다.
-                        def lastBuildCommit = 'HEAD^'
                     }
                     def changes = sh(script: 'git diff --name-only ${lastBuildCommit} HEAD', returnStdout: true).trim()
                     env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
