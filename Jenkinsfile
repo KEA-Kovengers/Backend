@@ -13,7 +13,7 @@ pipeline {
                 script {
                     def lastBuildCommit = 'HEAD^'
                     if (fileExists('.last_build_commit')) {
-                        def lastBuildCommit = readFile('.last_build_commit').trim()
+                        lastBuildCommit = readFile('.last_build_commit').trim()
                         echo "Last Build Commit: ${lastBuildCommit}"
                     } else {
                         echo "No last build commit file found. Assuming first build."
