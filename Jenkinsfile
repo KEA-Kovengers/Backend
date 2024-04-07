@@ -11,7 +11,7 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
-                    def changes = git diff --name-only HEAD^ HEAD
+                    def changes = sh(script: 'git diff --name-only HEAD^ HEAD', returnStdout: true).trim()
                     env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
                     env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'
                 }
