@@ -1,5 +1,6 @@
 package com.newcord.userservice.auth.service;
 
+import com.newcord.userservice.auth.jwt.JwtTokenProvider;
 import com.newcord.userservice.auth.response.ResponseCode;
 import com.newcord.userservice.auth.exception.UserException;
 import com.newcord.userservice.auth.utils.KakaoUserInfo;
@@ -8,6 +9,7 @@ import com.newcord.userservice.user.domain.Users;
 import com.newcord.userservice.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,7 +30,7 @@ public class KakaoAuthService {
         Users user = usersRepository.findById(userId).orElse(null);
         if (user == null) {
             // 사용자가 존재하지 않는 경우에만 createUser 호출
-            return createUser(userInfo.getId(), userInfo.getProperties().getNickname(), userInfo.getProperties().getProfile_image());
+            return createUser(userId, userInfo.getProperties().getNickname(), userInfo.getProperties().getProfile_image());
         }
         return userId;
     }
@@ -45,4 +47,13 @@ public class KakaoAuthService {
         log.info("새로운 회원 저장 완료");
         return user.getId();
     }
+
+    // refresh token db 저장
+    @Transactional
+    public void saveRefreshToken(Long id, String refreshToken) {
+        Users user = usersRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
+        user.setRefreshToken(refreshToken);
+        usersRepository.save(user);
+    }
+
 }

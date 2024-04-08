@@ -44,6 +44,18 @@ public class JwtTokenProvider {
                 .compact();
     }
 
+    // 리프레시 토큰 생성
+    public String createRefreshToken(String userPk) {
+        Claims claims = Jwts.claims().setSubject(userPk);
+        Date now = new Date();
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(new Date(System.currentTimeMillis()+ (1000 * 60 * 60 * 24 * 7))) // 리프레시 토큰 유효시각 설정 (1주일)
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
+    }
+
     // 인증 정보 조회
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));

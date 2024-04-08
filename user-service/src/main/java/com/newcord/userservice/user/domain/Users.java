@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 public class Users extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 100,unique = true)
@@ -40,5 +40,8 @@ public class Users extends BaseTimeEntity {
 
     @Column(length = 300)
     private String profileImg;
+
+    @Column(length = 500)
+    private String refreshToken;
 
 }

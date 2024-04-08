@@ -45,12 +45,18 @@ public class KakaoController {
         return response;
     }
 
-    // 카카오 로그인을 위해 회원가입 여부 확인, 이미 회원이면 Jwt 토큰 발급
+    // 카카오 로그인을 위해 회원가입 여부 확인, Jwt 토큰 발급
     public ApiResponse<HashMap<String, String>> authCheck(@RequestHeader String accessToken) {
         Long userId = kakaoAuthService.isSignedUp(accessToken); // 유저 고유번호 추출
+        String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
+        kakaoAuthService.saveRefreshToken(userId, refreshToken); // 리프레시 토큰 db 저장
+
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId.toString());
         map.put("token", jwtTokenProvider.createToken(userId.toString()));
+        map.put("refreshToken", refreshToken);
         return ApiResponse.success(map, ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
+
+
 }
