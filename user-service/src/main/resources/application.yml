@@ -33,3 +33,5 @@ spring:
         format_sql: true
   thymeleaf:
     prefix: classpath:/static/
+jwt:
+  secret: 01254cd9f9f67bab5529f1d210a20d93eab0aa9d09d681e3b201b36a4069fd6b
