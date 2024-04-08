@@ -17,7 +17,7 @@ spring:
       name: user
       password: 1
   profiles:
-    include: private
+    include: API-KEY
   datasource:
     url: jdbc:mysql://localhost:3306/newcord_userservice_db
     username: kovengers
@@ -35,3 +35,5 @@ spring:
     prefix: classpath:/static/
 jwt:
   secret: 01254cd9f9f67bab5529f1d210a20d93eab0aa9d09d681e3b201b36a4069fd6b
+  accessTokenValiditySeconds: 1800
+  refreshTokenValiditySeconds: 604800

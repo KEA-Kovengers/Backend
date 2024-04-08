@@ -31,7 +31,6 @@ public class KakaoController {
         return "index";
     }
 
-    @Description("회원이 소셜 로그인을 마치면 자동으로 실행되는 API입니다. 인가 코드를 이용해 토큰을 받고, 해당 토큰으로 사용자 정보를 조회합니다." + "사용자 정보를 이용하여 서비스에 회원가입합니다.")
     @GetMapping("/login")
     @ResponseBody
     public ApiResponse<HashMap<String, String>> kakaoOauth(@RequestParam("code") String code) {
@@ -40,12 +39,13 @@ public class KakaoController {
         log.info("토큰에 대한 정보입니다.{}",kakaoTokenResponse);
 
         ApiResponse<HashMap<String, String>> response = authCheck(kakaoTokenResponse.getAccess_token());
-        log.info("jwt 토큰 생성 완료: {}", response.getData().get("token"));
+        log.info("jwt 토큰 생성 완료: {}", response.getResult().get("token"));
+        log.info("jwt refresh 토큰 생성 완료: {}", response.getResult().get("refreshToken"));
 
         return response;
     }
 
-    // 카카오 로그인을 위해 회원가입 여부 확인, Jwt 토큰 발급
+    // 카카오 로그인을 위해 회원가입 여부 확인, Jwt 엑세스/리프레시 토큰 발급
     public ApiResponse<HashMap<String, String>> authCheck(@RequestHeader String accessToken) {
         Long userId = kakaoAuthService.isSignedUp(accessToken); // 유저 고유번호 추출
         String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
@@ -57,6 +57,4 @@ public class KakaoController {
         map.put("refreshToken", refreshToken);
         return ApiResponse.success(map, ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
-
-
 }

@@ -24,6 +24,13 @@ public class JwtTokenProvider {
     @Value("${jwt.secret}") // application.properties 등에 보관한다.
     private String secretKey;
 
+    @Value("${jwt.accessTokenValiditySeconds}")
+    private long accessTokenValiditySeconds;
+
+    @Value("${jwt.refreshTokenValiditySeconds}")
+    private long refreshTokenValiditySeconds;
+
+
     private final UserDetailsService userDetailsService;
 
     // 객체 초기화, secretKey를 Base64로 인코딩
@@ -39,7 +46,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + (30 * 60 * 1000L))) // 토큰 유효시각 설정 (30분)
+                .setExpiration(new Date(now.getTime() + (accessTokenValiditySeconds * 1000))) // 토큰 유효시각 설정 (30분)
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 암호화 알고리즘과, secret 값
                 .compact();
     }
@@ -51,7 +58,7 @@ public class JwtTokenProvider {
         return Jwts.builder()
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+ (1000 * 60 * 60 * 24 * 7))) // 리프레시 토큰 유효시각 설정 (1주일)
+                .setExpiration(new Date(System.currentTimeMillis()+ (refreshTokenValiditySeconds * 1000))) // 리프레시 토큰 유효시각 설정 (1주일)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
@@ -75,6 +82,25 @@ public class JwtTokenProvider {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    // 리프레시 토큰 유효성 확인
+    public boolean validateRefreshToken(String jwtToken) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return !claims.getBody().getExpiration().before(new Date());
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // 액세스 토큰 재발급
+    public String refreshAccessToken(String refreshToken) {
+        if (validateRefreshToken(refreshToken)) {
+            String userPk = getUserPk(refreshToken);
+            return createToken(userPk);
+        }
+        return null;
     }
 
     // Request의 Header에서 token 값 가져오기
