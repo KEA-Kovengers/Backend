@@ -25,11 +25,10 @@ public class KakaoAuthService {
         log.info("회원 정보 입니다.{}", userInfo);
 
         Long userId = userInfo.getId();
-
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new UserException(ResponseCode.USER_NOT_FOUND.getMessage()));
+        Users user = usersRepository.findById(userId).orElse(null);
         if (user == null) {
             // 사용자가 존재하지 않는 경우에만 createUser 호출
-            return createUser(userId, userInfo.getProperties().getNickname(), userInfo.getProperties().getProfile_image());
+            return createUser(userInfo.getId(), userInfo.getProperties().getNickname(), userInfo.getProperties().getProfile_image());
         }
         return userId;
     }
