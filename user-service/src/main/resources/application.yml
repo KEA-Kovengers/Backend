@@ -13,8 +13,8 @@
 
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/newcord_userservice_db
-    username: kovengers
+    url: jdbc:mysql://172.16.211.102:3306/newcord_user_db
+    username: root
     password: kovengers1234
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
