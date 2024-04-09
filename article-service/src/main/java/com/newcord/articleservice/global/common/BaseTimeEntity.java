@@ -1,4 +1,4 @@
-package com.newcord.userservice;
+package com.newcord.articleservice.global.common;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
