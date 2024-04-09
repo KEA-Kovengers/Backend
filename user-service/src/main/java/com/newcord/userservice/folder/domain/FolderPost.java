@@ -7,6 +7,7 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 @Entity
 @Table(name="folder_post")

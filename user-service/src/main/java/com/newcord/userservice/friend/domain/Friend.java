@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "friend")
-@Getter @Setter
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 //@IdClass(FriendId.class)
 public class Friend extends BaseTimeEntity {

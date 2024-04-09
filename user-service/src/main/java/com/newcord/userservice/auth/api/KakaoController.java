@@ -23,7 +23,6 @@ import java.util.HashMap;
 @Slf4j
 public class KakaoController {
     private final KakaoTokenJsonData kakaoTokenJsonData;
-    private final JwtTokenProvider jwtTokenProvider;
     private final KakaoAuthService kakaoAuthService;
 
     @GetMapping("/")
@@ -38,23 +37,10 @@ public class KakaoController {
         KakaoTokenResponse kakaoTokenResponse = kakaoTokenJsonData.getToken(code);
         log.info("토큰에 대한 정보입니다.{}",kakaoTokenResponse);
 
-        ApiResponse<HashMap<String, String>> response = authCheck(kakaoTokenResponse.getAccess_token());
+        ApiResponse<HashMap<String, String>> response = kakaoAuthService.authCheck(kakaoTokenResponse.getAccess_token());
         log.info("jwt 토큰 생성 완료: {}", response.getResult().get("token"));
         log.info("jwt refresh 토큰 생성 완료: {}", response.getResult().get("refreshToken"));
 
         return response;
-    }
-
-    // 카카오 로그인을 위해 회원가입 여부 확인, Jwt 엑세스/리프레시 토큰 발급
-    public ApiResponse<HashMap<String, String>> authCheck(@RequestHeader String accessToken) {
-        Long userId = kakaoAuthService.isSignedUp(accessToken); // 유저 고유번호 추출
-        String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
-        kakaoAuthService.saveRefreshToken(userId, refreshToken); // 리프레시 토큰 db 저장
-
-        HashMap<String, String> map = new HashMap<>();
-        map.put("userId", userId.toString());
-        map.put("token", jwtTokenProvider.createToken(userId.toString()));
-        map.put("refreshToken", refreshToken);
-        return ApiResponse.success(map, ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
 }
