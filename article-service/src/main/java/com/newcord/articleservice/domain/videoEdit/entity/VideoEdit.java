@@ -1,13 +1,16 @@
 package com.newcord.articleservice.domain.videoEdit.entity;
 
-import com.newcord.articleservice.domain.clip.entity.Clip;
-import com.newcord.articleservice.global.common.BaseTimeEntity;
+import com.newcord.articleservice.global.common.BaseMongoTimeEntity;
+import jakarta.persistence.Id;
 import java.util.List;
 import lombok.Builder;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+@Document
 @Builder
-public class VideoEdit extends BaseTimeEntity {
+public class VideoEdit extends BaseMongoTimeEntity {
+    @Id
     private String id;
-    private List<Clip> clip_list;
+    private List<String> clip_list;
 
 }
