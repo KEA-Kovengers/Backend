@@ -25,24 +25,6 @@ pipeline {
                 }
             }
         }
-        // stage('Build Spring Boot Project') {
-        //     steps {
-        //         script {
-        //             if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-        //                 dir('article-service') {
-        //                     sh './gradlew build'
-        //                     echo 'Build article-service'
-        //                 }
-        //             }
-        //             if (env.USER_SERVICE_CHANGED == 'true') {
-        //                 dir('user-service') {
-        //                     sh './gradlew build'
-        //                     echo 'Build user-service'
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
         stage('Build Docker images') {
             steps {
                 script {
@@ -77,7 +59,14 @@ pipeline {
                 }
             }
         }
-
+        stage('Docker image cleanup') {
+            steps {
+                script {
+                    // 이미지 삭제
+                    sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'
+                }
+            }
+        }
         stage('Save Last Commit Hash') {
             steps {
                 script {
