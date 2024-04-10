@@ -62,8 +62,14 @@ pipeline {
         stage('Docker image cleanup') {
             steps {
                 script {
-                    // 이미지 삭제
-                    sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'
+                        if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                            sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}'
+                            echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
+                        }
+                        if (env.USER_SERVICE_CHANGED == 'true') {
+                            sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'                    
+                            echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
+                        }
                 }
             }
         }
