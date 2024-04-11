@@ -12,6 +12,12 @@
 #spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
 
 spring:
+  security:
+    user:
+      name: user
+      password: 1
+  profiles:
+    include: secret
   datasource:
     url: jdbc:mysql://172.16.211.102:3306/newcord_user_db
     username: root
@@ -25,3 +31,5 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  thymeleaf:
+    prefix: classpath:/static/

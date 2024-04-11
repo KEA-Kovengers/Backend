@@ -7,6 +7,7 @@ import static jakarta.persistence.FetchType.LAZY;
 
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Builder
 @Entity
 @Table(name="folder_post")
@@ -26,10 +27,10 @@ public class FolderPost extends BaseTimeEntity {
     private Long id;
 
     @Column
-    private Long folderid;
+    private Long folder_id;
 
     @Column
-    private Long postid;
+    private Long post_id;
 
 
 }
