@@ -50,7 +50,7 @@ pipeline {
                                     reference: '', 
                                     trackingSubmodules: false]], 
                     submoduleCfg: [], 
-                    userRemoteConfigs: [[url: "${git@github.com:KEA-Kovengers/Submodules.git}"]]
+                    userRemoteConfigs: [[url: "git@github.com:KEA-Kovengers/Submodules.git"]]
                 ])
             }
         }
