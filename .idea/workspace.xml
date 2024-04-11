@@ -43,7 +43,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "KOV-90-feat/create__user__service",
+    "git-widget-placeholder": "develop",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/seonghoonjeong/Desktop/School/4-1/KEA/project/Backend",
     "nodejs_package_manager_path": "npm",
@@ -64,6 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1711904655897</updated>
       <workItem from="1711904656922" duration="288000" />
+      <workItem from="1712190016755" duration="57000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />

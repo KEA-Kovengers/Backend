@@ -3,24 +3,18 @@ package com.newcord.userservice.user.domain;
 import com.newcord.userservice.folder.domain.FolderPost;
 import com.newcord.userservice.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import java.util.List;
-
+import lombok.*;
 
 @Entity
 @Table(name="USERS")
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
 @Builder
 public class Users extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    //@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 100,unique = true)
@@ -35,17 +29,11 @@ public class Users extends BaseTimeEntity {
 
     @Column(length = 300)
     private String profileImg;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<Friend> friendList;
 
-//    @CreatedDate
-//    @Column(name="created_at")
-//    private LocalDateTime created;
-//
-//    @Column(name = "updated_at")
-//    private LocalDateTime updated;
-//
+    @Column(length = 500)
+    private String refreshToken;
 
-
+    public void setRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

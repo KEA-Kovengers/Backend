@@ -1,8 +1,10 @@
-package com.newcord.userservice.user.domain;
+package com.newcord.userservice.friend.domain;
 
 import com.newcord.userservice.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -10,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "friend")
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 //@IdClass(FriendId.class)
 public class Friend extends BaseTimeEntity {
