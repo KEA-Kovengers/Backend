@@ -1,6 +1,6 @@
 package com.newcord.userservice.friend.domain;
 
-import com.newcord.userservice.BaseTimeEntity;
+import com.newcord.userservice.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
