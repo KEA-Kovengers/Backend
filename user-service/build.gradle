@@ -45,3 +45,10 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+processResources.dependsOn('copyGitSubmodule')
+task copyGitSubmodule(type: Copy) {
+    from '../config/user-service-module'
+    include '*.yml'
+    into 'src/main/resources'
+}
