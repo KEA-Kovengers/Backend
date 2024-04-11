@@ -37,23 +37,6 @@ pipeline {
                 }
             }
         }
-        stage('Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    doGenerateSubmoduleConfigurations: false, 
-                    branches: [[name: '*/main'],[name: '*/develop']], 
-                    extensions: [[$class: 'SubmoduleOption', 
-                                  disableSubmodules: false, 
-                                  parentCredentials: true, 
-                                    recursiveSubmodules: true, 
-                                    reference: '', 
-                                    trackingSubmodules: false]], 
-                    submoduleCfg: [], 
-                    userRemoteConfigs: [[url: "${env.GIT_URL}"]]
-                ])
-            }
-        }
         stage('Build Docker images') {
             steps {
                 script {
