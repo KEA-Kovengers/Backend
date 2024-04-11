@@ -36,5 +36,5 @@ out/
 ### VS Code ###
 .vscode/
 
-# Ignore application-API-KEY.properties file
-application-API-KEY.properties
+# Ignore application-secret.properties file
+application-secret.properties
