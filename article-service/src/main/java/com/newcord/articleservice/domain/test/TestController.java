@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.test;
 
+import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import lombok.Getter;
@@ -22,6 +23,6 @@ public class TestController {
 
     @GetMapping("/fail")
     public ApiResponse<String> testFail() {
-        return ApiResponse.onFailure(ErrorStatus._BAD_REQUEST.getCode(), ErrorStatus._BAD_REQUEST.getMessage(), "test");
+        throw new ApiException(ErrorStatus._INTERNAL_SERVER_ERROR);
     }
 }
