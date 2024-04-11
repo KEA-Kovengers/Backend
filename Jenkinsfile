@@ -12,16 +12,15 @@ pipeline {
             steps {
                 script {
                 // 빌드 원인 확인
-                    def userInitiatedCause = currentBuild.rawBuild.getCauses().find { 
-                        it instanceof hudson.model.Cause$UserIdCause 
-                    }
-                    if (userInitiatedCause) {
+                    def causes = currentBuild.getBuildCauses()
+                    
+                    if (causes.any { it._class == 'hudson.model.Cause$UserIdCause' }) {
                             echo "This build was started manually."
                             env.ARTICLE_SERVICE_CHANGED = 'true'
                             env.USER_SERVICE_CHANGED = 'true'
                     } else {
                         echo "This build was not started manually."
-    
+
                         def lastBuildCommit = 'HEAD^'
                         if (fileExists('.last_build_commit')) {
                             lastBuildCommit = readFile('.last_build_commit').trim()
