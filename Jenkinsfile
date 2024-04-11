@@ -37,6 +37,23 @@ pipeline {
                 }
             }
         }
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM', 
+                    doGenerateSubmoduleConfigurations: false, 
+                    branches: [[name: '*/main'],[name: '*/develop']], 
+                    extensions: [[$class: 'SubmoduleOption', 
+                                  disableSubmodules: false, 
+                                  parentCredentials: true, 
+                                    recursiveSubmodules: true, 
+                                    reference: '', 
+                                    trackingSubmodules: false]], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: "${git@github.com:KEA-Kovengers/Submodules.git}"]]
+                ])
+            }
+        }
         stage('Build Docker images') {
             steps {
                 script {
