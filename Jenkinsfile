@@ -11,25 +11,29 @@ pipeline {
         stage('Check Git Changes') {
             steps {
                 script {
-                    if (env.BUILD_CAUSE == 'USERIDCAUSE') {
-                        echo "This build was started manually."
-                        env.ARTICLE_SERVICE_CHANGED = 'true'
-                        env.USER_SERVICE_CHANGED = 'true'
-                } else {
-                    echo "This build was not started manually."
-
-                    def lastBuildCommit = 'HEAD^'
-                    if (fileExists('.last_build_commit')) {
-                        lastBuildCommit = readFile('.last_build_commit').trim()
-                        echo "Last Build Commit: ${lastBuildCommit}"
-                    } else {
-                        echo 'No last build commit file found. Assuming first build.'
+                // 빌드 원인 확인
+                    def userInitiatedCause = currentBuild.rawBuild.getCauses().find { 
+                        it instanceof hudson.model.Cause$UserIdCause 
                     }
-                    def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
-                    echo "Changes: ${changes}"
-                    env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
-                    env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'   
-                }
+                    if (userInitiatedCause) {
+                            echo "This build was started manually."
+                            env.ARTICLE_SERVICE_CHANGED = 'true'
+                            env.USER_SERVICE_CHANGED = 'true'
+                    } else {
+                        echo "This build was not started manually."
+    
+                        def lastBuildCommit = 'HEAD^'
+                        if (fileExists('.last_build_commit')) {
+                            lastBuildCommit = readFile('.last_build_commit').trim()
+                            echo "Last Build Commit: ${lastBuildCommit}"
+                        } else {
+                            echo 'No last build commit file found. Assuming first build.'
+                        }
+                        def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
+                        echo "Changes: ${changes}"
+                        env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
+                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'   
+                    }
                     
                 }
             }
