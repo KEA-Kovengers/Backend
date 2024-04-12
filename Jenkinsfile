@@ -57,15 +57,20 @@ pipeline {
         // }
         stage('Checkout') {
             steps {
-                git(
-                    url: 'git@github.com:KEA-Kovengers/Backend.git',
-                    credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd', // 위에서 생성한 Credentials ID
-                    branches: [[name: '*/main'],[name: '*/develop']],
-                    submoduleCfg: [
-                        [submoduleName: 'config', credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd']
-                    ]
-                )
-            }
+        git(
+            url: 'git@github.com:KEA-Kovengers/Backend.git',
+            credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
+            branch: 'develop', // 또는 'develop'
+            extensions: [
+                [$class: 'SubmoduleOption', 
+                 disableSubmodules: false, 
+                 parentCredentials: true, 
+                 recursiveSubmodules: true, 
+                 reference: '', 
+                 trackingSubmodules: false]
+            ]
+        )
+    }
         }
         stage('Build Docker images') {
             steps {
