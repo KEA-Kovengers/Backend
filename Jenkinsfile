@@ -37,21 +37,34 @@ pipeline {
                 }
             }
         }
+        // stage('Checkout') {
+        //     steps {
+        //         checkout([
+        //             $class: 'GitSCM', 
+        //             doGenerateSubmoduleConfigurations: false, 
+                    
+        //             branches: [[name: '*/main'],[name: '*/develop']], 
+        //             extensions: [[$class: 'SubmoduleOption', 
+        //                           disableSubmodules: false, 
+        //                           parentCredentials: true, 
+        //                             recursiveSubmodules: true, 
+        //                             reference: '', 
+        //                             trackingSubmodules: false]], 
+        //             submoduleCfg: [], 
+        //             userRemoteConfigs: [[url: "https://github.com/KEA-Kovengers/Backend.git"]]
+        //         ])
+        //     }
+        // }
         stage('Checkout') {
             steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    doGenerateSubmoduleConfigurations: false, 
-                    branches: [[name: '*/main'],[name: '*/develop']], 
-                    extensions: [[$class: 'SubmoduleOption', 
-                                  disableSubmodules: false, 
-                                  parentCredentials: true, 
-                                    recursiveSubmodules: true, 
-                                    reference: '', 
-                                    trackingSubmodules: false]], 
-                    submoduleCfg: [], 
-                    userRemoteConfigs: [[url: "https://github.com/KEA-Kovengers/Backend.git"]]
-                ])
+                git(
+                    url: 'git@github.com:KEA-Kovengers/Backend.git',
+                    credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd', // 위에서 생성한 Credentials ID
+                    branches: [[name: '*/main'],[name: '*/develop']],
+                    submoduleCfg: [
+                        [submoduleName: '', credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd']
+                    ]
+                )
             }
         }
         stage('Build Docker images') {
