@@ -51,7 +51,7 @@ pipeline {
                                     reference: '', 
                                     trackingSubmodules: false]], 
                     submoduleCfg: [], 
-                    userRemoteConfigs: [[url: "https://github.com/KEA-Kovengers/Backend.git"]]
+                    userRemoteConfigs: [[url: "git@github.com:KEA-Kovengers/Backend.git"]]
                 ])
             }
         }
