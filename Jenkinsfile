@@ -37,41 +37,29 @@ pipeline {
                 }
             }
         }
-        stage('Checkout') {
+        stage('Copy YAML File') {
             steps {
-                checkout([
-                    $class: 'GitSCM', 
-                    doGenerateSubmoduleConfigurations: false, 
-                    credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
-                    branches: [[name: '*/main'],[name: '*/develop']], 
-                    extensions: [[$class: 'SubmoduleOption', 
-                                  disableSubmodules: false, 
-                                  parentCredentials: true, 
-                                    recursiveSubmodules: true, 
-                                    reference: '', 
-                                    trackingSubmodules: false]], 
-                    submoduleCfg: [], 
-                    userRemoteConfigs: [[url: "git@github.com:KEA-Kovengers/Backend.git"]]
-                ])
+                script{
+                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                    // YAML 파일을 credential로부터 읽어와서 특정 위치에 복사
+                    withCredentials([file(credentialsId: 'article-application', variable: 'ARTICLE_YML_FILE')]) {
+                        // 파일 복사 명령 실행
+                        sh('mkdir -p ' + WORKSPACE + '/config/article-service-module/')
+                        sh('cp ' + ARTICLE_YML_FILE + ' ' + WORKSPACE + '/config/article-service-module/application.yml')
+                    }
+                    }
+                    if (env.USER_SERVICE_CHANGED == 'true') {
+                        // YAML 파일을 credential로부터 읽어와서 특정 위치에 복사
+                        withCredentials([file(credentialsId: 'user-application', variable: 'USER_YML_FILE')]) {
+                            // 파일을 빌드 디렉토리 내 특정 위치로 복사
+                            // 파일 복사 명령 실행
+                            sh('mkdir -p ' + WORKSPACE + '/config/user-service-module/')
+                            sh('cp ' + USER_YML_FILE + ' ' + WORKSPACE + '/config/user-service-module/application.yml')
+                        }
+                    }
+                }
             }
         }
-        // stage('Checkout') {
-        //     steps {
-        //         git(
-        //             url: 'git@github.com:KEA-Kovengers/Backend.git',
-        //             credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
-        //             branch: 'develop', // 또는 'develop'
-        //             extensions: [
-        //                 [$class: 'SubmoduleOption', 
-        //                  disableSubmodules: false, 
-        //                  parentCredentials: true, 
-        //                  recursiveSubmodules: true, 
-        //                  reference: '', 
-        //                  trackingSubmodules: false]
-        //             ]
-        //         )
-        //     }
-        // }
         stage('Build Docker images') {
             steps {
                 script {
