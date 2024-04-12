@@ -43,7 +43,7 @@ pipeline {
                     $class: 'GitSCM', 
                     doGenerateSubmoduleConfigurations: false, 
                     credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
-                    branches: [[name: '*/main'],[name: '*/develop']], 
+                    branches: [[name: 'feat/Jenkins-CICD']], 
                     extensions: [[$class: 'SubmoduleOption', 
                                   disableSubmodules: false, 
                                   parentCredentials: true, 
