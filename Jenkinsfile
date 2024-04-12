@@ -62,7 +62,7 @@ pipeline {
                     credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd', // 위에서 생성한 Credentials ID
                     branches: [[name: '*/main'],[name: '*/develop']],
                     submoduleCfg: [
-                        [submoduleName: '', credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd']
+                        [submoduleName: 'config', credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd']
                     ]
                 )
             }
