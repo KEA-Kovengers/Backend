@@ -37,41 +37,41 @@ pipeline {
                 }
             }
         }
-        // stage('Checkout') {
-        //     steps {
-        //         checkout([
-        //             $class: 'GitSCM', 
-        //             doGenerateSubmoduleConfigurations: false, 
-                    
-        //             branches: [[name: '*/main'],[name: '*/develop']], 
-        //             extensions: [[$class: 'SubmoduleOption', 
-        //                           disableSubmodules: false, 
-        //                           parentCredentials: true, 
-        //                             recursiveSubmodules: true, 
-        //                             reference: '', 
-        //                             trackingSubmodules: false]], 
-        //             submoduleCfg: [], 
-        //             userRemoteConfigs: [[url: "https://github.com/KEA-Kovengers/Backend.git"]]
-        //         ])
-        //     }
-        // }
         stage('Checkout') {
             steps {
-        git(
-            url: 'git@github.com:KEA-Kovengers/Backend.git',
-            credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
-            branch: 'develop', // 또는 'develop'
-            extensions: [
-                [$class: 'SubmoduleOption', 
-                 disableSubmodules: false, 
-                 parentCredentials: true, 
-                 recursiveSubmodules: true, 
-                 reference: '', 
-                 trackingSubmodules: false]
-            ]
-        )
-    }
+                checkout([
+                    $class: 'GitSCM', 
+                    doGenerateSubmoduleConfigurations: false, 
+                    credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
+                    branches: [[name: '*/main'],[name: '*/develop']], 
+                    extensions: [[$class: 'SubmoduleOption', 
+                                  disableSubmodules: false, 
+                                  parentCredentials: true, 
+                                    recursiveSubmodules: true, 
+                                    reference: '', 
+                                    trackingSubmodules: false]], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: "https://github.com/KEA-Kovengers/Backend.git"]]
+                ])
+            }
         }
+        // stage('Checkout') {
+        //     steps {
+        //         git(
+        //             url: 'git@github.com:KEA-Kovengers/Backend.git',
+        //             credentialsId: '0ac786cb-5cbe-4909-aee6-edba05bf8cfd',
+        //             branch: 'develop', // 또는 'develop'
+        //             extensions: [
+        //                 [$class: 'SubmoduleOption', 
+        //                  disableSubmodules: false, 
+        //                  parentCredentials: true, 
+        //                  recursiveSubmodules: true, 
+        //                  reference: '', 
+        //                  trackingSubmodules: false]
+        //             ]
+        //         )
+        //     }
+        // }
         stage('Build Docker images') {
             steps {
                 script {
