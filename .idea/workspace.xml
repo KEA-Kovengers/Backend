@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
-      <change afterPath="$PROJECT_DIR$/Submodules/eureka-service-module/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Submodules" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Backend/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Submodules/article-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Submodules/article-service-module/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Submodules/user-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/Submodules/user-service-module/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Submodules/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Submodules/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/article-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/ArticleServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/ArticleServiceApplication.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
@@ -81,6 +81,7 @@
       <workItem from="1712190016755" duration="57000" />
       <workItem from="1713062144224" duration="58000" />
       <workItem from="1713062832120" duration="24000" />
+      <workItem from="1713174923678" duration="45000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />
