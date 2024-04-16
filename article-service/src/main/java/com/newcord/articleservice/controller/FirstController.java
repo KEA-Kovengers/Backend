@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class FirstController {
 
-    @GetMapping("/user/first")
+    @GetMapping("/article/first")
     public String getFirst() {
         return "second";
     }
+
 }
