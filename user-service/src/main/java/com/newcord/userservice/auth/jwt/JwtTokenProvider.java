@@ -31,7 +31,7 @@ public class JwtTokenProvider {
     private long refreshTokenValiditySeconds;
 
 
-    private final UserDetailsService userDetailsService;
+//    private final UserDetailsService userDetailsService;
 
     // 객체 초기화, secretKey를 Base64로 인코딩
     @PostConstruct
@@ -62,49 +62,49 @@ public class JwtTokenProvider {
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
-
-    // 인증 정보 조회
-    public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
-    }
-
-    // 토큰에서 회원 정보 추출
-    public String getUserPk(String token) {
-        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
-    }
-
-    // 토큰 유효성, 만료일자 확인
-    public boolean validateToken(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 리프레시 토큰 유효성 확인
-    public boolean validateRefreshToken(String jwtToken) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
-            return !claims.getBody().getExpiration().before(new Date());
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
-    // 액세스 토큰 재발급
-    public String refreshAccessToken(String refreshToken) {
-        if (validateRefreshToken(refreshToken)) {
-            String userPk = getUserPk(refreshToken);
-            return createToken(userPk);
-        }
-        return null;
-    }
-
-    // Request의 Header에서 token 값 가져오기
-    public String resolveToken(HttpServletRequest request) {
-        return request.getHeader("X-AUTH-TOKEN");
-    }
+//
+//    // 인증 정보 조회
+//    public Authentication getAuthentication(String token) {
+//        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+//        return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+//    }
+//
+//    // 토큰에서 회원 정보 추출
+//    public String getUserPk(String token) {
+//        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
+//    }
+//
+//    // 토큰 유효성, 만료일자 확인
+//    public boolean validateToken(String jwtToken) {
+//        try {
+//            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+//            return !claims.getBody().getExpiration().before(new Date());
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+//
+//    // 리프레시 토큰 유효성 확인
+//    public boolean validateRefreshToken(String jwtToken) {
+//        try {
+//            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+//            return !claims.getBody().getExpiration().before(new Date());
+//        } catch (Exception e) {
+//            return false;
+//        }
+//    }
+//
+//    // 액세스 토큰 재발급
+//    public String refreshAccessToken(String refreshToken) {
+//        if (validateRefreshToken(refreshToken)) {
+//            String userPk = getUserPk(refreshToken);
+//            return createToken(userPk);
+//        }
+//        return null;
+//    }
+//
+//    // Request의 Header에서 token 값 가져오기
+//    public String resolveToken(HttpServletRequest request) {
+//        return request.getHeader("X-AUTH-TOKEN");
+//    }
 }
