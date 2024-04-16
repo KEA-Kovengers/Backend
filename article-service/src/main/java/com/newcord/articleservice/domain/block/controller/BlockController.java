@@ -19,29 +19,17 @@ public class BlockController {
     @Autowired
     private final RabbitTemplate rabbitTemplate;
 
-    @MessageMapping("/updateBlock")
-    @SendTo("/topic")
-    public String updateBlock(String message) {
+    @MessageMapping("/updateBlock/{postID}")
+    @SendTo("/topic/{postID}")
+    public String updateBlock(@Payload String message, @DestinationVariable String postID) {
         /*
             * 블록 업데이트 로직
          */
 
         // RabbitMQ의 Exchange로 메시지 전송
         log.info("Message sent to RabbitMQ");
-        rabbitTemplate.convertAndSend("1234", "", "Hello RabbitMQ");
+        rabbitTemplate.convertAndSend(postID, "", message);
 
-        return "Hello RabbitMQ";
+        return "Success to send message to RabbitMQ";
     }
-
-//    @MessageMapping("/updateBlock/{postID}")
-//    @SendTo("/topic/{postID}")
-//    public String updateBlock(@Payload String message, @DestinationVariable String postID) {
-//        /*
-//         * 블록 업데이트 로직
-//         */
-//        // 메시지를 postID에 해당하는 Exchange로 전송
-//        rabbitTemplate.convertAndSend(postID, "", message);
-//
-////        return message; // return값이 MQ의 Topic으로 전달됨
-//    }
 }

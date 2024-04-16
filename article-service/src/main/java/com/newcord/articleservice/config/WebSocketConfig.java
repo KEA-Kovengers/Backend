@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Value("${spring.rabbitmq.host}")
     private String RELAY_HOST;
-    @Value("${spring.rabbitmq.amqp-port}")
+    @Value("${spring.rabbitmq.stomp-port}")
     private Integer RELAY_PORT;
     @Value("${spring.rabbitmq.username}")
     private String RELAY_USERNAME;
@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws/test").setAllowedOrigins("*").withSockJS();
+        registry.addEndpoint("/ws/test").setAllowedOrigins("*");
     }
 
     @Override
