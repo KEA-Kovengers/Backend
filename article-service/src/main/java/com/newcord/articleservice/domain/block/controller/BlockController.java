@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.block.controller;
 
 import com.mysql.cj.log.Log;
+import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -30,6 +31,6 @@ public class BlockController {
         log.info("Message sent to RabbitMQ");
         rabbitTemplate.convertAndSend(postID, "", message);
 
-        return "Success to send message to RabbitMQ";
+        return Json.pretty("Success to send message to RabbitMQ") ;
     }
 }
