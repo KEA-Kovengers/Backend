@@ -65,13 +65,15 @@ pipeline {
                 script {
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                         dir('article-service') {
-                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}")
+                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION} .")
+
                             echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
                         }
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         dir('user-service') {
-                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}")
+                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION} .")
+
                             echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
                     }
@@ -83,11 +85,19 @@ pipeline {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', "${DOCKER_CREDENTIAL_ID}") {
                         if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                            // 'latest' 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:latest").push()
+                            // 버전 태그 푸시
                             docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}").push()
+
                             echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
                         }
                         if (env.USER_SERVICE_CHANGED == 'true') {
+                            // 'latest' 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:latest").push()
+                            // 버전 태그 푸시
                             docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}").push()
+
                             echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
                     }
