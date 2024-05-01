@@ -46,16 +46,11 @@ public class ArticleEditInterceptor implements ChannelInterceptor {
         return message;
     }
 
+    // Client가 Exchange로 구독을 요청하면 해당 Exchange를 생성
     private void handleSubscription(String destination, StompHeaderAccessor headerAccessor) {
-        // 예를 들어, destination에 따라 다른 로직을 수행
-        if (destination.startsWith("/topic/articleEditSession/")) {
-            String sessionID = destination.substring("/topic/articleEditSession/".length());
-            rabbitMQService.createContainer(sessionID).setMessageListener((message) -> {
-                    System.out.println("Received message: " + new String(message.getBody()));
-//                    webSocketService.sendArticleEditMessage("/topic/articleEditSession/" + sessionID, new String(message.getBody()));
-                // 메시지 처리 로직
-            });
-            // 특정 작업 수행
+        if (destination.startsWith("/exchange")) {
+            String[] sessionID = destination.split("/");
+            rabbitMQService.createTopic(sessionID[2]);
         }
     }
 }

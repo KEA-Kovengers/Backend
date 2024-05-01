@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.block.controller;
 
 import com.mysql.cj.log.Log;
+import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,8 +22,7 @@ public class BlockController {
     private final RabbitTemplate rabbitTemplate;
 
     @MessageMapping("/updateBlock/{postID}")
-    @SendTo("/topic/articleEditSession/{postID}")
-    public String updateBlock(@Payload String message, @DestinationVariable String postID) {
+    public ApiResponse<String> updateBlock(@Payload String message, @DestinationVariable String postID) {
         /*
             * 블록 업데이트 로직
          */
@@ -31,6 +31,6 @@ public class BlockController {
         log.info("Message sent to RabbitMQ");
         rabbitTemplate.convertAndSend(postID, "", message);
 
-        return Json.pretty(message);
+        return ApiResponse.onSuccess("Block updated");
     }
 }

@@ -6,5 +6,5 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 public interface RabbitMQService {
     public String createTopic(String topicName);
     public String deleteTopic(String topicName);
-    public SimpleMessageListenerContainer createContainer(String topicName);
+    public void createExchangeAndQueue(String topicName, String queueName);
 }
