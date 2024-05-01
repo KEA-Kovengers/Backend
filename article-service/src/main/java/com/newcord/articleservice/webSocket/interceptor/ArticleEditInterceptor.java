@@ -1,6 +1,8 @@
 package com.newcord.articleservice.webSocket.interceptor;
 
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
+import com.newcord.articleservice.webSocket.service.WebSocketService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
@@ -12,9 +14,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class ArticleEditInterceptor implements ChannelInterceptor {
-    @Autowired
-    private RabbitMQService rabbitMQService;
+
+    private final RabbitMQService rabbitMQService;
+
+//    private final WebSocketService webSocketService;
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
@@ -44,9 +49,12 @@ public class ArticleEditInterceptor implements ChannelInterceptor {
     private void handleSubscription(String destination, StompHeaderAccessor headerAccessor) {
         // 예를 들어, destination에 따라 다른 로직을 수행
         if (destination.startsWith("/topic/articleEditSession/")) {
-            String sessionID = "editSession-" + destination.substring("/sub/articleEditSession/".length());
-            rabbitMQService.createContainer(sessionID);
-            System.out.println("Handling special subscription logic for: " + destination);
+            String sessionID = destination.substring("/topic/articleEditSession/".length());
+            rabbitMQService.createContainer(sessionID).setMessageListener((message) -> {
+                    System.out.println("Received message: " + new String(message.getBody()));
+//                    webSocketService.sendArticleEditMessage("/topic/articleEditSession/" + sessionID, new String(message.getBody()));
+                // 메시지 처리 로직
+            });
             // 특정 작업 수행
         }
     }

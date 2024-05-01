@@ -1,5 +1,7 @@
 package com.newcord.articleservice.config;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -13,4 +15,5 @@ public class WebConfig implements WebMvcConfigurer{
             .exposedHeaders("Custom-Header")
             .maxAge(3600);
     }
+
 }

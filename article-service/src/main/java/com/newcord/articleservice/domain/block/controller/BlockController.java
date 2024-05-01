@@ -21,7 +21,7 @@ public class BlockController {
     private final RabbitTemplate rabbitTemplate;
 
     @MessageMapping("/updateBlock/{postID}")
-    @SendTo("/topic/{postID}")
+    @SendTo("/topic/articleEditSession/{postID}")
     public String updateBlock(@Payload String message, @DestinationVariable String postID) {
         /*
             * 블록 업데이트 로직
@@ -31,6 +31,6 @@ public class BlockController {
         log.info("Message sent to RabbitMQ");
         rabbitTemplate.convertAndSend(postID, "", message);
 
-        return Json.pretty("Success to send message to RabbitMQ") ;
+        return Json.pretty(message);
     }
 }
