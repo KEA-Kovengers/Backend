@@ -5,9 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
+      <change afterPath="$PROJECT_DIR$/Submodules" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/out/production/Backend/main/resources/application.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/article-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/article-service-module/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Submodules/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Submodules/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/ArticleServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/ArticleServiceApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/UserserviceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/UserserviceApplication.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,6 +33,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -46,7 +52,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/seonghoonjeong/Desktop/School/4-1/KEA/project/Backend&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/isojeong/Documents/GitHub/24_SW_academy/newcord/Backend&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
@@ -55,6 +61,13 @@
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/common" />
     </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-53826d6a" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -66,6 +79,9 @@
       <updated>1711904655897</updated>
       <workItem from="1711904656922" duration="288000" />
       <workItem from="1712190016755" duration="57000" />
+      <workItem from="1713062144224" duration="58000" />
+      <workItem from="1713062832120" duration="24000" />
+      <workItem from="1713174923678" duration="45000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />
