@@ -1,6 +1,9 @@
 package com.newcord.articleservice.domain.block.controller;
 
 import com.mysql.cj.log.Log;
+import com.newcord.articleservice.domain.block.dto.BlockRequest;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateDTO;
+import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import io.swagger.v3.core.util.Json;
@@ -19,16 +22,16 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class BlockController {
     private final RabbitMQService rabbitMQService;
+    private final BlockCommandService blockCommandService;
 
     @MessageMapping("/updateBlock/{postID}")
-    public ApiResponse<String> updateBlock(@Payload String message, @DestinationVariable String postID) {
+    public ApiResponse<String> updateBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
         /*
             * 블록 업데이트 로직
          */
 
-        // RabbitMQ의 Exchange로 메시지 전송
-        log.info("Message sent to RabbitMQ");
-        rabbitMQService.sendMessage(postID, "", message);
+
+        blockCommandService.updateBlock(blockContentUpdateDTO, postID);
 
         return ApiResponse.onSuccess("Block updated");
     }
