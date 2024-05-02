@@ -2,6 +2,7 @@ package com.newcord.articleservice.domain.block.controller;
 
 import com.mysql.cj.log.Log;
 import com.newcord.articleservice.global.common.response.ApiResponse;
+import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +18,7 @@ import org.springframework.stereotype.Controller;
 @RequiredArgsConstructor
 @Slf4j
 public class BlockController {
-
-    @Autowired
-    private final RabbitTemplate rabbitTemplate;
+    private final RabbitMQService rabbitMQService;
 
     @MessageMapping("/updateBlock/{postID}")
     public ApiResponse<String> updateBlock(@Payload String message, @DestinationVariable String postID) {
@@ -29,7 +28,7 @@ public class BlockController {
 
         // RabbitMQ의 Exchange로 메시지 전송
         log.info("Message sent to RabbitMQ");
-        rabbitTemplate.convertAndSend(postID, "", message);
+        rabbitMQService.sendMessage(postID, "", message);
 
         return ApiResponse.onSuccess("Block updated");
     }

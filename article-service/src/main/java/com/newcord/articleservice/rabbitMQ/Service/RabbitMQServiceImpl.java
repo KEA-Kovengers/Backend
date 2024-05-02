@@ -11,6 +11,7 @@ import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +30,12 @@ public class RabbitMQServiceImpl implements RabbitMQService{
     private RabbitAdmin rabbitAdmin;
     @Autowired
     private ConnectionFactory connectionFactory;
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
 
 
     @Override
-    public String createTopic(String topicName) {
+    public String createFanoutExchange(String topicName) {
         FanoutExchange exchange = new FanoutExchange(topicName);
         rabbitAdmin.declareExchange(exchange);
         return "Topic created " + topicName;
@@ -53,6 +56,11 @@ public class RabbitMQServiceImpl implements RabbitMQService{
         rabbitAdmin.declareExchange(exchange);
         rabbitAdmin.declareQueue(queue);
         rabbitAdmin.declareBinding(binding);
+    }
+
+    @Override
+    public void sendMessage(String topicName, String routing, Object message) {
+        rabbitTemplate.convertAndSend(topicName, routing, message);
     }
 
 }

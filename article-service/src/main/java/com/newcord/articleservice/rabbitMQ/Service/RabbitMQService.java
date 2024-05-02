@@ -1,10 +1,12 @@
 package com.newcord.articleservice.rabbitMQ.Service;
 
-import org.springframework.amqp.core.Exchange;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-
 public interface RabbitMQService {
-    public String createTopic(String topicName);
-    public String deleteTopic(String topicName);
-    public void createExchangeAndQueue(String topicName, String queueName);
+
+    String createFanoutExchange(String topicName);        //fanout exchange 생성
+
+    String deleteTopic(String topicName);                //topic 삭제
+
+    void createExchangeAndQueue(String topicName, String queueName);     //exchange와 queue 생성
+
+    void sendMessage(String topicName, String routing, Object message);     //메시지 전송
 }

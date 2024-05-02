@@ -1,10 +1,8 @@
 package com.newcord.articleservice.webSocket.interceptor;
 
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
-import com.newcord.articleservice.webSocket.service.WebSocketService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -50,7 +48,7 @@ public class ArticleEditInterceptor implements ChannelInterceptor {
     private void handleSubscription(String destination, StompHeaderAccessor headerAccessor) {
         if (destination.startsWith("/exchange")) {
             String[] sessionID = destination.split("/");
-            rabbitMQService.createTopic(sessionID[2]);
+            rabbitMQService.createFanoutExchange(sessionID[2]);
         }
     }
 }
