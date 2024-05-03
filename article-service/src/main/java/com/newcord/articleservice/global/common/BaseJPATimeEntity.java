@@ -3,6 +3,7 @@ package com.newcord.articleservice.global.common;
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
+import java.io.Serializable;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-public abstract class BaseJPATimeEntity {
+public abstract class BaseJPATimeEntity implements Serializable {
 
     // Entity가 생성되어 저장될 때 시간이 자동 저장됩니다.
     @CreatedDate
