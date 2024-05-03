@@ -1,5 +1,5 @@
 # Use the official gradle image to create a build artifact.
-FROM gradle:8.6.0-jdk17 AS build
+FROM gradle:8.7.0-jdk17 AS build
 
 # 작업 디렉토리 설정
 WORKDIR /app
