@@ -26,11 +26,13 @@ public class BlockController {
 
     @MessageMapping("/updateBlock/{postID}")
     public ApiResponse<String> updateBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
-        /*
-            * 블록 업데이트 로직
-         */
+        blockCommandService.updateBlock(blockContentUpdateDTO, postID);
 
+        return ApiResponse.onSuccess("Block updated");
+    }
 
+    @MessageMapping("/createBlock/{postID}")
+    public ApiResponse<String> createBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
         blockCommandService.updateBlock(blockContentUpdateDTO, postID);
 
         return ApiResponse.onSuccess("Block updated");

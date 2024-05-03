@@ -20,7 +20,13 @@ public enum ErrorStatus implements BaseErrorCode {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
 
     // Message DTO 관련
-    _BAD_REQUEST_DTO(HttpStatus.BAD_REQUEST, "COMMON400", "Request DTO 내용이 잘못되었습니다.");
+    _BAD_REQUEST_DTO(HttpStatus.BAD_REQUEST, "COMMON400", "Request DTO 내용이 잘못되었습니다."),
+
+    //Block 관련
+    _BLOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "BLOCK_001", "존재하지 않는 블록입니다."),
+
+    //Posts 관련
+    _POSTS_NOT_FOUND(HttpStatus.NOT_FOUND, "POSTS_001", "존재하지 않는 게시글입니다.");
 
     private final HttpStatus httpStatus;        // HTTP 상태 코드
     private final String code;                  // 내부적인 에러 코드. 도메인명 + 숫자로 구성. 숫자는 HTTP 상태코드 100의자리 참고
