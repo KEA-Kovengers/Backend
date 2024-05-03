@@ -24,6 +24,9 @@ public class BlockController {
     private final RabbitMQService rabbitMQService;
     private final BlockCommandService blockCommandService;
 
+    /*
+     게시글 블럭 순서 수정 구현, MongoDB 블럭 생성 반영되는지
+     */
     @MessageMapping("/updateBlock/{postID}")
     public ApiResponse<String> updateBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
         blockCommandService.updateBlock(blockContentUpdateDTO, postID);

@@ -1,6 +1,8 @@
 package com.newcord.articleservice.domain.block.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +14,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 public class Block implements Serializable {
         @Id
-        private String id;
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
         private BlockParent parent;
         private boolean has_children;
         private String blockType;

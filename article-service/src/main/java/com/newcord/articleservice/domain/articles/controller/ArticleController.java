@@ -1,4 +1,4 @@
-package com.newcord.articleservice.domain.articles;
+package com.newcord.articleservice.domain.articles.controller;
 
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -11,8 +11,5 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 @Slf4j
 public class ArticleController {
-
-//    @PostMapping("/article/create")
-//    public ApiResponse<void>
 
 }
