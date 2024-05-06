@@ -14,5 +14,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Article extends BaseMongoTimeEntity {
     @Id
     private Long id;
-    private List<Long> block_list;
+    private List<String> block_list;
 }

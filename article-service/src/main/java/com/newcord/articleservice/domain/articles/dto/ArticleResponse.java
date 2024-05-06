@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.articles.dto;
 
+import com.newcord.articleservice.domain.block.entity.Block;
 import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
@@ -11,16 +12,16 @@ public class ArticleResponse {
     @Getter
     public static class ArticleCreateResponseDTO {
         private Long articleId;
-        private List<Long> blockList;
+        private List<String> blockList;
     }
 
     @Builder
     @Getter
     public static class BlockSequenceUpdateResponseDTO {
         private Long articleId;
-        private Long blockId;
+        private Block block;
         private Long newPosition;
-        private List<Long> blockList;
+        private List<String> blockList;
     }
 
 }

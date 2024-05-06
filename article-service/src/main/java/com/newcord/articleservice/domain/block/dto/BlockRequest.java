@@ -22,6 +22,10 @@ public class BlockRequest {
         private String content;             // 내용
         private BlockParent blockParent;    // 부모 블럭 (없는경우 article ID)
         private BlockCreatedBy created_by;  // 생성자
+
+        public void setArticleID(Long articleID) {
+            this.articleID = articleID;
+        }
     }
 
     // 블럭 내용 수정 요청 DTO

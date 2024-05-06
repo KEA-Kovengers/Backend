@@ -1,9 +1,13 @@
 package com.newcord.articleservice.domain.block.service;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
+import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
+import com.newcord.articleservice.domain.block.entity.BlockParent;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
@@ -19,30 +23,45 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     @Autowired
     private RabbitMQService rabbitMQService;
     private final BlockRepository blockRepository;
+    private final ArticlesCommandService articlesCommandService;
 
     @Override
-    public JSONPObject createBlock(BlockCreateRequestDTO blockCreateDTO, String postId) {
+    public JSONPObject createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
+        blockCreateDTO.setArticleID(postId);
+        // Block 생성
         BlockUpdatedBy blockUpdatedBy = BlockUpdatedBy.builder()
                 .updated_at(blockCreateDTO.getCreated_by().getCreated_at())
                 .updater_id(blockCreateDTO.getCreated_by().getCreator_id())
                 .build();
-
         Block block = Block.builder()
                 .content(blockCreateDTO.getContent())
                 .blockType(blockCreateDTO.getBlockType())
+                .parent(BlockParent.builder()
+                    .type(blockCreateDTO.getBlockParent().getType())
+                    .page_id(blockCreateDTO.getBlockParent().getPage_id())
+                    .build())
                 .created_by(blockCreateDTO.getCreated_by())
                 .updated_by(blockUpdatedBy)
                 .build();
 
+        // Block 저장
         blockRepository.save(block);
 
-        rabbitMQService.sendMessage(postId, "", blockCreateDTO);
+        // Article에 순서에 맞게 Insert
+        BlockSequenceUpdateResponseDTO responseDTO = articlesCommandService.insertBlock(InsertBlockRequestDTO.builder()
+            .articleId(blockCreateDTO.getArticleID())
+            .block(block)
+            .position(blockCreateDTO.getPosition())
+            .build());
+
+
+        rabbitMQService.sendMessage(postId.toString(), "", responseDTO);
 
         return null;
     }
 
     @Override
-    public JSONPObject updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, String postId) {
+    public JSONPObject updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(blockContentUpdateDTO.getBlockId()).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
@@ -60,7 +79,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         // 블록 업데이트 후 저장
         blockRepository.save(block);
 
-        rabbitMQService.sendMessage(postId, "", blockContentUpdateDTO);
+        rabbitMQService.sendMessage(postId.toString(), "", blockContentUpdateDTO);
         return null;
     }
 }

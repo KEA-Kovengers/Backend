@@ -27,6 +27,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Block 관련
     _BLOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "BLOCK_001", "존재하지 않는 블록입니다."),
+    _BLOCK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BLOCK_002", "이미 존재하는 블록입니다."),
 
     //Posts 관련
     _POSTS_NOT_FOUND(HttpStatus.NOT_FOUND, "POSTS_001", "존재하지 않는 게시글입니다.");

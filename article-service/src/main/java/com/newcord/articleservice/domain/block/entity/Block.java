@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import java.io.Serializable;
 import lombok.Builder;
 import lombok.Getter;
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,8 +15,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 public class Block implements Serializable {
         @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+        private ObjectId id;
         private BlockParent parent;
         private boolean has_children;
         private String blockType;
