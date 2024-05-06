@@ -52,10 +52,8 @@ public class BlockResponse {
     @AllArgsConstructor
     @Getter
     public static class BlockContentUpdateResponseDTO {
-        private String blockId;               // 수정할 block ID
-        private String blockType;           // block 타입
+        private BlockDTO blockDTO;
         private Long position;              // block의 위치 (변경되지 않는다면 원래 값 그대로)
-        private String content;             // 내용
         private BlockUpdatedBy updated_by;  // 수정자
     }
 

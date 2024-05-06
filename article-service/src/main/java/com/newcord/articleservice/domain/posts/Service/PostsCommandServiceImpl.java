@@ -1,6 +1,5 @@
 package com.newcord.articleservice.domain.posts.Service;
 
-import com.newcord.articleservice.domain.articles.dto.ArticleRequest.ArticleCreateRequestDTO;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.editor.EditorCommandService;
@@ -30,14 +29,10 @@ public class PostsCommandServiceImpl implements PostsCommandService{
             .build());
 
 
-        articlesCommandService.createArticle(ArticleCreateRequestDTO.builder()
-                .articleId(newPosts.getId())
-                .build());
+        articlesCommandService.createArticle(newPosts.getId());
 
         return PostCreateResponseDTO.builder()
                 .id(newPosts.getId())
                 .build();
     }
-
-
 }

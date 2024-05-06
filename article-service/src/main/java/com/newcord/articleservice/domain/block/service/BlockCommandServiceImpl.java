@@ -47,8 +47,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         blockRepository.save(block);
 
         // Article에 순서에 맞게 Insert
-        BlockSequenceUpdateResponseDTO responseDTO = articlesCommandService.insertBlock(InsertBlockRequestDTO.builder()
-            .articleId(blockCreateDTO.getArticleID())
+        BlockSequenceUpdateResponseDTO responseDTO = articlesCommandService.insertBlock(postId, InsertBlockRequestDTO.builder()
             .block(block)
             .position(blockCreateDTO.getPosition())
             .build());
@@ -71,8 +70,6 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         //TODO: 컨플릭트 로직이 들어가야함
 
 
-        // 블록 생성으로 DB에 저장하는 API구현하고, 웹소켓으로 업데이트하는게 제대로 반영 되는지 확인
-
         // DTO로 받은 내용으로 블록 업데이트
         block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
         block.updateBlockType(blockContentUpdateDTO.getBlockType(), blockContentUpdateDTO.getUpdated_by());
@@ -81,10 +78,8 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         blockRepository.save(block);
 
         return BlockContentUpdateResponseDTO.builder()
-            .blockId(block.getId().toString())
-            .blockType(block.getBlockType())
+            .blockDTO(BlockDTO.toDTO(block))
             .position(blockContentUpdateDTO.getPosition())
-            .content(block.getContent())
             .updated_by(block.getUpdated_by())
             .build();
     }

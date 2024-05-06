@@ -19,8 +19,6 @@ public class ArticleResponse {
     @Getter
     public static class BlockSequenceUpdateResponseDTO {
         private Long articleId;
-        private Block block;
-        private Long newPosition;
         private List<String> blockList;
     }
 

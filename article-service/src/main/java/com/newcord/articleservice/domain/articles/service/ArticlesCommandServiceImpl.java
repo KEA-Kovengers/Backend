@@ -1,6 +1,6 @@
 package com.newcord.articleservice.domain.articles.service;
 
-import com.newcord.articleservice.domain.articles.dto.ArticleRequest.ArticleCreateRequestDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.BlockSequenceUpdateRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.ArticleCreateResponseDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
@@ -19,14 +19,16 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
     private final ArticlesQueryService articlesQueryService;
 
     @Override
-    public ArticleCreateResponseDTO createArticle(ArticleCreateRequestDTO articleCreateRequestDTO) {
+    public ArticleCreateResponseDTO createArticle(Long articleID) {
+        articlesRepository.findById(articleID)
+            .ifPresent(a -> {
+                throw new ApiException(ErrorStatus._ARTICLE_ALREADY_EXISTS);
+            });
+
         Article article = Article.builder()
-            .id(articleCreateRequestDTO.getArticleId())
+            .id(articleID)
             .block_list(new ArrayList<>())
             .build();
-
-        if(!articlesRepository.findById(articleCreateRequestDTO.getArticleId()).isEmpty())
-            throw new ApiException(ErrorStatus._ARTICLE_ALREADY_EXISTS);
 
         articlesRepository.save(article);
 
@@ -36,8 +38,8 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
     }
 
     @Override
-    public BlockSequenceUpdateResponseDTO insertBlock(InsertBlockRequestDTO insertBlockRequestDTO) {
-        Article article = articlesQueryService.findArticleById(insertBlockRequestDTO.getArticleId());
+    public BlockSequenceUpdateResponseDTO insertBlock(Long articleID, InsertBlockRequestDTO insertBlockRequestDTO) {
+        Article article = articlesQueryService.findArticleById(articleID);
 
         if(article.getBlock_list().contains(insertBlockRequestDTO.getBlock().getId()))
             throw new ApiException(ErrorStatus._BLOCK_ALREADY_EXISTS);
@@ -48,8 +50,31 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
 
         return BlockSequenceUpdateResponseDTO.builder()
             .articleId(article.getId())
-            .block(insertBlockRequestDTO.getBlock())
-            .newPosition(insertBlockRequestDTO.getPosition())
+            .blockList(article.getBlock_list())
+            .build();
+    }
+
+    @Override
+    public BlockSequenceUpdateResponseDTO updateBlockSequence(
+        Long articleID,
+        BlockSequenceUpdateRequestDTO blockSequenceUpdateRequestDTO) {
+        Article article = articlesQueryService.findArticleById(articleID);
+
+        for (int i = 0; i < blockSequenceUpdateRequestDTO.getBlockList().size(); i++) {
+            int idx = article.getBlock_list().indexOf(blockSequenceUpdateRequestDTO.getBlockList().get(i));
+            if(idx == -1)
+                throw new ApiException(ErrorStatus._BLOCK_NOT_FOUND);
+
+            // 원래 있던 블럭을 삭제하고 새로운 위치에 추가
+            article.getBlock_list().remove(idx);
+            article.getBlock_list().add(blockSequenceUpdateRequestDTO.getPosition().get(i).intValue(),
+                blockSequenceUpdateRequestDTO.getBlockList().get(i));
+        }
+
+        articlesRepository.save(article);
+
+        return BlockSequenceUpdateResponseDTO.builder()
+            .articleId(article.getId())
             .blockList(article.getBlock_list())
             .build();
     }
