@@ -1,33 +1,31 @@
 package com.newcord.articleservice.domain.block.service;
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockParent;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
-import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class BlockCommandServiceImpl implements BlockCommandService{
-    @Autowired
-    private RabbitMQService rabbitMQService;
     private final BlockRepository blockRepository;
     private final ArticlesCommandService articlesCommandService;
 
     @Override
-    public JSONPObject createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
+    public BlockCreateResponseDTO createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
         blockCreateDTO.setArticleID(postId);
         // Block 생성
         BlockUpdatedBy blockUpdatedBy = BlockUpdatedBy.builder()
@@ -55,14 +53,16 @@ public class BlockCommandServiceImpl implements BlockCommandService{
             .position(blockCreateDTO.getPosition())
             .build());
 
-
-        rabbitMQService.sendMessage(postId.toString(), "", responseDTO);
-
-        return null;
+        return BlockCreateResponseDTO.builder()
+            .blockDTO(BlockDTO.toDTO(block))
+            .articleId(blockCreateDTO.getArticleID())
+            .position(blockCreateDTO.getPosition())
+            .blockList(responseDTO.getBlockList())
+            .build();
     }
 
     @Override
-    public JSONPObject updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
+    public BlockContentUpdateResponseDTO updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(new ObjectId(blockContentUpdateDTO.getBlockId())).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
@@ -80,7 +80,12 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         // 블록 업데이트 후 저장
         blockRepository.save(block);
 
-        rabbitMQService.sendMessage(postId.toString(), "", blockContentUpdateDTO);
-        return null;
+        return BlockContentUpdateResponseDTO.builder()
+            .blockId(block.getId().toString())
+            .blockType(block.getBlockType())
+            .position(blockContentUpdateDTO.getPosition())
+            .content(block.getContent())
+            .updated_by(block.getUpdated_by())
+            .build();
     }
 }

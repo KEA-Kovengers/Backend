@@ -22,6 +22,9 @@ public class ArticleRequest {
         private Block block;
     }
 
+    //여러개가 수정되면 어떻게 하지?
+    // 그냥 리스트를 통채로 받아올까
+
     @Builder
     @Getter
     public static class BlockSequenceUpdateRequestDTO {
