@@ -15,7 +15,8 @@ public class BlockRequest {
     @Builder
     @AllArgsConstructor
     @Getter
-    public static class BlockCreateDTO {
+    public static class BlockCreateRequestDTO {
+        private Long articleID;
         private String blockType;           // 블럭타입
         private Long position;              // 블럭이 추가될 위치 (0부터 시작)
         private String content;             // 내용
@@ -27,10 +28,11 @@ public class BlockRequest {
     @Builder
     @AllArgsConstructor
     @Getter
-    public static class BlockContentUpdateDTO {
-        private Long blockId;
-        private String blockType;
-        private String content;
-        private BlockUpdatedBy updated_by;
+    public static class BlockContentUpdateRequestDTO {
+        private Long blockId;               // 수정할 block ID
+        private String blockType;           // block 타입
+        private Long position;              // block의 위치 (변경되지 않는다면 원래 값 그대로)
+        private String content;             // 내용
+        private BlockUpdatedBy updated_by;  // 수정자
     }
 }

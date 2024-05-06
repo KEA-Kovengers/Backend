@@ -1,8 +1,8 @@
 package com.newcord.articleservice.domain.block.service;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
-import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateDTO;
-import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
@@ -21,7 +21,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     private final BlockRepository blockRepository;
 
     @Override
-    public JSONPObject createBlock(BlockCreateDTO blockCreateDTO, String postId) {
+    public JSONPObject createBlock(BlockCreateRequestDTO blockCreateDTO, String postId) {
         BlockUpdatedBy blockUpdatedBy = BlockUpdatedBy.builder()
                 .updated_at(blockCreateDTO.getCreated_by().getCreated_at())
                 .updater_id(blockCreateDTO.getCreated_by().getCreator_id())
@@ -42,7 +42,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     }
 
     @Override
-    public JSONPObject updateBlock(BlockContentUpdateDTO blockContentUpdateDTO, String postId) {
+    public JSONPObject updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, String postId) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(blockContentUpdateDTO.getBlockId()).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)

@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.controller;
 
+import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PostsController {
     private final RabbitMQService rabbitMQService;
     private final PostsCommandService postsCommandService;
-
 
     @Operation(summary = "게시글 편집 세션 생성", description = "게시글 편집 세션을 생성합니다.")
     @PostMapping("/createEditSession")

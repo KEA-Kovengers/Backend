@@ -1,5 +1,7 @@
 package com.newcord.articleservice.domain.posts.Service;
 
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.ArticleCreateRequestDTO;
+import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.editor.EditorCommandService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
@@ -14,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class PostsCommandServiceImpl implements PostsCommandService{
     private final PostsRepository postsRepository;
     private final EditorCommandService editorCommandService;
+    private final ArticlesCommandService articlesCommandService;
     /*
     TODO: 게시글 편집 세션(Exchange 생성 삭제등 관리에 관한 서비스 구현)
      */
@@ -25,6 +28,11 @@ public class PostsCommandServiceImpl implements PostsCommandService{
                 .postId(newPosts.getId())
                 .userID(userID)
             .build());
+
+
+        articlesCommandService.createArticle(ArticleCreateRequestDTO.builder()
+                .articleId(newPosts.getId())
+                .build());
 
         return PostCreateResponseDTO.builder()
                 .id(newPosts.getId())
