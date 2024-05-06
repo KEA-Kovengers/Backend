@@ -33,7 +33,7 @@ public class BlockRequest {
     @AllArgsConstructor
     @Getter
     public static class BlockContentUpdateRequestDTO {
-        private Long blockId;               // 수정할 block ID
+        private String blockId;               // 수정할 block ID
         private String blockType;           // block 타입
         private Long position;              // block의 위치 (변경되지 않는다면 원래 값 그대로)
         private String content;             // 내용

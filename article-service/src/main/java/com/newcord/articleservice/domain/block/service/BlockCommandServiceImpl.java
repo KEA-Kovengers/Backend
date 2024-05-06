@@ -14,6 +14,7 @@ import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     @Override
     public JSONPObject updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
-        Block block = blockRepository.findById(blockContentUpdateDTO.getBlockId()).orElseThrow(
+        Block block = blockRepository.findById(new ObjectId(blockContentUpdateDTO.getBlockId())).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
         );
 
