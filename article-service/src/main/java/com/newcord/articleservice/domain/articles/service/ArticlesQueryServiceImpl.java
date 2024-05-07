@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.repository.ArticlesRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
