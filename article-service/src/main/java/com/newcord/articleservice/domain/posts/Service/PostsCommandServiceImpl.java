@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.articles.service.ArticlesCommandService
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.service.EditorCommandService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
+import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostsCommandServiceImpl implements PostsCommandService{
     private final PostsRepository postsRepository;
+    private final PostsQueryService postsQueryService;
     private final EditorCommandService editorCommandService;
     private final ArticlesCommandService articlesCommandService;
     /*
@@ -34,5 +36,15 @@ public class PostsCommandServiceImpl implements PostsCommandService{
         return PostCreateResponseDTO.builder()
                 .id(newPosts.getId())
                 .build();
+    }
+
+    @Override
+    public Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO) {
+        Posts post = postsQueryService.getPost(postUpdateDTO.getId());
+        post.updateByDTO(postUpdateDTO);
+
+        postsRepository.save(post);
+
+        return post;
     }
 }

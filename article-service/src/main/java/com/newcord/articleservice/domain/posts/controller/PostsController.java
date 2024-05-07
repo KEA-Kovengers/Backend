@@ -5,9 +5,11 @@ import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
+import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
+import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,6 +62,12 @@ public class PostsController {
     @GetMapping("/list/{userID}")
     public ApiResponse<PostListResponseDTO> getPostList(@PathVariable String userID, @RequestParam Integer page, @RequestParam Integer size){
         return ApiResponse.onSuccess(editorQueryService.getPostListByUserID(userID, page, size));
+    }
+
+    @Operation(summary = "게시글 편집", description = "게시글을 편집합니다.")
+    @PostMapping("/editPost")
+    public ApiResponse<Posts> editPost(@RequestBody PostUpdateRequestDTO updateRequestDTO) {
+        return ApiResponse.onSuccess(postsCommandService.updatePost("testID", updateRequestDTO));
     }
 
 }

@@ -26,4 +26,7 @@ public abstract class BaseJPATimeEntity implements Serializable {
     @Column(updatable = false)
     private LocalDateTime updated_at;
 
+    protected void update(){
+        updated_at = LocalDateTime.now();
+    }
 }

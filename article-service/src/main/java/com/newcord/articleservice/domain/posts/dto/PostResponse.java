@@ -41,5 +41,4 @@ public class PostResponse {
     public static class PostListResponseDTO{
         private Page<Editor> postList;
     }
-
 }
