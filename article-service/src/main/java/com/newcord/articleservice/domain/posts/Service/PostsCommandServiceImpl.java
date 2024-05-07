@@ -2,7 +2,7 @@ package com.newcord.articleservice.domain.posts.Service;
 
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
-import com.newcord.articleservice.domain.editor.editor.EditorCommandService;
+import com.newcord.articleservice.domain.editor.service.EditorCommandService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;

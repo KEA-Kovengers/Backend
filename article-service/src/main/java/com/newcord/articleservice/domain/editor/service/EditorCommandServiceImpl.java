@@ -1,4 +1,4 @@
-package com.newcord.articleservice.domain.editor.editor;
+package com.newcord.articleservice.domain.editor.service;
 
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorAddResponseDTO;

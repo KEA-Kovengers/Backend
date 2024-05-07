@@ -1,6 +1,8 @@
 package com.newcord.articleservice.domain.posts.dto;
 
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
+import com.newcord.articleservice.domain.editor.entity.Editor;
+import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -8,6 +10,7 @@ import java.util.List;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 //게시글 관련 API 응답 DTO
 public class PostResponse {
@@ -31,6 +34,12 @@ public class PostResponse {
         private Long views;
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
+    }
+
+    @Builder
+    @Getter
+    public static class PostListResponseDTO{
+        private Page<Editor> postList;
     }
 
 }
