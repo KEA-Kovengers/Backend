@@ -1,16 +1,12 @@
 package com.newcord.userservice.auth.api;
 
-
-import com.newcord.userservice.auth.jwt.JwtTokenProvider;
 import com.newcord.userservice.auth.response.ApiResponse;
-import com.newcord.userservice.auth.response.ResponseCode;
 import com.newcord.userservice.auth.service.KakaoAuthService;
 import com.newcord.userservice.auth.utils.KakaoTokenJsonData;
 import com.newcord.userservice.auth.utils.dto.KakaoTokenResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Description;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +39,13 @@ public class KakaoController {
 
         return response;
     }
+
+
+
+    //토큰 유효 검증
+
+    //토큰 db 검증
+
+    //토큰 생성 및 재발급
 
 }
