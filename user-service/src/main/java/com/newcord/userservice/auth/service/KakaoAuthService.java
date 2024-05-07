@@ -26,31 +26,40 @@ public class KakaoAuthService {
     private final UsersRepository usersRepository;
     private final JwtTokenProvider jwtTokenProvider;
 
+
+    // 카카오에서 엑세스 토큰 받아와서 회원정보 가져오고 검증함
     @Transactional
     public Long isSignedUp(String token) {
         KakaoUserInfoResponse userInfo = kakaoUserInfo.getUserInfo(token);
         log.info("회원 정보 입니다.{}", userInfo);
 
         Long userId = userInfo.getId();
-        Users user = usersRepository.findById(userId).orElse(null);
-        if (user == null) {
-            // 사용자가 존재하지 않는 경우에만 createUser 호출
-            return createUser(userId, userInfo.getProperties().getNickname(), userInfo.getProperties().getProfile_image());
-        }
         return userId;
     }
 
     @Transactional
-    public Long createUser(Long id, String nickName, String profileImg) {
+    public boolean isUserExists(Long userId) {
+        Users user = usersRepository.findById(userId).orElse(null);
+        return user != null;
+    }
+
+
+    // 유저 정보 추가
+    @Transactional
+    public Long createUser(String token) {
+        KakaoUserInfoResponse userInfo = kakaoUserInfo.getUserInfo(token);
+        log.info("회원 정보 입니다.{}", userInfo);
+
+        Long userId = userInfo.getId();
         Users user = Users.builder()
-                .id(id)
-                .nickName(nickName)
-                .profileImg(profileImg)
+                .id(userId)
+                .nickName(userInfo.getProperties().getNickname())
+                .profileImg(userInfo.getProperties().getProfile_image())
                 .build();
 
         usersRepository.save(user);
         log.info("새로운 회원 저장 완료");
-        return user.getId();
+        return userId;
     }
 
     // refresh token db 저장
@@ -66,12 +75,21 @@ public class KakaoAuthService {
     @Transactional
     public ApiResponse<HashMap<String, String>> authCheck(@RequestHeader String accessToken) {
         Long userId = isSignedUp(accessToken); // 유저 고유번호 추출
-        String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
+        String refreshToken;
+
+        boolean userExists = isUserExists(userId);
+        if (!userExists) {
+            // 사용자가 존재하지 않으면 회원 가입
+            createUser(accessToken);
+        }
+
+        refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
+
         saveRefreshToken(userId, refreshToken); // 리프레시 토큰 db 저장
 
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId.toString());
-        map.put("token", jwtTokenProvider.createToken(userId.toString()));
+        map.put("token", jwtTokenProvider.createToken(userId.toString())); // 유저 아이디로 jwt 토큰 발급
         map.put("refreshToken", refreshToken);
         return ApiResponse.success(map, ResponseCode.USER_LOGIN_SUCCESS.getMessage());
     }
