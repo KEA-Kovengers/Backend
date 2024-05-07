@@ -2,8 +2,10 @@ package com.newcord.articleservice.domain.block.controller;
 
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockDeleteRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.global.common.WSRequest;
 import com.newcord.articleservice.global.common.response.ApiResponse;
@@ -36,6 +38,17 @@ public class BlockController {
     public WSResponse<BlockCreateResponseDTO> createBlock(WSRequest<BlockCreateRequestDTO> blockCreateRequestDTO, @DestinationVariable Long postID) {
         BlockCreateResponseDTO responseDTO = blockCommandService.createBlock(blockCreateRequestDTO.getDto(), postID);
         WSResponse<BlockCreateResponseDTO> response = WSResponse.onSuccess("/createBlock/"+postID, blockCreateRequestDTO.getUuid(), responseDTO);
+        rabbitMQService.sendMessage(postID.toString(), "", response);
+
+        return response;
+    }
+
+
+    // 요청시에 dto : {'blockId' : '~~`'} 가 아닌, dto : '~~' 로 보내야함
+    @MessageMapping("/deleteBlock/{postID}")
+    public WSResponse<BlockDeleteResponseDTO> deleteBlock(WSRequest<BlockDeleteRequestDTO> requestDTO, @DestinationVariable Long postID) {
+        BlockDeleteResponseDTO responseDTO = blockCommandService.deleteBlock(requestDTO.getDto(), postID);
+        WSResponse<BlockDeleteResponseDTO> response = WSResponse.onSuccess("/deleteBlock/"+postID, requestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 
         return response;

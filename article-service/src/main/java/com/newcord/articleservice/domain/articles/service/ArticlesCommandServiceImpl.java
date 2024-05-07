@@ -6,9 +6,11 @@ import com.newcord.articleservice.domain.articles.dto.ArticleResponse.ArticleCre
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
 import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.repository.ArticlesRepository;
+import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -77,5 +79,15 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
             .articleId(article.getId())
             .blockList(article.getBlock_list())
             .build();
+    }
+
+    @Override
+    public List<String> deleteBlock(Long articleID, Block block) {
+        Article article = articlesQueryService.findArticleById(articleID);
+
+        article.getBlock_list().remove(block.getId().toString());
+        articlesRepository.save(article);
+
+        return article.getBlock_list();
     }
 }

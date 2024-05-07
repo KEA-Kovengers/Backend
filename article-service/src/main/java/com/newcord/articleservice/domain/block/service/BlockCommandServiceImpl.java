@@ -2,18 +2,23 @@ package com.newcord.articleservice.domain.block.service;
 
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
+import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
+import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockDeleteRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockParent;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
@@ -23,6 +28,7 @@ import org.springframework.stereotype.Service;
 public class BlockCommandServiceImpl implements BlockCommandService{
     private final BlockRepository blockRepository;
     private final ArticlesCommandService articlesCommandService;
+    private final ArticlesQueryService articlesQueryService;
 
     @Override
     public BlockCreateResponseDTO createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
@@ -81,6 +87,21 @@ public class BlockCommandServiceImpl implements BlockCommandService{
             .blockDTO(BlockDTO.toDTO(block))
             .position(blockContentUpdateDTO.getPosition())
             .updated_by(block.getUpdated_by())
+            .build();
+    }
+
+    @Override
+    public BlockDeleteResponseDTO deleteBlock(BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
+        // 블록 삭제 로직 후 ResponseDTO로 전송
+        Block block = blockRepository.findById(new ObjectId(blockDeleteDTO.getBlockId())).orElseThrow(
+                () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
+        );
+
+        List<String> blockList = articlesCommandService.deleteBlock(postId, block);
+
+        return BlockDeleteResponseDTO.builder()
+            .blockId(block.getId().toString())
+            .blockList(blockList)
             .build();
     }
 }

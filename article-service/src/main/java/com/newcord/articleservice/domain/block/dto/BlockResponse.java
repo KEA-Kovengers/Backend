@@ -57,4 +57,11 @@ public class BlockResponse {
         private BlockUpdatedBy updated_by;  // 수정자
     }
 
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class BlockDeleteResponseDTO {
+        private String blockId;
+        private List<String> blockList;
+    }
 }

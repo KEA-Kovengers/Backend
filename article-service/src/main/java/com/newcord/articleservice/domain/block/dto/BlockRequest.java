@@ -39,4 +39,11 @@ public class BlockRequest {
         private String content;             // 내용
         private BlockUpdatedBy updated_by;  // 수정자
     }
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class BlockDeleteRequestDTO {
+        private String blockId;
+    }
 }
