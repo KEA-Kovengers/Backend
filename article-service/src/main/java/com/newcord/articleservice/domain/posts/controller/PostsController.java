@@ -1,6 +1,5 @@
 package com.newcord.articleservice.domain.posts.controller;
 
-import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
@@ -11,10 +10,8 @@ import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailRespon
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.global.common.response.ApiResponse;
-import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostsController {
-    private final RabbitMQService rabbitMQService;
     private final PostsCommandService postsCommandService;
     private final PostsQueryService postsQueryService;
     private final EditorQueryService editorQueryService;
@@ -37,13 +33,13 @@ public class PostsController {
     @Operation(summary = "게시글 편집 세션 생성", description = "게시글 편집 세션을 생성합니다.")
     @PostMapping("/createEditSession")
     public ApiResponse<String> createPostEditSession(@RequestBody String articleID) {
-        return ApiResponse.onSuccess(rabbitMQService.createFanoutExchange(articleID));
+        return ApiResponse.onSuccess(postsCommandService.createPostEditSession(articleID));
     }
 
-    @Operation(summary = "게시글 편집 세션 삭제", description = "게시글 편집 세션을 생성합니다.")
+    @Operation(summary = "게시글 편집 세션 삭제", description = "게시글 편집 세션을 삭제합니다.")
     @PostMapping("/deleteEditSession")
     public ApiResponse<String> deletePostEditSession(@RequestBody String articleID) {
-        return ApiResponse.onSuccess(rabbitMQService.deleteTopic(articleID));
+        return ApiResponse.onSuccess(postsCommandService.deletePostEditSession(articleID));
     }
 
     @Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")

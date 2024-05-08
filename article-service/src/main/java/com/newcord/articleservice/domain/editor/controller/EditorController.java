@@ -1,4 +1,4 @@
-package com.newcord.articleservice.domain.editor;
+package com.newcord.articleservice.domain.editor.controller;
 
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorResponseDTO;

@@ -23,23 +23,34 @@ public class EditorCommandServiceImpl implements EditorCommandService {
     private final PostsQueryService postsQueryService;
 
     @Override
-    public EditorAddResponseDTO addEditor(EditorAddRequestDTO editorAddDTO) {
+    public EditorAddResponseDTO addEditor(String userID, EditorAddRequestDTO editorAddDTO) {
+        // 요청 유저의 권한 확인
+        editorQueryService.getEditorByPostIdAndUserID(editorAddDTO.getPostId(), userID);
+
+        return addInitialEditor(editorAddDTO);
+    }
+
+    @Override
+    public EditorAddResponseDTO addInitialEditor(EditorAddRequestDTO editorAddDTO) {
+        // 게시글 존재 확인
         Posts post = postsQueryService.getPost(editorAddDTO.getPostId());
+
         Editor editor = Editor.builder()
-                .post(post)
-                .userID(editorAddDTO.getUserID())
-                .build();
+            .post(post)
+            .userID(editorAddDTO.getUserID())
+            .build();
         editorRepository.save(editor);
 
         return EditorAddResponseDTO.builder()
-                .userID(editor.getUserID())
-                .postId(editor.getPost().getId())
-                .build();
+            .userID(editor.getUserID())
+            .postId(editor.getPost().getId())
+            .build();
     }
 
     @Override
     public DeleteEditorResponseDTO deleteEditor(String userID, DeleteEditorRequestDTO deleteEditorRequestDTO) {
-        Editor editor = editorQueryService.getEditorByPostIdAndUserID(deleteEditorRequestDTO.getPostId(), userID);
+        // 요청한 유저의 권한 확인
+        editorQueryService.getEditorByPostIdAndUserID(deleteEditorRequestDTO.getPostId(), userID);
         Editor deleteEditor = editorQueryService.getEditorByPostIdAndUserID(deleteEditorRequestDTO.getPostId(), deleteEditorRequestDTO.getUserID());
 
         editorRepository.delete(deleteEditor);

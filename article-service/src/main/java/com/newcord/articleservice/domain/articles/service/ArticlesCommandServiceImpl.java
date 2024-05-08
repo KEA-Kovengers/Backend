@@ -43,7 +43,7 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
     public BlockSequenceUpdateResponseDTO insertBlock(Long articleID, InsertBlockRequestDTO insertBlockRequestDTO) {
         Article article = articlesQueryService.findArticleById(articleID);
 
-        if(article.getBlock_list().contains(insertBlockRequestDTO.getBlock().getId()))
+        if(article.getBlock_list().contains(insertBlockRequestDTO.getBlock().getId().toString()))
             throw new ApiException(ErrorStatus._BLOCK_ALREADY_EXISTS);
 
         article.getBlock_list().add(insertBlockRequestDTO.getPosition().intValue(), insertBlockRequestDTO.getBlock().getId().toString());
