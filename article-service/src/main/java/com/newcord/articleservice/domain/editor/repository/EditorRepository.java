@@ -11,5 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface EditorRepository extends JpaRepository<Editor, String> {
     Page<Editor> findByUserID(String userID, Pageable pageable);
+    Optional<Editor> findByPostIdAndUserID(Long postId, String userID);
+    List<Editor> findByPostId(Long postId);
 
 }

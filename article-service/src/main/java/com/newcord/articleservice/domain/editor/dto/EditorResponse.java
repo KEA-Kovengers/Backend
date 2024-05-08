@@ -14,4 +14,16 @@ public class EditorResponse {
         private String userID;
     }
 
+    @Builder
+    @Getter
+    public static class DeleteEditorResponseDTO{
+        private Long postId;
+        private String userID;
+        private boolean postDelete;         //게시글 완전 삭제 여부 (편집자가 없을때 삭제됨)
+
+        public void setPostDelete(boolean postDelete){
+            this.postDelete = postDelete;
+        }
+    }
+
 }

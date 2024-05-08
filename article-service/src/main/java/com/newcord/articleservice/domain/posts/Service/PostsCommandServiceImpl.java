@@ -47,4 +47,10 @@ public class PostsCommandServiceImpl implements PostsCommandService{
 
         return post;
     }
+
+    @Override
+    public void deletePost(String userID, Long postId) {
+        Posts post = postsQueryService.getPost(postId);
+        postsRepository.delete(post);
+    }
 }

@@ -9,6 +9,5 @@ public interface PostsCommandService {
 
     PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO);        //게시글 생성
     Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO);        //게시글 수정
-
-
+    void deletePost(String userID, Long postId);        //게시글 삭제
 }

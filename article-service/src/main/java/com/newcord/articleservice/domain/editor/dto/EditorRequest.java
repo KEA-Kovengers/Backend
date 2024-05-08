@@ -15,4 +15,10 @@ public class EditorRequest {
         private String userID;
     }
 
+    @Builder
+    @Getter
+    public static class DeleteEditorRequestDTO{
+        private Long postId;
+        private String userID;
+    }
 }
