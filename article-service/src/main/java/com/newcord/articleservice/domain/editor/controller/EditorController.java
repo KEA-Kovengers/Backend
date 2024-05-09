@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.controller;
 
+import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorResponseDTO;
@@ -34,7 +35,7 @@ public class EditorController {
     public ApiResponse<DeleteEditorResponseDTO> deleteUser(@RequestBody DeleteEditorRequestDTO deleteEditorRequestDTO) {
         DeleteEditorResponseDTO response = editorCommandService.deleteEditor("testID", deleteEditorRequestDTO);
         if(response.isPostDelete()){
-            postsCommandService.deletePost("testID", deleteEditorRequestDTO.getPostId());
+            postsCommandService.deletePost(deleteEditorRequestDTO.getPostId());
         }
 
         return ApiResponse.onSuccess(response);

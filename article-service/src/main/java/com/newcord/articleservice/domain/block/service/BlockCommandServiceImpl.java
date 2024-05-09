@@ -2,7 +2,6 @@ package com.newcord.articleservice.domain.block.service;
 
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
-import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
@@ -97,7 +96,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
         );
 
-        List<String> blockList = articlesCommandService.deleteBlock(postId, block);
+        List<String> blockList = articlesCommandService.deleteBlockFromBlockList(postId, block);
 
         return BlockDeleteResponseDTO.builder()
             .blockId(block.getId().toString())

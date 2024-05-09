@@ -9,7 +9,7 @@ public interface PostsCommandService {
 
     PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO);        //게시글 생성
     Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO);        //게시글 수정
-    void deletePost(String userID, Long postId);        //게시글 삭제
+    void deletePost(Long postId);        //게시글 삭제 (편집자 검증을 거치지 않음)
     String createPostEditSession(String articleID);        //게시글 편집 세션 생성
     String deletePostEditSession(String articleID);        //게시글 편집 세션 삭제
 }

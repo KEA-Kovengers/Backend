@@ -82,12 +82,17 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
     }
 
     @Override
-    public List<String> deleteBlock(Long articleID, Block block) {
+    public List<String> deleteBlockFromBlockList(Long articleID, Block block) {
         Article article = articlesQueryService.findArticleById(articleID);
 
         article.getBlock_list().remove(block.getId().toString());
         articlesRepository.save(article);
 
         return article.getBlock_list();
+    }
+
+    @Override
+    public void deleteArticle(Long articleID) {
+
     }
 }
