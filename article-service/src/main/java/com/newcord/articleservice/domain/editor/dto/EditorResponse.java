@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.dto;
 
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -24,6 +25,13 @@ public class EditorResponse {
         public void setPostDelete(boolean postDelete){
             this.postDelete = postDelete;
         }
+    }
+
+    @Builder
+    @Getter
+    public static class EditorListResponseDTO{
+        private Long postId;
+        private List<String> userID;
     }
 
 }

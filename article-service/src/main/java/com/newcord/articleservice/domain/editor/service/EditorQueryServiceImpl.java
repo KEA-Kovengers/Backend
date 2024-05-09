@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.service;
 
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorListResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
@@ -36,5 +37,13 @@ public class EditorQueryServiceImpl implements EditorQueryService{
             throw new ApiException(ErrorStatus._EDITOR_NOT_FOUND);
         }
         return editor;
+    }
+
+    @Override
+    public EditorListResponseDTO getAllEditorsByPostId(Long postId) {
+        return EditorListResponseDTO.builder()
+            .postId(postId)
+            .userID(editorRepository.findByPostId(postId).stream().map(Editor::getUserID).toList())
+            .build();
     }
 }
