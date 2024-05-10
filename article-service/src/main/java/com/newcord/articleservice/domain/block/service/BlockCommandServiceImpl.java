@@ -26,11 +26,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class BlockCommandServiceImpl implements BlockCommandService{
     private final BlockRepository blockRepository;
-    private final ArticlesCommandService articlesCommandService;
-    private final ArticlesQueryService articlesQueryService;
 
     @Override
-    public BlockCreateResponseDTO createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
+    public Block createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId) {
         blockCreateDTO.setArticleID(postId);
         // Block 생성
         BlockUpdatedBy blockUpdatedBy = BlockUpdatedBy.builder()
@@ -51,22 +49,11 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         // Block 저장
         blockRepository.save(block);
 
-        // Article에 순서에 맞게 Insert
-        BlockSequenceUpdateResponseDTO responseDTO = articlesCommandService.insertBlock(postId, InsertBlockRequestDTO.builder()
-            .block(block)
-            .position(blockCreateDTO.getPosition())
-            .build());
-
-        return BlockCreateResponseDTO.builder()
-            .blockDTO(BlockDTO.toDTO(block))
-            .articleId(blockCreateDTO.getArticleID())
-            .position(blockCreateDTO.getPosition())
-            .blockList(responseDTO.getBlockList())
-            .build();
+        return block;
     }
 
     @Override
-    public BlockContentUpdateResponseDTO updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
+    public Block updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(new ObjectId(blockContentUpdateDTO.getBlockId())).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
@@ -82,25 +69,18 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         // 블록 업데이트 후 저장
         blockRepository.save(block);
 
-        return BlockContentUpdateResponseDTO.builder()
-            .blockDTO(BlockDTO.toDTO(block))
-            .position(blockContentUpdateDTO.getPosition())
-            .updated_by(block.getUpdated_by())
-            .build();
+        return block;
     }
 
     @Override
-    public BlockDeleteResponseDTO deleteBlock(BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
+    public Block deleteBlock(BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
         // 블록 삭제 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(new ObjectId(blockDeleteDTO.getBlockId())).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
         );
 
-        List<String> blockList = articlesCommandService.deleteBlockFromBlockList(postId, block);
+        blockRepository.delete(block);
 
-        return BlockDeleteResponseDTO.builder()
-            .blockId(block.getId().toString())
-            .blockList(blockList)
-            .build();
+        return block;
     }
 }

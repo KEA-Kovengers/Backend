@@ -18,10 +18,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ArticlesCommandServiceImpl implements ArticlesCommandService{
     private final ArticlesRepository articlesRepository;
-    private final ArticlesQueryService articlesQueryService;
 
     @Override
-    public ArticleCreateResponseDTO createArticle(Long articleID) {
+    public Article createArticle(Long articleID) {
         articlesRepository.findById(articleID)
             .ifPresent(a -> {
                 throw new ApiException(ErrorStatus._ARTICLE_ALREADY_EXISTS);
@@ -34,14 +33,13 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
 
         articlesRepository.save(article);
 
-        return ArticleCreateResponseDTO.builder()
-            .articleId(article.getId())
-            .build();
+        return article;
     }
 
     @Override
-    public BlockSequenceUpdateResponseDTO insertBlock(Long articleID, InsertBlockRequestDTO insertBlockRequestDTO) {
-        Article article = articlesQueryService.findArticleById(articleID);
+    public Article insertBlock(Long articleID, InsertBlockRequestDTO insertBlockRequestDTO) {
+        Article article = articlesRepository.findById(articleID)
+            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
 
         if(article.getBlock_list().contains(insertBlockRequestDTO.getBlock().getId().toString()))
             throw new ApiException(ErrorStatus._BLOCK_ALREADY_EXISTS);
@@ -50,17 +48,15 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
 
         articlesRepository.save(article);
 
-        return BlockSequenceUpdateResponseDTO.builder()
-            .articleId(article.getId())
-            .blockList(article.getBlock_list())
-            .build();
+        return article;
     }
 
     @Override
-    public BlockSequenceUpdateResponseDTO updateBlockSequence(
+    public Article updateBlockSequence(
         Long articleID,
         BlockSequenceUpdateRequestDTO blockSequenceUpdateRequestDTO) {
-        Article article = articlesQueryService.findArticleById(articleID);
+        Article article = articlesRepository.findById(articleID)
+            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
 
         for (int i = 0; i < blockSequenceUpdateRequestDTO.getBlockList().size(); i++) {
             int idx = article.getBlock_list().indexOf(blockSequenceUpdateRequestDTO.getBlockList().get(i));
@@ -75,24 +71,22 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
 
         articlesRepository.save(article);
 
-        return BlockSequenceUpdateResponseDTO.builder()
-            .articleId(article.getId())
-            .blockList(article.getBlock_list())
-            .build();
+        return article;
     }
 
     @Override
-    public List<String> deleteBlockFromBlockList(Long articleID, Block block) {
-        Article article = articlesQueryService.findArticleById(articleID);
+    public Article deleteBlockFromBlockList(Long articleID, Block block) {
+        Article article = articlesRepository.findById(articleID)
+            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
 
         article.getBlock_list().remove(block.getId().toString());
         articlesRepository.save(article);
 
-        return article.getBlock_list();
+        return article;
     }
 
     @Override
-    public void deleteArticle(Long articleID) {
-
+    public Article deleteArticle(Long articleID) {
+        return null;
     }
 }
