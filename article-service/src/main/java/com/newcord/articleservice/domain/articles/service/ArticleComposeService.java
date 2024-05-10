@@ -8,11 +8,7 @@ import com.newcord.articleservice.domain.block.entity.Block;
 import java.util.List;
 
 public interface ArticleComposeService {
-    ArticleCreateResponseDTO createArticle(Long articleID);            // 게시글 생성(MongoDB용)
-    BlockSequenceUpdateResponseDTO insertBlock(Long articleID, InsertBlockRequestDTO insertBlockRequestDTO);            // 새로운 블럭을 게시글에 추가할때 사용
-    BlockSequenceUpdateResponseDTO updateBlockSequence(Long articleID,
+    BlockSequenceUpdateResponseDTO updateBlockSequence(String userID, Long articleID,
         BlockSequenceUpdateRequestDTO blockSequenceUpdateRequestDTO);        // 게시글 내 블럭 순서 변경
-    List<String> deleteBlockFromBlockList(Long articleID, Block block);            // 게시글 내 블럭 삭제
-    void deleteArticle(Long articleID);            // 게시글 삭제
 
 }

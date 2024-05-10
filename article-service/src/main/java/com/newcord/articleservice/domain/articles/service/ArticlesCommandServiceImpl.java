@@ -87,6 +87,11 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
 
     @Override
     public Article deleteArticle(Long articleID) {
-        return null;
+        Article article = articlesRepository.findById(articleID)
+            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
+
+        articlesRepository.delete(article);
+
+        return article;
     }
 }

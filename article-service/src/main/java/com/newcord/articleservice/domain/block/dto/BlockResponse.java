@@ -53,7 +53,6 @@ public class BlockResponse {
     @Getter
     public static class BlockContentUpdateResponseDTO {
         private BlockDTO blockDTO;
-        private Long position;              // block의 위치 (변경되지 않는다면 원래 값 그대로)
         private BlockUpdatedBy updated_by;  // 수정자
     }
 

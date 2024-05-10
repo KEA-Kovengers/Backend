@@ -53,7 +53,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     }
 
     @Override
-    public Block updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
+    public Block updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO) {
         // 블록 업데이트 로직 후 ResponseDTO로 전송
         Block block = blockRepository.findById(new ObjectId(blockContentUpdateDTO.getBlockId())).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
@@ -73,9 +73,9 @@ public class BlockCommandServiceImpl implements BlockCommandService{
     }
 
     @Override
-    public Block deleteBlock(BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
+    public Block deleteBlock(String blockID) {
         // 블록 삭제 로직 후 ResponseDTO로 전송
-        Block block = blockRepository.findById(new ObjectId(blockDeleteDTO.getBlockId())).orElseThrow(
+        Block block = blockRepository.findById(new ObjectId(blockID)).orElseThrow(
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
         );
 

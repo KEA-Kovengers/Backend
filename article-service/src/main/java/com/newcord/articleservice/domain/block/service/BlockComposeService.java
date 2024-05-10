@@ -8,8 +8,8 @@ import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResp
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 
 public interface BlockComposeService {
-    BlockCreateResponseDTO createBlock(BlockCreateRequestDTO blockCreateDTO, Long postId);        // 블럭 생성
-    BlockContentUpdateResponseDTO updateBlock(BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId);        // 블럭 내용 수정
-    BlockDeleteResponseDTO deleteBlock(BlockDeleteRequestDTO blockDeleteDTO, Long postId);        // 블럭 삭제
+    BlockCreateResponseDTO createBlock(String userID, BlockCreateRequestDTO blockCreateDTO, Long postId);        // 블럭 생성
+    BlockContentUpdateResponseDTO updateBlock(String userID, BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId);        // 블럭 내용 수정
+    BlockDeleteResponseDTO deleteBlock(String userID, BlockDeleteRequestDTO blockDeleteDTO, Long postId);        // 블럭 삭제
 
 }
