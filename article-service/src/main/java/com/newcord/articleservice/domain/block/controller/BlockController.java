@@ -1,20 +1,20 @@
 package com.newcord.articleservice.domain.block.controller;
 
-import com.mysql.cj.log.Log;
-import com.newcord.articleservice.domain.block.dto.BlockRequest;
-import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockDeleteRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
+import com.newcord.articleservice.global.common.WSRequest;
 import com.newcord.articleservice.global.common.response.ApiResponse;
+import com.newcord.articleservice.global.common.response.WSResponse;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
-import io.swagger.v3.core.util.Json;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -24,20 +24,33 @@ public class BlockController {
     private final RabbitMQService rabbitMQService;
     private final BlockCommandService blockCommandService;
 
-    /*
-     게시글 블럭 순서 수정 구현, MongoDB 블럭 생성 반영되는지
-     */
     @MessageMapping("/updateBlock/{postID}")
-    public ApiResponse<String> updateBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
-        blockCommandService.updateBlock(blockContentUpdateDTO, postID);
+    public WSResponse<BlockContentUpdateResponseDTO> updateBlock(WSRequest<BlockContentUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
+        BlockContentUpdateResponseDTO responseDTO = blockCommandService.updateBlock(requestDTO.getDto(), postID);
+        WSResponse<BlockContentUpdateResponseDTO> response = WSResponse.onSuccess("/updateBlock/"+postID, requestDTO.getUuid(), responseDTO);
 
-        return ApiResponse.onSuccess("Block updated");
+        rabbitMQService.sendMessage(postID.toString(), "", response);
+
+        return response;
     }
 
     @MessageMapping("/createBlock/{postID}")
-    public ApiResponse<String> createBlock(BlockContentUpdateDTO blockContentUpdateDTO, @DestinationVariable String postID) {
-        blockCommandService.updateBlock(blockContentUpdateDTO, postID);
+    public WSResponse<BlockCreateResponseDTO> createBlock(WSRequest<BlockCreateRequestDTO> blockCreateRequestDTO, @DestinationVariable Long postID) {
+        BlockCreateResponseDTO responseDTO = blockCommandService.createBlock(blockCreateRequestDTO.getDto(), postID);
+        WSResponse<BlockCreateResponseDTO> response = WSResponse.onSuccess("/createBlock/"+postID, blockCreateRequestDTO.getUuid(), responseDTO);
+        rabbitMQService.sendMessage(postID.toString(), "", response);
 
-        return ApiResponse.onSuccess("Block updated");
+        return response;
+    }
+
+
+    // 요청시에 dto : {'blockId' : '~~`'} 가 아닌, dto : '~~' 로 보내야함
+    @MessageMapping("/deleteBlock/{postID}")
+    public WSResponse<BlockDeleteResponseDTO> deleteBlock(WSRequest<BlockDeleteRequestDTO> requestDTO, @DestinationVariable Long postID) {
+        BlockDeleteResponseDTO responseDTO = blockCommandService.deleteBlock(requestDTO.getDto(), postID);
+        WSResponse<BlockDeleteResponseDTO> response = WSResponse.onSuccess("/deleteBlock/"+postID, requestDTO.getUuid(), responseDTO);
+        rabbitMQService.sendMessage(postID.toString(), "", response);
+
+        return response;
     }
 }

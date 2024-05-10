@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.entity;
 
+import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.global.common.BaseJPATimeEntity;
 import jakarta.persistence.Column;
@@ -30,4 +31,11 @@ public class Posts extends BaseJPATimeEntity {
     private PostStatus status;
     @Default
     private Long views = 0L;
+
+    public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){
+        if (updateRequestDTO.getThumbnail() != null) this.thumbnail = updateRequestDTO.getThumbnail();
+        if (updateRequestDTO.getTitle() != null) this.title = updateRequestDTO.getTitle();
+        if (updateRequestDTO.getStatus() != null) this.status = updateRequestDTO.getStatus();
+        super.update();
+    }
 }
