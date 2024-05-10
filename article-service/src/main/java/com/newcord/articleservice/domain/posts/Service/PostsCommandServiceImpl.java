@@ -9,6 +9,8 @@ import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequest
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
+import com.newcord.articleservice.global.common.exception.ApiException;
+import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,39 +19,24 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PostsCommandServiceImpl implements PostsCommandService{
     private final PostsRepository postsRepository;
-    private final PostsQueryService postsQueryService;
-    private final EditorCommandService editorCommandService;
-    private final EditorQueryService editorQueryService;
-    private final ArticlesCommandService articlesCommandService;
-    private final RabbitMQService rabbitMQService;
+
     /*
     TODO: 게시글 편집 세션(Exchange 생성 삭제등 관리에 관한 서비스 구현)
      */
     @Override
-    public PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO) {
+    public Posts createPost(String userID, PostCreateRequestDTO postCreateDTO) {
         Posts newPosts = postCreateDTO.toEntity(postCreateDTO);
         postsRepository.save(newPosts);
-        editorCommandService.addInitialEditor(EditorAddRequestDTO.builder()
-                .postId(newPosts.getId())
-                .userID(userID)
-            .build());
 
-
-        articlesCommandService.createArticle(newPosts.getId());
-
-        return PostCreateResponseDTO.builder()
-                .id(newPosts.getId())
-                .build();
+        return newPosts;
     }
 
     @Override
     public Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO) {
-        // 요청 유저의 권한 확인
-        editorQueryService.getEditorByPostIdAndUserID(postUpdateDTO.getId(), userID);
+        Posts post = postsRepository.findById(postUpdateDTO.getId()).orElseThrow(() -> new ApiException(
+                ErrorStatus._POSTS_NOT_FOUND));
 
-        Posts post = postsQueryService.getPost(postUpdateDTO.getId());
         post.updateByDTO(postUpdateDTO);
-
         postsRepository.save(post);
 
         return post;
@@ -57,21 +44,8 @@ public class PostsCommandServiceImpl implements PostsCommandService{
 
     @Override
     public void deletePost(Long postId) {
-        Posts post = postsQueryService.getPost(postId);
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
+                ErrorStatus._POSTS_NOT_FOUND));
         postsRepository.delete(post);
-
-        articlesCommandService.deleteArticle(postId);
-    }
-
-    @Override
-    public String createPostEditSession(String articleID) {
-        rabbitMQService.createFanoutExchange(articleID);
-        return null;
-    }
-
-    @Override
-    public String deletePostEditSession(String articleID) {
-        rabbitMQService.deleteTopic(articleID);
-        return null;
     }
 }
