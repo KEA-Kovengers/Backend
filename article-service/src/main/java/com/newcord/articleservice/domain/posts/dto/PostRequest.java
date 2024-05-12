@@ -2,6 +2,8 @@ package com.newcord.articleservice.domain.posts.dto;
 
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -25,6 +27,16 @@ public class PostRequest {
                     .status(dto.getStatus())
                     .build();
         }
+    }
+
+    @Builder
+    @Getter
+    public static class PostUpdateRequestDTO{
+        private Long id;
+        private String thumbnail;
+        private String title;
+        @Enumerated(EnumType.ORDINAL)
+        private PostStatus status;
     }
 
 }
