@@ -50,9 +50,8 @@ public class FriendController {
 
     @DeleteMapping("/{friendID}")
     @Operation(summary = "친구 삭제", description = "친구 삭제하기")
-    public ResponseEntity<String> deleteFriend(@PathVariable Long friendID){
-        friendRepository.deleteById(friendID);
-        return new ResponseEntity<>(HttpStatus.OK);
+    public String deleteFriend(@PathVariable Long friendID) throws Exception{
+        return friendService.deleteFriendship(friendID);
     }
 
 
@@ -65,7 +64,6 @@ public class FriendController {
 
     @PostMapping("/{fromid},{toid}")
     @Operation(summary = "친구 요청",description = "친구 요청하기")
-    @ResponseStatus(HttpStatus.OK)
     public String sendFriendshipRequest(@Valid @PathVariable("fromid") Long fromId, @PathVariable("toid") Long toId) throws Exception {
         if(!userService.isExistById(toId)) {
             throw new Exception("대상 회원이 존재하지 않습니다");

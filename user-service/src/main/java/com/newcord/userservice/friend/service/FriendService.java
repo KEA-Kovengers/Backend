@@ -32,73 +32,51 @@ public class FriendService {
     }
 
 
-    public boolean isalreadyfriend(Long fromID, Long toID,FriendshipStatus status){
-        List<Friend> friends=friendRepository.findFriendsByFriendIDOrUserIDAndStatus(toID,fromID,status);
-        return friends.isEmpty();
-    }
-
-    public boolean isalreadyrequest(Long fromID,Long toID, FriendshipStatus status){
-        List<Friend> friends=friendRepository.findFriendsByFriendIDAndUserIDAndStatus(toID,fromID,status);
-        return friends.isEmpty();
-    }
-
     @Transactional
-    public String createFriendship(Long fromID, Long toID) throws Exception{
-// 유저 1이 2한테 요청을 보냈다고 가정, fromId=1, toId=2
-
+    public String createFriendship(Long fromID, Long toID) throws Exception {
         // 유저 정보를 모두 가져옴
-        // fromUser = 1
-        // toUser = 2
         Users fromUser = usersRepository.findById(fromID).orElseThrow(() -> new Exception("회원 조회 실패"));
         Users toUser = usersRepository.findById(toID).orElseThrow(() -> new Exception("회원 조회 실패"));
+        Optional<Friend> existingFriendship = friendRepository.findAllByFriendIDAndUserIDAndStatus(fromID, toID, FriendshipStatus.WAITING);
+        Optional<Friend> alreadyFriendship=friendRepository.findAllByFriendIDAndUserIDAndStatus(fromID,toID,FriendshipStatus.ACCEPT);
 
-
-        // 이미 친구인지 확인
-        if(!isalreadyfriend(fromID,toID,FriendshipStatus.ACCEPT)){
-            return "이미 친구입니다.";
+        if (existingFriendship.isPresent()) {
+            log.info(String.valueOf(existingFriendship));
+            throw new Exception("이미 친구 요청을 보냈습니다.");
         }
 
-// 이미 요청을 보냈는지 확인
-        if(!isalreadyrequest(fromID,toID,FriendshipStatus.WAITING)){
-            return "이미 친구 요청을 보냈습니다.";
+        if(alreadyFriendship.isPresent()){
+            throw new Exception("이미 친구입니다.");
         }
 
-        if(isalreadyfriend(fromID,toID,FriendshipStatus.ACCEPT) && isalreadyrequest(fromID,toID,FriendshipStatus.WAITING)){
-           // 요청을 보내는 사람 정보 저장
-            // 1이 2한테 요청을 보냈으니까.
-            // user는 1이고, 1입장에서 생각했을 때 이건 보낸 요청.
-            Friend friendshipFrom = Friend.builder()
-                    .users(fromUser) //1
-                    .friendID(toID) //2
-                    .status(FriendshipStatus.WAITING)
-                    .isFrom(true) // 받는 사람은 이게 보내는 요청인지 아닌지 판단할 수 있다. (어디서 부터 받은 요청 인가?)
-                    .build();
+        // 요청을 보내는 사람 정보 저장
+        Friend friendshipFrom = Friend.builder()
+                .users(fromUser)
+                .friendID(toID)
+                .status(FriendshipStatus.WAITING)
+                .isFrom(true)
+                .build();
 
-            // 요청을 받는 사람
-            // 보내는 사람 쪽에 저장될 친구 요청
-            Friend friendshipTo = Friend.builder()
-                    .users(toUser)
-                    .userID(toID)
-                    .friendID(fromID)
-                    .status(FriendshipStatus.WAITING)
-                    .isFrom(false)
-                    .build();
+        // 요청을 받는 사람 정보 저장
+        Friend friendshipTo = Friend.builder()
+                .users(toUser)
+                .userID(toID)
+                .friendID(fromID)
+                .status(FriendshipStatus.WAITING)
+                .isFrom(false)
+                .build();
 
-            // 저장을 먼저 하는 이유는, 그래야 서로의 친구요청 번호가 생성되기 떄문이다.
-            friendRepository.save(friendshipTo);
-            friendRepository.save(friendshipFrom);
+        // 저장
+        friendRepository.save(friendshipTo);
+        friendRepository.save(friendshipFrom);
 
+        // 매칭되는 친구요청의 아이디를 서로 저장
+        friendshipTo.setCounterpartId(friendshipFrom.getId());
+        friendshipFrom.setCounterpartId(friendshipTo.getId());
 
-            // 매칭되는 친구요청의 아이디를 서로 저장한다.
-            friendshipTo.setCounterpartId(friendshipFrom.getId());
-
-            friendshipFrom.setCounterpartId(friendshipTo.getId());
-            log.info("성공");
-            return "친구 요청 성공";
-        }
-
-        return "에러발생";
+        return "친구 요청 성공";
     }
+
 
 
     @Transactional
@@ -127,6 +105,19 @@ public class FriendService {
         friendRepository.deleteById(counterFriendship.getId());
 
         return "거절 성공";
+
+    }
+
+    @Transactional
+    public String deleteFriendship(Long friendshipId) throws Exception{
+        Friend friendship=friendRepository.findById(friendshipId).orElseThrow(()->new Exception("친구 목록 조회 실패"));
+        Long fid=friendship.getCounterpartId();
+        Friend counterFriendship=friendRepository.findById(friendship.getCounterpartId()).orElseThrow(()->new Exception("친구 목록 조회 실패"));
+
+        friendRepository.deleteById(friendship.getId());
+        friendRepository.deleteById(counterFriendship.getId());
+
+        return "삭제 성공";
 
     }
 

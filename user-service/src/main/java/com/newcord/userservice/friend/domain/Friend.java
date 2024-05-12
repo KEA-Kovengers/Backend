@@ -121,9 +121,9 @@ public class Friend extends BaseTimeEntity {
     @Column()
     private FriendshipStatus status;
 
-    //어디서 보낸 요청인가?
-    //요청을 받은 사람은 true
-    //요청을 보낸 사람은 false
+    //보낸 요청인가?
+    //요청을 받은 사람은 false
+    //요청을 보낸 사람은 true
     @Column()
     private boolean isFrom;
 
