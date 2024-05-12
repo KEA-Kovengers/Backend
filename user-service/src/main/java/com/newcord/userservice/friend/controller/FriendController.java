@@ -21,7 +21,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @Tag(name = "Friend", description = "친구 API")
-@RequestMapping("/api/friend")
+@RequestMapping("/users/friend")
 public class FriendController {
 
     @Autowired
@@ -79,6 +79,13 @@ public class FriendController {
     @Operation(summary = "받은 요청",description = "받은 요청 보기")
     public ResponseEntity<?> getWaitingFriendInfo(@PathVariable Long userID) throws Exception {
         return friendService.getWaitingFriendList(userID);
+    }
+
+    @DeleteMapping("/reject/{friendshipId}")
+    @Operation(summary = "친구 거절",description = "친구 거절하기")
+    @ResponseStatus(HttpStatus.OK)
+    public String rejectFriendship(@Valid @PathVariable("friendshipId") Long friendshipId) throws Exception{
+        return friendService.rejectFriendshipRequest(friendshipId);
     }
 
     @GetMapping("/friend/{userID}")

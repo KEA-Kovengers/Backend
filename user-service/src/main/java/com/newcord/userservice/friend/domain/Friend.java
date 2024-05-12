@@ -117,12 +117,18 @@ public class Friend extends BaseTimeEntity {
     @Column()
     private Long friendID;
 
+    // enum 타입으로 waiting, accept 두 가지 상태가 존재
     @Column()
     private FriendshipStatus status;
 
+    //어디서 보낸 요청인가?
+    //요청을 받은 사람은 true
+    //요청을 보낸 사람은 false
     @Column()
     private boolean isFrom;
 
+    //상대방의 아이디가 아니라,
+    //상대방의 친구db id
     @Column()
     private Long counterpartId;
 
