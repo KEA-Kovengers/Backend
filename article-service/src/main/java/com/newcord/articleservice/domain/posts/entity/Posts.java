@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.entity;
 
+import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.global.common.BaseJPATimeEntity;
@@ -10,9 +11,14 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import lombok.*;
 import lombok.Builder.Default;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -31,6 +37,19 @@ public class Posts extends BaseJPATimeEntity {
     private PostStatus status;
     @Default
     private Long views = 0L;
+
+    @ManyToMany
+    @JoinTable(
+        name = "post_hashtags",
+        joinColumns = @JoinColumn(name = "post_id"),
+        inverseJoinColumns = @JoinColumn(name = "hashtag_id")
+    )
+    @Default
+    private Set<Hashtags> hashtags = new HashSet<>();
+
+    public void updateHashtagList(List<Hashtags> hashtag){
+        this.hashtags = new HashSet<>(hashtag);
+    }
 
     public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){
         if (updateRequestDTO.getThumbnail() != null) this.thumbnail = updateRequestDTO.getThumbnail();
