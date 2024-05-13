@@ -4,11 +4,16 @@ import com.newcord.articleservice.domain.articles.service.ArticlesCommandService
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.service.EditorCommandService;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
+import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
+import com.newcord.articleservice.domain.hashtags.service.HashtagsCommandService;
+import com.newcord.articleservice.domain.hashtags.service.HashtagsQueryService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,10 +27,26 @@ public class PostsComposeServiceImpl implements PostsComposeService{
 
     private final ArticlesCommandService articlesCommandService;
 
+    private final HashtagsQueryService hashtagsQueryService;
+    private final HashtagsCommandService hashtagsCommandService;
+
     private final RabbitMQService rabbitMQService;
     @Override
     public PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO) {
         Posts posts = postsCommandService.createPost(userID, postCreateDTO);
+
+        // 해시태그 조회 (없으면 생성)
+        List<Hashtags> hashtags = new ArrayList<>();
+        for(String tagName : postCreateDTO.getHashtags()){
+            Hashtags tag = hashtagsQueryService.findByTagNameOptional(tagName).orElse(null);
+            if(tag == null){
+                tag = hashtagsCommandService.createHashtags(tagName);
+            }
+            hashtags.add(tag);
+        }
+
+        // 해시태그 추가
+        posts = postsCommandService.addHashtags(posts.getId(), hashtags);
 
         editorCommandService.addEditor(posts,EditorAddRequestDTO.builder()
             .postId(posts.getId())

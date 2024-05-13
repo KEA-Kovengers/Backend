@@ -3,6 +3,7 @@ package com.newcord.articleservice.domain.posts.Service;
 import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.block.service.BlockQueryService;
+import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
@@ -45,6 +46,7 @@ public class PostsQueryServiceImpl implements PostsQueryService{
                 .views(posts.getViews())
                 .blockSequence(blockSequence)
                 .blockList(blockDTOList)
+                .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
                 .build();
     }
 }
