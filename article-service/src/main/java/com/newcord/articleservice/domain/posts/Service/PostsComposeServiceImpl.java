@@ -89,10 +89,7 @@ public class PostsComposeServiceImpl implements PostsComposeService{
         return postsCommandService.updatePost(userID, postUpdateDTO);
     }
 
-    @Override
-    public PostDetailResponseDTO getPostDetail(Long postId) {
-        Posts posts = postsQueryService.getPost(postId);
-
+    private PostDetailResponseDTO makePostDetailResponseDTO(Posts posts){
         List<String> blockSequence = articlesQueryService.findArticleById(posts.getId()).getBlock_list();
         List<BlockDTO> blockDTOList = blockSequence.stream().map(blockQueryService::getBlockDetail).toList();
 
@@ -107,6 +104,13 @@ public class PostsComposeServiceImpl implements PostsComposeService{
             .blockList(blockDTOList)
             .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
             .build();
+    }
+
+    @Override
+    public PostDetailResponseDTO getPostDetail(Long postId) {
+        Posts posts = postsQueryService.getPost(postId);
+
+        return makePostDetailResponseDTO(posts);
     }
 
     @Override
@@ -126,19 +130,6 @@ public class PostsComposeServiceImpl implements PostsComposeService{
 
         Posts posts = postsCommandService.updateHashtags(postUpdateHashtagsRequestDTO.getPostId(), hashtags);
 
-        List<String> blockSequence = articlesQueryService.findArticleById(posts.getId()).getBlock_list();
-        List<BlockDTO> blockDTOList = blockSequence.stream().map(blockQueryService::getBlockDetail).toList();
-
-        return PostDetailResponseDTO.builder()
-            .id(posts.getId())
-            .thumbnail(posts.getThumbnail())
-            .title(posts.getTitle())
-            .body(posts.getBody())
-            .status(posts.getStatus())
-            .views(posts.getViews())
-            .blockSequence(blockSequence)
-            .blockList(blockDTOList)
-            .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
-            .build();
+        return makePostDetailResponseDTO(posts);
     }
 }
