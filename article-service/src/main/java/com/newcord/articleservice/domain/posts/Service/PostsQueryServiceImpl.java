@@ -19,8 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public class PostsQueryServiceImpl implements PostsQueryService{
     private final PostsRepository postsRepository;
-    private final ArticlesQueryService articlesQueryService;
-    private final BlockQueryService blockQueryService;
 
     @Override
     public Posts getPost(Long postId) {
@@ -28,25 +26,5 @@ public class PostsQueryServiceImpl implements PostsQueryService{
         if(posts == null)
             throw new ApiException(ErrorStatus._POSTS_NOT_FOUND);;
         return posts;
-    }
-
-    @Override
-    public PostDetailResponseDTO getPostDetail(Long postId) {
-        Posts posts = getPost(postId);
-
-        List<String> blockSequence = articlesQueryService.findArticleById(posts.getId()).getBlock_list();
-        List<BlockDTO> blockDTOList = blockSequence.stream().map(blockQueryService::getBlockDetail).toList();
-
-        return PostDetailResponseDTO.builder()
-                .id(posts.getId())
-                .thumbnail(posts.getThumbnail())
-                .title(posts.getTitle())
-                .body(posts.getBody())
-                .status(posts.getStatus())
-                .views(posts.getViews())
-                .blockSequence(blockSequence)
-                .blockList(blockDTOList)
-                .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
-                .build();
     }
 }

@@ -14,14 +14,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import lombok.*;
 import lombok.Builder.Default;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -50,8 +47,8 @@ public class Posts extends BaseJPATimeEntity {
     @Default
     private Set<Hashtags> hashtags = new HashSet<>();
 
-    public void addHashtags(Hashtags hashtag){
-        this.hashtags.add(hashtag);
+    public void updateHashtagList(List<Hashtags> hashtag){
+        this.hashtags = new HashSet<>(hashtag);
     }
 
     public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){

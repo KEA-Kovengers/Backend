@@ -41,4 +41,11 @@ public class PostRequest {
         private PostStatus status;
     }
 
+    @Builder
+    @Getter
+    public static class PostUpdateHashtagsRequestDTO{
+        private Long postId;
+        private List<String> hashtags;
+    }
+
 }
