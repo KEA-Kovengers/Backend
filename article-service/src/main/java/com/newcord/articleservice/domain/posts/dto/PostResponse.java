@@ -2,11 +2,13 @@ package com.newcord.articleservice.domain.posts.dto;
 
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
+import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import java.util.List;
+import java.util.Set;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
@@ -34,6 +36,7 @@ public class PostResponse {
         private Long views;
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
+        private List<String> hashtags;
     }
 
     @Builder
