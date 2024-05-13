@@ -2,6 +2,7 @@ package com.newcord.articleservice.domain.posts.controller;
 
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
+import com.newcord.articleservice.domain.posts.Service.PostsComposeService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
@@ -26,26 +27,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/posts")
 public class PostsController {
-    private final PostsCommandService postsCommandService;
+    private final PostsComposeService postsComposeService;
     private final PostsQueryService postsQueryService;
     private final EditorQueryService editorQueryService;
 
     @Operation(summary = "게시글 편집 세션 생성", description = "게시글 편집 세션을 생성합니다.")
     @PostMapping("/createEditSession")
     public ApiResponse<String> createPostEditSession(@RequestBody String articleID) {
-        return ApiResponse.onSuccess(postsCommandService.createPostEditSession(articleID));
+        return ApiResponse.onSuccess(postsComposeService.createPostEditSession(articleID));
     }
 
     @Operation(summary = "게시글 편집 세션 삭제", description = "게시글 편집 세션을 삭제합니다.")
     @PostMapping("/deleteEditSession")
     public ApiResponse<String> deletePostEditSession(@RequestBody String articleID) {
-        return ApiResponse.onSuccess(postsCommandService.deletePostEditSession(articleID));
+        return ApiResponse.onSuccess(postsComposeService.deletePostEditSession(articleID));
     }
 
     @Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")
     @PostMapping("/createPost")
     public ApiResponse<PostCreateResponseDTO> createPost(@RequestBody PostCreateRequestDTO postCreateRequestDTO) {
-        return ApiResponse.onSuccess(postsCommandService.createPost("testID", postCreateRequestDTO));
+        return ApiResponse.onSuccess(postsComposeService.createPost("testID", postCreateRequestDTO));
     }
 
     @Operation(summary = "게시글 조회", description = "게시글을 조회합니다.")
@@ -63,7 +64,7 @@ public class PostsController {
     @Operation(summary = "게시글 편집", description = "게시글을 편집합니다.")
     @PostMapping("/editPost")
     public ApiResponse<Posts> editPost(@RequestBody PostUpdateRequestDTO updateRequestDTO) {
-        return ApiResponse.onSuccess(postsCommandService.updatePost("testID", updateRequestDTO));
+        return ApiResponse.onSuccess(postsComposeService.updatePost("testID", updateRequestDTO));
     }
 
 }
