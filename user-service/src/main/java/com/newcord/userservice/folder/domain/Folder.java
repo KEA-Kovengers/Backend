@@ -22,8 +22,4 @@ public class Folder extends BaseTimeEntity {
 
     @Column()
     private String folderName; // 폴더명
-
-    //FK
-//    @OneToMany(mappedBy = "folder")
-//    private List<FolderPost> folderPosts;
 }
