@@ -8,7 +8,8 @@ import com.newcord.userservice.auth.utils.dto.KakaoTokenResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import java.util.HashMap;
 @RequestMapping("/users/auth")
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "Auth", description = "로그인 API")
 public class KakaoController {
     private final KakaoTokenJsonData kakaoTokenJsonData;
     private final KakaoAuthService kakaoAuthService;
@@ -30,6 +32,7 @@ public class KakaoController {
 
     // 카카오 로그인 + 토큰 발급
     @GetMapping("/login")
+    @Operation(summary = "로그인", description = "카카오 엑세스 토큰으로 사용자 정보를 가져옵니다.")
     @ResponseBody
     public ApiResponse<HashMap<String, String>> kakaoOauth(@RequestParam("code") String code) {
         log.info("인가 코드를 이용하여 토큰을 받습니다.");
@@ -44,6 +47,7 @@ public class KakaoController {
 
     // jwt 엑세스 토큰을 받으면 토큰을 해독하여 유저 아이디를 조회하고 반환
     @GetMapping("/decode")
+    @Operation(summary = "토큰 해독 및 DB 조회", description = "엑세스 토큰을 해독하여 유저아이디로 DB 유효성을 조회합니다.")
     @ResponseBody
     public ApiResponse<Long> decodeToken(@RequestHeader("X-AUTH-TOKEN") String jwtToken) {
         String userIdString = jwtTokenProvider.getUserPk(jwtToken);
@@ -63,6 +67,7 @@ public class KakaoController {
 
     // jwt 엑세스 토큰 유효성을 검증
     @GetMapping("/validate")
+    @Operation(summary = "토큰 유효성 검증", description = "엑세스 토큰의 유효성을 검증합니다.")
     @ResponseBody
     public ApiResponse<Boolean> validateToken(@RequestHeader("X-AUTH-TOKEN") String jwtToken) {
         boolean isValid = jwtTokenProvider.validateToken(jwtToken);
@@ -72,6 +77,7 @@ public class KakaoController {
 
     // jwt 리프레시 토큰 유효할 때 jwt 엑세스 토큰 재발급
     @GetMapping("/issueToken")
+    @Operation(summary = "토큰 재발급", description = "리프레시 토큰이 유효할 때 엑세스 토큰을 재발급합니다.")
     @ResponseBody
     public ApiResponse<HashMap<String, String>> issueToken(@RequestHeader("X-REFRESH-TOKEN") String refreshToken) {
         boolean isRefreshTokenValid = jwtTokenProvider.validateRefreshToken(refreshToken);
