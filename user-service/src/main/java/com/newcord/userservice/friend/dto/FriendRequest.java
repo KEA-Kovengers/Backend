@@ -1,4 +1,4 @@
 package com.newcord.userservice.friend.dto;
 
-public class FriendInfoDTO {
+public class FriendRequest {
 }
