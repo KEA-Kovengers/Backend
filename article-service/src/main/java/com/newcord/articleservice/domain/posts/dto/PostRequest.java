@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import java.util.List;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -17,6 +18,7 @@ public class PostRequest {
         private String thumbnail;
         private String title;
         private String body;
+        private List<String> hashtags;
         private PostStatus status;
 
         public Posts toEntity(PostCreateRequestDTO dto){
@@ -37,6 +39,13 @@ public class PostRequest {
         private String title;
         @Enumerated(EnumType.ORDINAL)
         private PostStatus status;
+    }
+
+    @Builder
+    @Getter
+    public static class PostUpdateHashtagsRequestDTO{
+        private Long postId;
+        private List<String> hashtags;
     }
 
 }

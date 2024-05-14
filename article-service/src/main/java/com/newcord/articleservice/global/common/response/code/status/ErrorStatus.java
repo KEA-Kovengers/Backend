@@ -34,7 +34,11 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Editor 관련
     _EDITOR_WITHOUT_PERMISSION(HttpStatus.BAD_REQUEST, "EDITOR_001", "편집 권한이 없습니다."),
-    _EDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "EDITOR_002", "존재하지 않는 편집자입니다.");
+    _EDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "EDITOR_002", "존재하지 않는 편집자입니다."),
+
+    //Hashtags 관련
+    _HASHTAGS_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAGS_001", "존재하지 않는 해시태그입니다."),
+    _HASHTAGS_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "HASHTAGS_002", "이미 존재하는 해시태그입니다.");
 
     private final HttpStatus httpStatus;        // HTTP 상태 코드
     private final String code;                  // 내부적인 에러 코드. 도메인명 + 숫자로 구성. 숫자는 HTTP 상태코드 100의자리 참고

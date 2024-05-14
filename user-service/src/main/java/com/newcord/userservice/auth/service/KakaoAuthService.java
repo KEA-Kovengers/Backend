@@ -1,7 +1,7 @@
 package com.newcord.userservice.auth.service;
 
 import com.newcord.userservice.auth.jwt.JwtTokenProvider;
-import com.newcord.userservice.auth.response.ApiResponse;
+import com.newcord.userservice.global.common.response.ApiResponse;
 import com.newcord.userservice.auth.response.ResponseCode;
 import com.newcord.userservice.auth.exception.UserException;
 import com.newcord.userservice.auth.utils.KakaoUserInfo;
@@ -90,7 +90,6 @@ public class KakaoAuthService {
         map.put("userId", userId.toString());
         map.put("token", jwtTokenProvider.createToken(userId.toString())); // 유저 아이디로 jwt 토큰 발급
         map.put("refreshToken", refreshToken);
-        return ApiResponse.success(map, ResponseCode.USER_LOGIN_SUCCESS.getMessage());
+        return ApiResponse.onSuccess(map);
     }
-
 }

@@ -5,9 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/api/KakaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/api/KakaoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/resources/static/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/service/KakaoAuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/folder/domain/Folder.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/folder/domain/Folder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,7 +28,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/config" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -45,9 +46,13 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
+    "git-widget-placeholder": "d1e79e3c",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/gachonswacademy03/Desktop/KEA-Backend/Backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "vue.rearranger.settings.migration": "true"
   }
@@ -79,6 +84,8 @@
       <workItem from="1713062832120" duration="24000" />
       <workItem from="1713174923678" duration="45000" />
       <workItem from="1715053956376" duration="60000" />
+      <workItem from="1715274034350" duration="20000" />
+      <workItem from="1715331983291" duration="611000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />

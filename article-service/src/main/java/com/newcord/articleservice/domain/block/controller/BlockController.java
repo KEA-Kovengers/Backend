@@ -7,6 +7,7 @@ import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpd
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
+import com.newcord.articleservice.domain.block.service.BlockComposeServiceImpl;
 import com.newcord.articleservice.global.common.WSRequest;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.global.common.response.WSResponse;
@@ -22,11 +23,11 @@ import org.springframework.stereotype.Controller;
 @Slf4j
 public class BlockController {
     private final RabbitMQService rabbitMQService;
-    private final BlockCommandService blockCommandService;
+    private final BlockComposeServiceImpl blockComposeServiceImpl;
 
     @MessageMapping("/updateBlock/{postID}")
     public WSResponse<BlockContentUpdateResponseDTO> updateBlock(WSRequest<BlockContentUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
-        BlockContentUpdateResponseDTO responseDTO = blockCommandService.updateBlock(requestDTO.getDto(), postID);
+        BlockContentUpdateResponseDTO responseDTO = blockComposeServiceImpl.updateBlock("testID", requestDTO.getDto(), postID);
         WSResponse<BlockContentUpdateResponseDTO> response = WSResponse.onSuccess("/updateBlock/"+postID, requestDTO.getUuid(), responseDTO);
 
         rabbitMQService.sendMessage(postID.toString(), "", response);
@@ -36,7 +37,7 @@ public class BlockController {
 
     @MessageMapping("/createBlock/{postID}")
     public WSResponse<BlockCreateResponseDTO> createBlock(WSRequest<BlockCreateRequestDTO> blockCreateRequestDTO, @DestinationVariable Long postID) {
-        BlockCreateResponseDTO responseDTO = blockCommandService.createBlock(blockCreateRequestDTO.getDto(), postID);
+        BlockCreateResponseDTO responseDTO = blockComposeServiceImpl.createBlock("testID", blockCreateRequestDTO.getDto(), postID);
         WSResponse<BlockCreateResponseDTO> response = WSResponse.onSuccess("/createBlock/"+postID, blockCreateRequestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 
@@ -47,7 +48,7 @@ public class BlockController {
     // 요청시에 dto : {'blockId' : '~~`'} 가 아닌, dto : '~~' 로 보내야함
     @MessageMapping("/deleteBlock/{postID}")
     public WSResponse<BlockDeleteResponseDTO> deleteBlock(WSRequest<BlockDeleteRequestDTO> requestDTO, @DestinationVariable Long postID) {
-        BlockDeleteResponseDTO responseDTO = blockCommandService.deleteBlock(requestDTO.getDto(), postID);
+        BlockDeleteResponseDTO responseDTO = blockComposeServiceImpl.deleteBlock("testID", requestDTO.getDto(), postID);
         WSResponse<BlockDeleteResponseDTO> response = WSResponse.onSuccess("/deleteBlock/"+postID, requestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 

@@ -1,15 +1,15 @@
 package com.newcord.articleservice.domain.posts.Service;
 
+import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
-import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import java.util.List;
 
 public interface PostsCommandService {
 
-    PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO);        //게시글 생성
+    Posts createPost(String userID, PostCreateRequestDTO postCreateDTO);        //게시글 생성
     Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO);        //게시글 수정
+    Posts updateHashtags(Long postId, List<Hashtags> hashtags);        //해시태그 업데이트 (대체)
     void deletePost(Long postId);        //게시글 삭제 (편집자 검증을 거치지 않음)
-    String createPostEditSession(String articleID);        //게시글 편집 세션 생성
-    String deletePostEditSession(String articleID);        //게시글 편집 세션 삭제
 }
