@@ -6,12 +6,10 @@ import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockDeleteReque
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
-import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.domain.block.service.BlockComposeServiceImpl;
 import com.newcord.articleservice.global.common.WSRequest;
-import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.global.common.response.WSResponse;
-import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
+import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
