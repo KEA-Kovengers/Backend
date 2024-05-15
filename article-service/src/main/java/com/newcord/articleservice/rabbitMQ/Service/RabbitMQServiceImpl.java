@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
@@ -36,7 +37,10 @@ public class RabbitMQServiceImpl implements RabbitMQService{
 
     @Override
     public String createFanoutExchange(String topicName) {
-        FanoutExchange exchange = new FanoutExchange(topicName);
+        FanoutExchange exchange = ExchangeBuilder.fanoutExchange(topicName)
+            .autoDelete()
+            .durable(true)
+            .build();
         rabbitAdmin.declareExchange(exchange);
         return "Topic created " + topicName;
     }
@@ -49,7 +53,10 @@ public class RabbitMQServiceImpl implements RabbitMQService{
 
     @Override
     public void createExchangeAndQueue(String topicName, String queueName) {
-        Exchange exchange = new FanoutExchange(topicName);
+        Exchange exchange = ExchangeBuilder.fanoutExchange(topicName)
+            .autoDelete()
+            .durable(true)
+            .build();
         Queue queue = new Queue(queueName, false);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with("").noargs();
 
@@ -62,5 +69,6 @@ public class RabbitMQServiceImpl implements RabbitMQService{
     public void sendMessage(String topicName, String routing, Object message) {
         rabbitTemplate.convertAndSend(topicName, routing, message);
     }
+
 
 }
