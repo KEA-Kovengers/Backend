@@ -10,12 +10,14 @@ import com.newcord.userservice.user.domain.Users;
 import com.newcord.userservice.user.repository.UsersRepository;
 import lombok.RequiredArgsConstructor;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -25,12 +27,12 @@ public class FriendQueryServiceImpl implements FriendQueryService{
     private final FriendRepository friendRepository;
 
     @Override
-    public List<FriendResponseDTO> getWaitingFriendList(Long ID){
+    public List<FriendResponseDTO> getWaitingFriendList(Long userid){
 
-        Users users = usersRepository.findById(ID).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
+        Users users = usersRepository.findById(userid).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
 
         List<Friend> friendshipList = users.getFriendList();
-
+        log.info(friendshipList.toString());
         // 조회된 결과 객체를 담을 Dto 리스트
         List<FriendResponseDTO> result = new ArrayList<>();
 
@@ -39,9 +41,9 @@ public class FriendQueryServiceImpl implements FriendQueryService{
             if (!x.isFrom() && x.getStatus() == FriendshipStatus.WAITING) {
                 Users friend = usersRepository.findById(x.getFriendID()).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
                 FriendResponseDTO dto = FriendResponseDTO.builder()
-                        .friendshipId(x.getId())
-                        .friendId(friend.getId())
-                        .friendName(friend.getNickName())
+                        .friendshipID(x.getId())
+                        .userID(userid)
+                        .friendID(friend.getId())
                         .status(x.getStatus())
                         .build();
                 result.add(dto);
@@ -52,8 +54,8 @@ public class FriendQueryServiceImpl implements FriendQueryService{
     }
 
     @Override
-    public List<FriendResponseDTO> getAcceptFriendList(Long id){
-        Users users = usersRepository.findById(id).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
+    public List<FriendResponseDTO> getAcceptFriendList(Long userid){
+        Users users = usersRepository.findById(userid).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
 
         List<Friend> friendshipList = users.getFriendList();
 
@@ -65,9 +67,9 @@ public class FriendQueryServiceImpl implements FriendQueryService{
             if (x.getStatus() == FriendshipStatus.ACCEPT) {
                 Users friend = usersRepository.findById(x.getFriendID()).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
                 FriendResponseDTO dto = FriendResponseDTO.builder()
-                        .friendshipId(x.getId())
-                        .friendId(friend.getId())
-                        .friendName(friend.getNickName())
+                        .friendshipID(x.getId())
+                        .userID(userid)
+                        .friendID(friend.getId())
                         .status(x.getStatus())
                         .build();
                 result.add(dto);

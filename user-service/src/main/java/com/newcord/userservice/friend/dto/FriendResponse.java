@@ -9,10 +9,9 @@ public class FriendResponse {
     @Builder
     @Getter
     public static class FriendResponseDTO{
-        private Long friendshipId;
+        private Long friendshipID;
         private Long userID;
-        private Long friendId;
-        private String friendName;
+        private Long friendID;
         private FriendshipStatus status;
         private boolean isFrom;
     }
