@@ -1,11 +1,13 @@
 package com.newcord.userservice.auth.api;
 
 import com.newcord.userservice.auth.jwt.JwtTokenProvider;
+import com.newcord.userservice.global.common.exception.ApiException;
 import com.newcord.userservice.global.common.response.ApiResponse;
 import com.newcord.userservice.auth.service.KakaoAuthService;
 import com.newcord.userservice.auth.utils.KakaoTokenJsonData;
 import com.newcord.userservice.auth.utils.dto.KakaoTokenResponse;
 
+import com.newcord.userservice.global.common.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,7 +32,6 @@ public class KakaoController {
         return "index";
     }
 
-    // 카카오 로그인 + 토큰 발급
     @GetMapping("/login")
     @Operation(summary = "로그인", description = "카카오 엑세스 토큰으로 사용자 정보를 가져옵니다.")
     @ResponseBody
@@ -59,8 +60,7 @@ public class KakaoController {
         // 유저 아이디를 가지고 디비에 있는지 확인
         boolean userExists = kakaoAuthService.isUserExists(userId);
         if (!userExists) {
-            log.error("User not found in database with ID: {}", userId);
-            return ApiResponse.onFailure("USER_NOT_FOUND", "User not found in database", null);
+            throw new ApiException(ErrorStatus._USER_NOT_FOUND);
         }
         return ApiResponse.onSuccess(userId);
     }
@@ -72,7 +72,11 @@ public class KakaoController {
     public ApiResponse<Boolean> validateToken(@RequestHeader("X-AUTH-TOKEN") String jwtToken) {
         boolean isValid = jwtTokenProvider.validateToken(jwtToken);
         log.info("JWT 토큰 유효성 검증 결과: {}", isValid);
-        return ApiResponse.onSuccess(isValid);
+        if(!isValid){
+            throw new ApiException(ErrorStatus._ACCESS_TOKEN_INVALID);
+        }else{
+            return ApiResponse.onSuccess(isValid);
+        }
     }
 
     // jwt 리프레시 토큰 유효할 때 jwt 엑세스 토큰 재발급
@@ -88,8 +92,7 @@ public class KakaoController {
             log.info("발급된 액세스 토큰: {}", accessToken);
             return ApiResponse.onSuccess(map);
         } else {
-            log.error("JWT 리프레시 토큰이 유효하지 않습니다.");
-            return ApiResponse.onFailure("REFRESH_TOKEN_INVALID", "Refresh token validation failed.", null);
+            throw new ApiException(ErrorStatus._REFRESH_TOKEN_INVALID);
         }
     }
 

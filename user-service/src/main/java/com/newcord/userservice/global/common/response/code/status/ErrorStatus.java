@@ -23,7 +23,11 @@ public enum ErrorStatus implements BaseErrorCode {
     _FOLDER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOLDER_002", "이미 존재하는 폴더입니다."),
 
     _FOLDERPOST_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDERPOST_001", "폴더에서 존재하지 않는 게시글입니다."),
-    _FOLDERPOST_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOLDERPOST_002", "폴더에 이미 존재하는 게시글입니다.");
+    _FOLDERPOST_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOLDERPOST_002", "폴더에 이미 존재하는 게시글입니다."),
+
+    _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_001", "데이터베이스에 존재하지 않는 사용자입니다."),
+    _ACCESS_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_002", "엑세스 토큰이 만료되었습니다."),
+    _REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_003", "리프레시 토큰이 만료되었습니다.");
 
 
     private final HttpStatus httpStatus;        // HTTP 상태 코드
