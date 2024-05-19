@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -32,17 +33,17 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         // 유저 정보를 모두 가져옴
         Users fromUser = usersRepository.findById(fromID).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
         Users toUser = usersRepository.findById(toID).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
-        Optional<Friend> existingFriendship = friendRepository.findAllByFriendIDAndUserIDAndStatus(fromID, toID, FriendshipStatus.WAITING);
-        Optional<Friend> alreadyFriendship=friendRepository.findAllByFriendIDAndUserIDAndStatus(fromID,toID,FriendshipStatus.ACCEPT);
 
-        if (existingFriendship.isPresent()) {
-            throw new ApiException(ErrorStatus._ALREADY_REQUEST);
+        List<Friend> frinedlist=friendRepository.findAllByFriendIDAndUserID(fromID,toID);
+
+        for (Friend x:frinedlist){
+            if(x.getStatus()==FriendshipStatus.WAITING){
+                throw new ApiException(ErrorStatus._ALREADY_REQUEST);
+            }
+            if(x.getStatus()==FriendshipStatus.ACCEPT){
+                throw new ApiException(ErrorStatus._ALREADY_FRIEND);
+            }
         }
-
-        if(alreadyFriendship.isPresent()){
-            throw new ApiException(ErrorStatus._ALREADY_FRIEND);
-        }
-
         //요청 보내는 사람 정보 저장
         Friend friendshipFrom=Friend.builder()
                 .users(fromUser)
