@@ -16,7 +16,7 @@ import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequest
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
-import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
+import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

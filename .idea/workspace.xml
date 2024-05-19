@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/global/kakao/ObjectStorageConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/global/kakao/ObjectStorageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/api/KakaoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/api/KakaoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/service/KakaoAuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/auth/service/KakaoAuthService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/folder/domain/Folder.java" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/folder/domain/Folder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/controller/FirstController.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/controller/FirstController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/ObjectStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/ObjectStorageService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/dto/S3Result.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/article-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/article-service-module/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/user-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/user-service-module/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,21 +48,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "d1e79e3c",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/gachonswacademy03/Desktop/KEA-Backend/Backend",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;d1e79e3c&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/gachonswacademy03/Desktop/KEA-Backend/Backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/common" />
