@@ -1,4 +1,4 @@
-package com.newcord.articleservice.global.kakao;
+package com.newcord.userservice.global.kakao;
 
 import java.io.IOException;
 import java.nio.file.Files;
