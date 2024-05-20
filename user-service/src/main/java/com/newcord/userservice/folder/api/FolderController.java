@@ -34,7 +34,7 @@ public class FolderController {
     }
 
     @Operation(summary = "폴더 삭제", description = "폴더를 삭제합니다.")
-    @PostMapping("/delete")
+    @DeleteMapping("/delete")
     public ApiResponse<FolderResponseDTO> deleteFolder(@RequestBody FolderRequestDTO folderDeleteRequestDTO) {
         return ApiResponse.onSuccess(folderCommandService.deleteFolder(folderDeleteRequestDTO));
     }
@@ -52,7 +52,7 @@ public class FolderController {
     }
 
     @Operation(summary = "폴더 별 게시글 삭제", description = "폴더의 게시글을 삭제합니다.")
-    @PostMapping("/deletePost")
+    @DeleteMapping("/deletePost")
     public ApiResponse<FolderPostResponseDTO> deleteFolderPost(@RequestBody FolderPostRequestDTO folderPostDeleteDTO) {
         return ApiResponse.onSuccess(folderCommandService.deleteFolderPost(folderPostDeleteDTO));
     }
