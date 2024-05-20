@@ -1,54 +1,55 @@
 package com.newcord.userservice.friend.domain;
 
+import com.newcord.userservice.friend.status.FriendshipStatus;
 import com.newcord.userservice.global.common.BaseTimeEntity;
+import com.newcord.userservice.user.domain.Users;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import lombok.*;
 
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "friend")
 @Getter
-@EntityListeners(AuditingEntityListener.class)
-//@IdClass(FriendId.class)
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Friend extends BaseTimeEntity {
-
-//    @EmbeddedId
-//    private FriendId id;
-
-//    @Id
-//    @ManyToOne
-//    @JoinColumn(name = "user_id1", referencedColumnName = "id", insertable = false, updatable = false)
-//    private Users userId1;
-//
-//    @Id
-//    @ManyToOne
-//    @JoinColumn(name = "user_id2", referencedColumnName = "id", insertable = false, updatable = false)
-//    private Users userId2;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "userId1")
-    private Long userid1;
-
-
-    @Column(name = "userId2")
-    private Long userid2;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users users;
 
     @Column()
-    private String status;
+    private Long userID;
+
+    @Column()
+    private Long friendID;
+
+    // enum 타입으로 waiting, accept 두 가지 상태가 존재
+    @Column()
+    private FriendshipStatus status;
+
+    //보낸 요청인가?
+    //요청을 받은 사람은 false
+    //요청을 보낸 사람은 true
+    @Column()
+    private boolean isFrom;
+
+    //상대방의 아이디가 아니라,
+    //상대방의 친구db id
+    @Column()
+    private Long counterpartId;
+
+
+
+    public void acceptFriendshipRequest() {
+        status = FriendshipStatus.ACCEPT;
+    }
+
 }
-
-//    @EmbeddedId
-//    private FriendId id;
-
-
-//    @CreatedDate
-//    @Column(name = "created_at")
-//    private LocalDateTime created;

@@ -67,7 +67,6 @@ public class KakaoAuthService {
     public void saveRefreshToken(Long id, String refreshToken) {
         Users user = usersRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found with id : " + id));
         user.setRefreshToken(refreshToken);
-
         usersRepository.save(user);
     }
 
