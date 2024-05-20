@@ -121,6 +121,16 @@ pipeline {
             }
         }
         
+        stage('Kubernetes deploy') {
+            steps{
+                script {
+                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+                        sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment'
+                    }
+                }
+            }    
+        }
+
         stage('Save Last Commit Hash') {
             steps {
                 script {

@@ -1,24 +1,16 @@
-package com.newcord.articleservice.rabbitMQ.Service;
+package com.newcord.articleservice.global.rabbitMQ.Service;
 
-import com.newcord.articleservice.webSocket.service.WebSocketService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.ExchangeBuilder;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.Queue;
-import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
-import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
-import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -36,7 +28,10 @@ public class RabbitMQServiceImpl implements RabbitMQService{
 
     @Override
     public String createFanoutExchange(String topicName) {
-        FanoutExchange exchange = new FanoutExchange(topicName);
+        FanoutExchange exchange = ExchangeBuilder.fanoutExchange(topicName)
+            .autoDelete()
+            .durable(true)
+            .build();
         rabbitAdmin.declareExchange(exchange);
         return "Topic created " + topicName;
     }
@@ -49,7 +44,10 @@ public class RabbitMQServiceImpl implements RabbitMQService{
 
     @Override
     public void createExchangeAndQueue(String topicName, String queueName) {
-        Exchange exchange = new FanoutExchange(topicName);
+        Exchange exchange = ExchangeBuilder.fanoutExchange(topicName)
+            .autoDelete()
+            .durable(true)
+            .build();
         Queue queue = new Queue(queueName, false);
         Binding binding = BindingBuilder.bind(queue).to(exchange).with("").noargs();
 
@@ -62,5 +60,6 @@ public class RabbitMQServiceImpl implements RabbitMQService{
     public void sendMessage(String topicName, String routing, Object message) {
         rabbitTemplate.convertAndSend(topicName, routing, message);
     }
+
 
 }
