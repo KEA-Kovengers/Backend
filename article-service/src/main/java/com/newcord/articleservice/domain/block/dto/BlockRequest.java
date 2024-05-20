@@ -17,6 +17,7 @@ public class BlockRequest {
     @Getter
     public static class BlockCreateRequestDTO {
         private Long articleID;
+        private final String articleVersion; // {version index}.{operation index} 형태
         private String blockType;           // 블럭타입
         private Long position;              // 블럭이 추가될 위치 (0부터 시작)
         private String content;             // 내용

@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.Service;
 
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionCommandService;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
@@ -39,6 +40,8 @@ public class PostsComposeServiceImpl implements PostsComposeService{
     private final ArticlesQueryService articlesQueryService;
     private final BlockQueryService blockQueryService;
 
+    private final ArticleVersionCommandService articleVersionCommandService;
+
     private final RabbitMQService rabbitMQService;
 
     @Override
@@ -75,6 +78,8 @@ public class PostsComposeServiceImpl implements PostsComposeService{
             .build());
 
         articlesCommandService.createArticle(posts.getId());
+
+        articleVersionCommandService.createArticleVersion(posts.getId());
 
         return PostCreateResponseDTO.builder()
             .id(posts.getId())

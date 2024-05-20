@@ -42,6 +42,7 @@ public class BlockResponse {
     @Getter
     public static class BlockCreateResponseDTO{
         private Long articleId;
+        private String articleVersion;
         private BlockDTO blockDTO;
         private Long position;
         private List<String> blockList;

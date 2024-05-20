@@ -1,5 +1,11 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
+import com.newcord.articleservice.domain.article_version.entity.Version;
+import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionCommandService;
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionComposeService;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
@@ -23,6 +29,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     private final BlockCommandService blockCommandService;
     private final EditorQueryService editorQueryService;
     private final ArticlesCommandService articlesCommandService;
+    private final ArticleVersionComposeService articleVersionComposeService;
 
     @Override
     public BlockCreateResponseDTO createBlock(String userID, BlockCreateRequestDTO blockCreateDTO, Long postId) {
@@ -32,14 +39,29 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         //block 생성
         Block block = blockCommandService.createBlock(blockCreateDTO, postId);
 
+        // ArticleVersion관련 로직 수행
+        ArticleVersion articleVersion = articleVersionComposeService.applyOperation(VersionOperation.builder()
+                .id(block.getId())
+                .operationType(OperationType.BLOCK_INSERT)
+                .timestamp(blockCreateDTO.getCreated_by().getCreated_at())
+                .position(blockCreateDTO.getPosition())
+                .content(block.getContent())
+                .updated_by(block.getUpdated_by())
+            .build(), blockCreateDTO.getArticleVersion(), postId);
+        //====
+        List<Version> versions = articleVersion.getVersions();
+        int lastVersionIdx = versions.size() - 1;
+        List<VersionOperation> operations = versions.get(lastVersionIdx).getOperations();
+        int lastOperation = operations.size() - 1;
         // Article의 blockList에 block 추가
         Article article = articlesCommandService.insertBlock(postId, InsertBlockRequestDTO.builder()
                 .block(block)
-                .position(blockCreateDTO.getPosition())
+                .position(operations.get(lastOperation).getPosition())
             .build());
 
         return BlockCreateResponseDTO.builder()
             .articleId(postId)
+            .articleVersion(lastVersionIdx + "." + lastOperation)
             .blockDTO(BlockDTO.toDTO(block))
             .position(blockCreateDTO.getPosition())
             .blockList(article.getBlock_list())
