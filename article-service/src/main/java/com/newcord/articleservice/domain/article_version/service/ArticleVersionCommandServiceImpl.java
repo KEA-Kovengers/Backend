@@ -6,6 +6,7 @@ import com.newcord.articleservice.domain.article_version.entity.VersionOperation
 import com.newcord.articleservice.domain.article_version.repository.ArticleVersionRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,13 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
             .id(articleId)
             .versions(new ArrayList<>())
             .build();
+
+        Version version = Version.builder()
+            .timestamp(LocalDateTime.now())
+            .operations(new ArrayList<>())
+            .build();
+
+        articleVersion.getVersions().add(version);
 
         articleVersionRepository.save(articleVersion);
 
