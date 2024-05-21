@@ -18,6 +18,10 @@ public enum ErrorStatus implements BaseErrorCode {
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON400", "잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON401", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON403", "금지된 요청입니다."),
+    //friend 관련
+    _ALREADY_FRIEND(HttpStatus.BAD_REQUEST,"FRIEND_002_","이미 친구입니다."),
+    _ALREADY_REQUEST(HttpStatus.BAD_REQUEST,"FRIEND_003","이미 친구 요청을 보냈습니다."),
+    _FRIEND_REQUEST_NOT_FOUND(HttpStatus.NOT_FOUND,"FRIEND_004","친구 요청을 찾을 수 없습니다."),
 
     _FOLDER_NOT_FOUND(HttpStatus.NOT_FOUND, "FOLDER_001", "존재하지 않는 폴더입니다."),
     _FOLDER_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "FOLDER_002", "이미 존재하는 폴더입니다."),
@@ -28,6 +32,7 @@ public enum ErrorStatus implements BaseErrorCode {
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_001", "데이터베이스에 존재하지 않는 사용자입니다."),
     _ACCESS_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_002", "엑세스 토큰이 만료되었습니다."),
     _REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_003", "리프레시 토큰이 만료되었습니다.");
+
 
 
     private final HttpStatus httpStatus;        // HTTP 상태 코드

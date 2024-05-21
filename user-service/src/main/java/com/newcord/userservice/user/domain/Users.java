@@ -1,9 +1,13 @@
 package com.newcord.userservice.user.domain;
 
 import com.newcord.userservice.folder.domain.FolderPost;
+import com.newcord.userservice.friend.domain.Friend;
 import com.newcord.userservice.global.common.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="USERS")
@@ -27,6 +31,10 @@ public class Users extends BaseTimeEntity {
     @Column(length = 100)
     private String bio;
 
+    @OneToMany(mappedBy = "users")
+    @Column()
+    private List<Friend> friendList=new ArrayList<>();
+
     @Column(length = 300)
     private String profileImg;
 
@@ -42,4 +50,5 @@ public class Users extends BaseTimeEntity {
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
+
 }
