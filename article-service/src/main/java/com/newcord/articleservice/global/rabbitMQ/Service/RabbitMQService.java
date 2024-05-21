@@ -1,4 +1,4 @@
-package com.newcord.articleservice.rabbitMQ.Service;
+package com.newcord.articleservice.global.rabbitMQ.Service;
 
 public interface RabbitMQService {
 

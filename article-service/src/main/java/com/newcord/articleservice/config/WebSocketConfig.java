@@ -1,6 +1,6 @@
 package com.newcord.articleservice.config;
 
-import com.newcord.articleservice.webSocket.interceptor.ArticleEditInterceptor;
+import com.newcord.articleservice.global.webSocket.interceptor.ArticleEditInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

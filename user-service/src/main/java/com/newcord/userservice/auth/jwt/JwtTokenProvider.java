@@ -47,8 +47,9 @@ public class JwtTokenProvider {
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
+                .setIssuer("kovengers")
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + (accessTokenValiditySeconds * 1000))) // 토큰 유효시각 설정 (30분)
+                .setExpiration(new Date(now.getTime() + (10 * 3600 * 1000))) // 토큰 유효시각 설정 (10시간)
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 암호화 알고리즘과, secret 값
                 .compact();
     }

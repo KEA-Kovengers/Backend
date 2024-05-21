@@ -1,6 +1,6 @@
-package com.newcord.articleservice.webSocket.interceptor;
+package com.newcord.articleservice.global.webSocket.interceptor;
 
-import com.newcord.articleservice.rabbitMQ.Service.RabbitMQService;
+import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.Message;

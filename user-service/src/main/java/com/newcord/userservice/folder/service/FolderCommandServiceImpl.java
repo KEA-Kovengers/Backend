@@ -2,14 +2,10 @@ package com.newcord.userservice.folder.service;
 
 import com.newcord.userservice.folder.domain.Folder;
 import com.newcord.userservice.folder.domain.FolderPost;
-import com.newcord.userservice.folder.dto.FolderPostRequest.FolderPostRequestDTO;
-import com.newcord.userservice.folder.dto.FolderPostResponse.FolderPostListResponseDTO;
-import com.newcord.userservice.folder.dto.FolderPostResponse.FolderPostResponseDTO;
-import com.newcord.userservice.folder.dto.FolderRequest.FolderUpdateRequestDTO;
-import com.newcord.userservice.folder.dto.FolderRequest.FolderRequestDTO;
-import com.newcord.userservice.folder.dto.FolderResponse.FolderUpdateResponseDTO;
-import com.newcord.userservice.folder.dto.FolderResponse.FolderListResponseDTO;
-import com.newcord.userservice.folder.dto.FolderResponse.FolderResponseDTO;
+import com.newcord.userservice.folder.dto.FolderPostRequest;
+import com.newcord.userservice.folder.dto.FolderPostResponse;
+import com.newcord.userservice.folder.dto.FolderRequest;
+import com.newcord.userservice.folder.dto.FolderResponse;
 import com.newcord.userservice.folder.repository.FolderPostRepository;
 import com.newcord.userservice.folder.repository.FolderRepository;
 import com.newcord.userservice.global.common.exception.ApiException;
@@ -18,17 +14,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class FolderServiceImpl implements FolderService {
-
+public class FolderCommandServiceImpl implements FolderCommandService{
     private final FolderRepository folderRepository;
     private final FolderPostRepository folderPostRepository;
 
     @Override
-    public FolderResponseDTO addFolder(FolderRequestDTO folderAddDTO) {
+    public FolderResponse.FolderResponseDTO addFolder(FolderRequest.FolderRequestDTO folderAddDTO) {
         String folderName = folderAddDTO.getFolderName();
         Long userId = folderAddDTO.getUser_id();
 
@@ -39,13 +33,13 @@ public class FolderServiceImpl implements FolderService {
 
         Folder newFolder = folderAddDTO.toEntity(folderAddDTO);
         Folder savedFolder = folderRepository.save(newFolder);
-        return FolderResponseDTO.builder()
+        return FolderResponse.FolderResponseDTO.builder()
                 .id(savedFolder.getId())
                 .build();
     }
 
     @Override
-    public FolderResponseDTO deleteFolder(FolderRequestDTO folderDeleteDTO) {
+    public FolderResponse.FolderResponseDTO deleteFolder(FolderRequest.FolderRequestDTO folderDeleteDTO) {
         Long userId = folderDeleteDTO.getUser_id();
         String folderName = folderDeleteDTO.getFolderName();
         Folder folderToDelete = folderRepository.findByUser_idAndFolderName(userId, folderName);
@@ -53,7 +47,7 @@ public class FolderServiceImpl implements FolderService {
             List<FolderPost> folderPostsToDelete = folderPostRepository.findByFolder_id(folderToDelete.getId());
             folderPostRepository.deleteAll(folderPostsToDelete);
             folderRepository.delete(folderToDelete);
-            return FolderResponseDTO.builder()
+            return FolderResponse.FolderResponseDTO.builder()
                     .id(folderToDelete.getId())
                     .build();
         } else {
@@ -62,18 +56,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<FolderListResponseDTO> getFolderList(Long user_id) {
-        List<Folder> folders = folderRepository.findByUser_id(user_id);
-        return folders.stream()
-                .map(folder -> FolderListResponseDTO.builder()
-                        .id(folder.getId())
-                        .folderName(folder.getFolderName())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public FolderPostResponseDTO addFolderPost(FolderPostRequestDTO folderPostAddDTO) {
+    public FolderPostResponse.FolderPostResponseDTO addFolderPost(FolderPostRequest.FolderPostRequestDTO folderPostAddDTO) {
         Long folderId = folderPostAddDTO.getFolder_id();
         Long postId = folderPostAddDTO.getPost_id();
 
@@ -85,14 +68,14 @@ public class FolderServiceImpl implements FolderService {
 
         FolderPost newFolderPost = folderPostAddDTO.toEntity(folderPostAddDTO);
         FolderPost savedFolderPost = folderPostRepository.save(newFolderPost);
-        return FolderPostResponseDTO.builder()
+        return FolderPostResponse.FolderPostResponseDTO.builder()
                 .folder_id(savedFolderPost.getFolder_id())
                 .post_id(savedFolderPost.getPost_id())
                 .build();
     }
 
     @Override
-    public FolderPostResponseDTO deleteFolderPost(FolderPostRequestDTO folderPostDeleteDTO) {
+    public FolderPostResponse.FolderPostResponseDTO deleteFolderPost(FolderPostRequest.FolderPostRequestDTO folderPostDeleteDTO) {
         Long folderId = folderPostDeleteDTO.getFolder_id();
         Long postId = folderPostDeleteDTO.getPost_id();
 
@@ -100,7 +83,7 @@ public class FolderServiceImpl implements FolderService {
         FolderPost folderPostToDelete = folderPostRepository.findByFolder_idAndPost_id(folderId, postId);
         if (folderPostToDelete != null) {
             folderPostRepository.delete(folderPostToDelete);
-            return FolderPostResponseDTO.builder()
+            return FolderPostResponse.FolderPostResponseDTO.builder()
                     .folder_id(folderPostToDelete.getFolder_id())
                     .post_id(folderPostToDelete.getPost_id())
                     .build();
@@ -110,18 +93,7 @@ public class FolderServiceImpl implements FolderService {
     }
 
     @Override
-    public List<FolderPostListResponseDTO> getFolderPostList(Long folder_id) {
-        Folder folder = folderRepository.findById(folder_id).orElseThrow(() -> new ApiException(ErrorStatus._FOLDER_NOT_FOUND));
-        List<FolderPost> posts = folderPostRepository.findByFolder_id(folder_id);
-        return posts.stream()
-                .map(folderPost -> FolderPostListResponseDTO.builder()
-                        .post_id(folderPost.getPost_id())
-                        .build())
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public FolderUpdateResponseDTO updateFolder(FolderUpdateRequestDTO folderUpdateDTO) {
+    public FolderResponse.FolderUpdateResponseDTO updateFolder(FolderRequest.FolderUpdateRequestDTO folderUpdateDTO) {
         Long folderId = folderUpdateDTO.getFolder_id();
         String newFolderName = folderUpdateDTO.getFolderName();
         List<Long> newPostIds = folderUpdateDTO.getPostIds();
@@ -139,13 +111,10 @@ public class FolderServiceImpl implements FolderService {
             folderPostRepository.save(newFolderPost);
         }
 
-        return FolderUpdateResponseDTO.builder()
+        return FolderResponse.FolderUpdateResponseDTO.builder()
                 .folder_id(folderId)
                 .folderName(newFolderName)
                 .postIds(newPostIds)
                 .build();
     }
-
 }
-
-
