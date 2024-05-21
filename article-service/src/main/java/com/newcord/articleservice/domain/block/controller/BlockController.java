@@ -25,7 +25,7 @@ public class BlockController {
 
     @MessageMapping("/updateBlock/{postID}")
     public WSResponse<BlockContentUpdateResponseDTO> updateBlock(WSRequest<BlockContentUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
-        BlockContentUpdateResponseDTO responseDTO = blockComposeServiceImpl.updateBlock("testID", requestDTO.getDto(), postID);
+        BlockContentUpdateResponseDTO responseDTO = blockComposeServiceImpl.updateBlock(requestDTO.getUserID(), requestDTO.getDto(), postID);
         WSResponse<BlockContentUpdateResponseDTO> response = WSResponse.onSuccess("/updateBlock/"+postID, requestDTO.getUuid(), responseDTO);
 
         rabbitMQService.sendMessage(postID.toString(), "", response);
@@ -35,7 +35,7 @@ public class BlockController {
 
     @MessageMapping("/createBlock/{postID}")
     public WSResponse<BlockCreateResponseDTO> createBlock(WSRequest<BlockCreateRequestDTO> blockCreateRequestDTO, @DestinationVariable Long postID) {
-        BlockCreateResponseDTO responseDTO = blockComposeServiceImpl.createBlock("testID", blockCreateRequestDTO.getDto(), postID);
+        BlockCreateResponseDTO responseDTO = blockComposeServiceImpl.createBlock(blockCreateRequestDTO.getUserID(), blockCreateRequestDTO.getDto(), postID);
         WSResponse<BlockCreateResponseDTO> response = WSResponse.onSuccess("/createBlock/"+postID, blockCreateRequestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 
@@ -46,7 +46,7 @@ public class BlockController {
     // 요청시에 dto : {'blockId' : '~~`'} 가 아닌, dto : '~~' 로 보내야함
     @MessageMapping("/deleteBlock/{postID}")
     public WSResponse<BlockDeleteResponseDTO> deleteBlock(WSRequest<BlockDeleteRequestDTO> requestDTO, @DestinationVariable Long postID) {
-        BlockDeleteResponseDTO responseDTO = blockComposeServiceImpl.deleteBlock("testID", requestDTO.getDto(), postID);
+        BlockDeleteResponseDTO responseDTO = blockComposeServiceImpl.deleteBlock(requestDTO.getUserID(), requestDTO.getDto(), postID);
         WSResponse<BlockDeleteResponseDTO> response = WSResponse.onSuccess("/deleteBlock/"+postID, requestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 

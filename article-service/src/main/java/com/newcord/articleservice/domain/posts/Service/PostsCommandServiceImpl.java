@@ -20,7 +20,7 @@ public class PostsCommandServiceImpl implements PostsCommandService{
     TODO: 게시글 편집 세션(Exchange 생성 삭제등 관리에 관한 서비스 구현)
      */
     @Override
-    public Posts createPost(String userID, PostCreateRequestDTO postCreateDTO) {
+    public Posts createPost(Long userID, PostCreateRequestDTO postCreateDTO) {
         Posts newPosts = postCreateDTO.toEntity(postCreateDTO);
         postsRepository.save(newPosts);
 
@@ -28,7 +28,7 @@ public class PostsCommandServiceImpl implements PostsCommandService{
     }
 
     @Override
-    public Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO) {
+    public Posts updatePost(Long userID, PostUpdateRequestDTO postUpdateDTO) {
         Posts post = postsRepository.findById(postUpdateDTO.getId()).orElseThrow(() -> new ApiException(
                 ErrorStatus._POSTS_NOT_FOUND));
 

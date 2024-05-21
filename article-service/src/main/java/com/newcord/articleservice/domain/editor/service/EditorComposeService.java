@@ -6,6 +6,6 @@ import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorR
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorAddResponseDTO;
 
 public interface EditorComposeService {
-    EditorAddResponseDTO addEditor(String userID, EditorAddRequestDTO editorAddDTO);       //편집자 추가
-    DeleteEditorResponseDTO deleteEditor(String userID, DeleteEditorRequestDTO deleteEditorRequestDTO);       //편집자 삭제
+    EditorAddResponseDTO addEditor(Long userID, EditorAddRequestDTO editorAddDTO);       //편집자 추가
+    DeleteEditorResponseDTO deleteEditor(Long userID, DeleteEditorRequestDTO deleteEditorRequestDTO);       //편집자 삭제
 }

@@ -21,7 +21,7 @@ public class EditorQueryServiceImpl implements EditorQueryService{
     private final EditorRepository editorRepository;
 
     @Override
-    public PostListResponseDTO getPostListByUserID(String userID, Integer page, Integer size) {
+    public PostListResponseDTO getPostListByUserID(Long userID, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
         Page<Editor> editors = editorRepository.findByUserID(userID, pageRequest);
@@ -33,7 +33,7 @@ public class EditorQueryServiceImpl implements EditorQueryService{
     }
 
     @Override
-    public Editor getEditorByPostIdAndUserID(Long postId, String userID) {
+    public Editor getEditorByPostIdAndUserID(Long postId, Long userID) {
         Editor editor = editorRepository.findByPostIdAndUserID(postId, userID).orElse(null);
         if(editor == null){
             throw new ApiException(ErrorStatus._EDITOR_NOT_FOUND);
