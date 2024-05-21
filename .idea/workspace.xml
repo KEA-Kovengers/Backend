@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="feat : 서브 모듈 수정">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
-    </list>
+    <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="feat : 서브 모듈 수정" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,7 +48,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "70c2fa43",
+    "git-widget-placeholder": "37e85717",
     "jdk.selected.JAVA_MODULE": "17",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/gachonswacademy03/Desktop/KEA-Backend/Backend",
@@ -99,6 +96,7 @@
       <workItem from="1716185642682" duration="1000" />
       <workItem from="1716266835456" duration="59000" />
       <workItem from="1716275114870" duration="722000" />
+      <workItem from="1716276289380" duration="80000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />
@@ -140,7 +138,15 @@
       <option name="project" value="LOCAL" />
       <updated>1716275274164</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat : 서브 모듈 수정">
+      <option name="closed" value="true" />
+      <created>1716276332393</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1716276332393</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
