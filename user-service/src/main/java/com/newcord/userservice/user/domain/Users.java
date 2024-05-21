@@ -39,8 +39,14 @@ public class Users extends BaseTimeEntity {
     private String profileImg;
 
     @Column(length = 500)
+    private String kakaoToken;
+
+    @Column(length = 500)
     private String refreshToken;
 
+    public void setKakaoToken(String kakaoToken) {
+        this.kakaoToken = kakaoToken;
+    }
     public void setRefreshToken(String refreshToken) {
         this.refreshToken = refreshToken;
     }
