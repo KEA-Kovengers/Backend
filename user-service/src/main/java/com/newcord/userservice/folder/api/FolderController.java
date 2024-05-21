@@ -1,5 +1,6 @@
 package com.newcord.userservice.folder.api;
 
+import com.newcord.userservice.auth.annotation.UserID;
 import com.newcord.userservice.folder.dto.FolderPostRequest.FolderPostRequestDTO;
 import com.newcord.userservice.folder.dto.FolderPostResponse.FolderPostResponseDTO;
 import com.newcord.userservice.folder.dto.FolderRequest.FolderUpdateRequestDTO;
@@ -29,14 +30,14 @@ public class FolderController {
 
     @Operation(summary = "폴더 생성", description = "폴더를 생성합니다.")
     @PostMapping("/add")
-    public ApiResponse<FolderResponseDTO> addFolder(@RequestBody FolderRequestDTO folderAddRequestDTO) {
-        return ApiResponse.onSuccess(folderCommandService.addFolder(folderAddRequestDTO));
+    public ApiResponse<FolderResponseDTO> addFolder(@UserID Long userID, @RequestBody FolderRequestDTO folderAddRequestDTO) {
+        return ApiResponse.onSuccess(folderCommandService.addFolder(userID, folderAddRequestDTO));
     }
 
     @Operation(summary = "폴더 삭제", description = "폴더를 삭제합니다.")
     @DeleteMapping("/delete")
-    public ApiResponse<FolderResponseDTO> deleteFolder(@RequestBody FolderRequestDTO folderDeleteRequestDTO) {
-        return ApiResponse.onSuccess(folderCommandService.deleteFolder(folderDeleteRequestDTO));
+    public ApiResponse<FolderResponseDTO> deleteFolder(@UserID Long userID,@RequestBody FolderRequestDTO folderDeleteRequestDTO) {
+        return ApiResponse.onSuccess(folderCommandService.deleteFolder(userID, folderDeleteRequestDTO));
     }
 
     @Operation(summary = "폴더 조회", description = "유저가 가진 폴더 목록을 조회합니다.")

@@ -22,16 +22,15 @@ public class FolderCommandServiceImpl implements FolderCommandService{
     private final FolderPostRepository folderPostRepository;
 
     @Override
-    public FolderResponse.FolderResponseDTO addFolder(FolderRequest.FolderRequestDTO folderAddDTO) {
+    public FolderResponse.FolderResponseDTO addFolder(Long userID, FolderRequest.FolderRequestDTO folderAddDTO) {
         String folderName = folderAddDTO.getFolderName();
-        Long userId = folderAddDTO.getUser_id();
 
-        Folder existingFolder = folderRepository.findByUser_idAndFolderName(userId, folderName);
+        Folder existingFolder = folderRepository.findByUser_idAndFolderName(userID, folderName);
         if (existingFolder != null) {
             throw new ApiException(ErrorStatus._FOLDER_ALREADY_EXISTS);
         }
 
-        Folder newFolder = folderAddDTO.toEntity(folderAddDTO);
+        Folder newFolder = folderAddDTO.toEntity(userID, folderAddDTO);
         Folder savedFolder = folderRepository.save(newFolder);
         return FolderResponse.FolderResponseDTO.builder()
                 .id(savedFolder.getId())
@@ -39,10 +38,9 @@ public class FolderCommandServiceImpl implements FolderCommandService{
     }
 
     @Override
-    public FolderResponse.FolderResponseDTO deleteFolder(FolderRequest.FolderRequestDTO folderDeleteDTO) {
-        Long userId = folderDeleteDTO.getUser_id();
+    public FolderResponse.FolderResponseDTO deleteFolder(Long userID, FolderRequest.FolderRequestDTO folderDeleteDTO) {
         String folderName = folderDeleteDTO.getFolderName();
-        Folder folderToDelete = folderRepository.findByUser_idAndFolderName(userId, folderName);
+        Folder folderToDelete = folderRepository.findByUser_idAndFolderName(userID, folderName);
         if (folderToDelete != null) {
             List<FolderPost> folderPostsToDelete = folderPostRepository.findByFolder_id(folderToDelete.getId());
             folderPostRepository.deleteAll(folderPostsToDelete);
