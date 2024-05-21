@@ -10,7 +10,7 @@ import org.springframework.data.annotation.CreatedDate;
 @Builder
 @Getter
 public class BlockCreatedBy implements Serializable {
-    private String creator_id;
+    private Long creator_id;
     @CreatedDate
     private LocalDateTime created_at;
 }

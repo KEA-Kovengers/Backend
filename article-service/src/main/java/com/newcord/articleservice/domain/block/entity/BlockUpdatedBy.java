@@ -12,7 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 @AllArgsConstructor
 @Getter
 public class BlockUpdatedBy implements Serializable {
-    private String updater_id;
+    private Long updater_id;
     @LastModifiedDate
     private LocalDateTime updated_at;
 

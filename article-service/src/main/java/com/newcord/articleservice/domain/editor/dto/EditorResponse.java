@@ -12,14 +12,14 @@ public class EditorResponse {
     @Getter
     public static class EditorAddResponseDTO{
         private Long postId;
-        private String userID;
+        private Long userID;
     }
 
     @Builder
     @Getter
     public static class DeleteEditorResponseDTO{
         private Long postId;
-        private String userID;
+        private Long userID;
         private boolean postDelete;         //게시글 완전 삭제 여부 (편집자가 없을때 삭제됨)
 
         public void setPostDelete(boolean postDelete){
@@ -31,7 +31,7 @@ public class EditorResponse {
     @Getter
     public static class EditorListResponseDTO{
         private Long postId;
-        private List<String> userID;
+        private List<Long> userID;
     }
 
 }

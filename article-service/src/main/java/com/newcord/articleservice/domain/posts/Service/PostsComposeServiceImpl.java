@@ -56,7 +56,7 @@ public class PostsComposeServiceImpl implements PostsComposeService{
         return "편집세션이 삭제되었습니다.";
     }
     @Override
-    public PostCreateResponseDTO createPost(String userID, PostCreateRequestDTO postCreateDTO) {
+    public PostCreateResponseDTO createPost(Long userID, PostCreateRequestDTO postCreateDTO) {
         Posts posts = postsCommandService.createPost(userID, postCreateDTO);
 
         // 해시태그 조회 (없으면 생성)
@@ -87,7 +87,7 @@ public class PostsComposeServiceImpl implements PostsComposeService{
     }
 
     @Override
-    public Posts updatePost(String userID, PostUpdateRequestDTO postUpdateDTO) {
+    public Posts updatePost(Long userID, PostUpdateRequestDTO postUpdateDTO) {
         // 요청 유저의 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postUpdateDTO.getId(), userID);
 
@@ -119,7 +119,7 @@ public class PostsComposeServiceImpl implements PostsComposeService{
     }
 
     @Override
-    public PostDetailResponseDTO updateHashtags(String userID,
+    public PostDetailResponseDTO updateHashtags(Long userID,
         PostUpdateHashtagsRequestDTO postUpdateHashtagsRequestDTO) {
         // 요청 유저의 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postUpdateHashtagsRequestDTO.getPostId(), userID);

@@ -34,7 +34,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     private final ArticleVersionCommandService articleVersionCommandService;
 
     @Override
-    public BlockCreateResponseDTO createBlock(String userID, BlockCreateRequestDTO blockCreateDTO, Long postId) {
+    public BlockCreateResponseDTO createBlock(Long userID, BlockCreateRequestDTO blockCreateDTO, Long postId) {
         //권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
 
@@ -68,7 +68,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     }
 
     @Override
-    public BlockContentUpdateResponseDTO updateBlock(String userID,
+    public BlockContentUpdateResponseDTO updateBlock(Long userID,
         BlockContentUpdateRequestDTO blockContentUpdateDTO, Long postId) {
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
@@ -95,7 +95,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     }
 
     @Override
-    public BlockDeleteResponseDTO deleteBlock(String userID, BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
+    public BlockDeleteResponseDTO deleteBlock(Long userID, BlockDeleteRequestDTO blockDeleteDTO, Long postId) {
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
 
