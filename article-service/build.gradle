@@ -39,6 +39,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-amqp' //RabbitMQ
 	implementation 'org.springframework.boot:spring-boot-starter-reactor-netty'
 	implementation "io.jsonwebtoken:jjwt:0.9.1"
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	//For Object Storage(AWS S3 API)
 	implementation platform('software.amazon.awssdk:bom:2.23.7')
 	implementation "software.amazon.awssdk:s3"

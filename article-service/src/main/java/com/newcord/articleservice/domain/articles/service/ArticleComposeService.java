@@ -8,7 +8,7 @@ import com.newcord.articleservice.domain.block.entity.Block;
 import java.util.List;
 
 public interface ArticleComposeService {
-    BlockSequenceUpdateResponseDTO updateBlockSequence(String userID, Long articleID,
+    BlockSequenceUpdateResponseDTO updateBlockSequence(Long userID, Long articleID,
         BlockSequenceUpdateRequestDTO blockSequenceUpdateRequestDTO);        // 게시글 내 블럭 순서 변경
 
 }
