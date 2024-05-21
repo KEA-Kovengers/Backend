@@ -12,12 +12,11 @@ public class FolderRequest {
     @Builder
     @Getter
     public static class FolderRequestDTO {
-        private Long user_id;
         private String folderName;
 
-        public Folder toEntity(FolderRequestDTO dto){
+        public Folder toEntity(Long userID, FolderRequestDTO dto){
             return Folder.builder()
-                    .user_id(dto.getUser_id())
+                    .user_id(userID)
                     .folderName(dto.getFolderName())
                     .build();
         }
