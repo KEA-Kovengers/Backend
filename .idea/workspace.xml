@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
-    </list>
+    <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +23,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/config" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -89,6 +86,7 @@
       <workItem from="1715331983291" duration="611000" />
       <workItem from="1716185330115" duration="118000" />
       <workItem from="1716185642682" duration="1000" />
+      <workItem from="1716266835456" duration="59000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />
