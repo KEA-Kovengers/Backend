@@ -19,7 +19,6 @@ public class BlockResponse {
         private String id;
         private BlockParent parent;
         private boolean has_children;
-        private String blockType;
         private String content;
         private BlockCreatedBy created_by;
         private BlockUpdatedBy updated_by;
@@ -29,7 +28,6 @@ public class BlockResponse {
                 .id(block.getId().toString())
                 .parent(block.getParent())
                 .has_children(block.isHas_children())
-                .blockType(block.getBlockType())
                 .content(block.getContent())
                 .created_by(block.getCreated_by())
                 .updated_by(block.getUpdated_by())
@@ -53,7 +51,10 @@ public class BlockResponse {
     @AllArgsConstructor
     @Getter
     public static class BlockContentUpdateResponseDTO {
-        private BlockDTO blockDTO;
+        private String blockId;                 // 수정할 block ID
+        private String articleVersion; // {version index}.{operation index} 형태
+        private Long position;                  // 블럭 내에서 위치
+        private String content;                 // 내용               OperationType이 TEXT_INSERT, TEXT_DELETE인 경우 필수
         private BlockUpdatedBy updated_by;  // 수정자
     }
 

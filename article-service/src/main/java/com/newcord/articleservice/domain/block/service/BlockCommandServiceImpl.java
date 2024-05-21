@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
@@ -37,7 +38,6 @@ public class BlockCommandServiceImpl implements BlockCommandService{
                 .build();
         Block block = Block.builder()
                 .content(blockCreateDTO.getContent())
-                .blockType(blockCreateDTO.getBlockType())
                 .parent(BlockParent.builder()
                     .type(blockCreateDTO.getBlockParent().getType())
                     .page_id(blockCreateDTO.getBlockParent().getPage_id())
@@ -59,12 +59,13 @@ public class BlockCommandServiceImpl implements BlockCommandService{
                 () -> new ApiException(ErrorStatus._BLOCK_NOT_FOUND)
         );
 
-        //TODO: 컨플릭트 로직이 들어가야함
-
-
         // DTO로 받은 내용으로 블록 업데이트
-        block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
-        block.updateBlockType(blockContentUpdateDTO.getBlockType(), blockContentUpdateDTO.getUpdated_by());
+
+        if(blockContentUpdateDTO.getOperationType().equals(OperationType.TAG))
+            block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
+        //아래 부분은 position에 삽입하도록 수정
+        else
+            block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
 
         // 블록 업데이트 후 저장
         blockRepository.save(block);

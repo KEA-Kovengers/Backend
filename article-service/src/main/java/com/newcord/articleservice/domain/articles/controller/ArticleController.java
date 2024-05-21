@@ -22,7 +22,7 @@ public class ArticleController {
 
     @MessageMapping("/updateBlockSequence/{postID}")
     public WSResponse<BlockSequenceUpdateResponseDTO> updateBlockSequence(WSRequest<BlockSequenceUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
-        BlockSequenceUpdateResponseDTO responseDTO = articleComposeService.updateBlockSequence("testID", postID, requestDTO.getDto());
+        BlockSequenceUpdateResponseDTO responseDTO = articleComposeService.updateBlockSequence(requestDTO.getUserId(), postID, requestDTO.getDto());
         WSResponse<BlockSequenceUpdateResponseDTO> response = WSResponse.onSuccess("/updateBlockSequence/"+postID, requestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 

@@ -15,7 +15,7 @@ public class ArticleVersionComposeServiceImpl implements ArticleVersionComposeSe
     private final ArticleVersionRepository articleVersionRepository;
 
     @Override
-    public ArticleVersion applyOperation(VersionOperation operation, String version,
+    public VersionOperation applyOperation(VersionOperation operation, String version,
         Long articleId) {
         ArticleVersion articleVersion = articleVersionRepository.findById(articleId)
             .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
@@ -26,6 +26,6 @@ public class ArticleVersionComposeServiceImpl implements ArticleVersionComposeSe
         articleVersion.getVersions().get(articleVersion.getVersions().size() - 1).getOperations().add(appliedOperation);
         articleVersionRepository.save(articleVersion);
 
-        return articleVersion;
+        return appliedOperation;
     }
 }

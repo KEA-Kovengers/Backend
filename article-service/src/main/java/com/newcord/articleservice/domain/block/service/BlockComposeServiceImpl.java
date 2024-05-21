@@ -21,6 +21,7 @@ import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +31,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     private final EditorQueryService editorQueryService;
     private final ArticlesCommandService articlesCommandService;
     private final ArticleVersionComposeService articleVersionComposeService;
+    private final ArticleVersionCommandService articleVersionCommandService;
 
     @Override
     public BlockCreateResponseDTO createBlock(String userID, BlockCreateRequestDTO blockCreateDTO, Long postId) {
@@ -40,7 +42,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         Block block = blockCommandService.createBlock(blockCreateDTO, postId);
 
         // ArticleVersion관련 로직 수행
-        ArticleVersion articleVersion = articleVersionComposeService.applyOperation(VersionOperation.builder()
+        VersionOperation versionOperation = articleVersionComposeService.applyOperation(VersionOperation.builder()
                 .id(block.getId())
                 .operationType(OperationType.BLOCK_INSERT)
                 .timestamp(blockCreateDTO.getCreated_by().getCreated_at())
@@ -48,20 +50,17 @@ public class BlockComposeServiceImpl implements BlockComposeService{
                 .content(block.getContent())
                 .updated_by(block.getUpdated_by())
             .build(), blockCreateDTO.getArticleVersion(), postId);
-        //====
-        List<Version> versions = articleVersion.getVersions();
-        int lastVersionIdx = versions.size() - 1;
-        List<VersionOperation> operations = versions.get(lastVersionIdx).getOperations();
-        int lastOperation = operations.size() - 1;
+
+
         // Article의 blockList에 block 추가
         Article article = articlesCommandService.insertBlock(postId, InsertBlockRequestDTO.builder()
                 .block(block)
-                .position(operations.get(lastOperation).getPosition())
+                .position(versionOperation.getPosition())
             .build());
 
         return BlockCreateResponseDTO.builder()
             .articleId(postId)
-            .articleVersion(lastVersionIdx + "." + lastOperation)
+            .articleVersion(articleVersionCommandService.getLatestVersion(postId))
             .blockDTO(BlockDTO.toDTO(block))
             .position(blockCreateDTO.getPosition())
             .blockList(article.getBlock_list())
@@ -74,10 +73,23 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
 
+        // ArticleVersion관련 로직 수행
+        VersionOperation versionOperation = articleVersionComposeService.applyOperation(VersionOperation.builder()
+            .id(new ObjectId(blockContentUpdateDTO.getBlockId()))
+            .operationType(OperationType.BLOCK_INSERT)
+            .timestamp(blockContentUpdateDTO.getUpdated_by().getUpdated_at())
+            .position(blockContentUpdateDTO.getPosition())
+            .content(blockContentUpdateDTO.getContent())
+            .updated_by(blockContentUpdateDTO.getUpdated_by())
+            .build(), blockContentUpdateDTO.getArticleVersion(), postId);
+        //====
+        blockContentUpdateDTO.setPosition(versionOperation.getPosition());
         Block block = blockCommandService.updateBlock(blockContentUpdateDTO);
 
         return BlockContentUpdateResponseDTO.builder()
-            .blockDTO(BlockDTO.toDTO(block))
+            .blockId(block.getId().toString())
+            .articleVersion(articleVersionCommandService.getLatestVersion(postId))
+            .position(blockContentUpdateDTO.getPosition())
             .updated_by(block.getUpdated_by())
             .build();
     }
