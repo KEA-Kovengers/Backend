@@ -38,7 +38,14 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Hashtags 관련
     _HASHTAGS_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAGS_001", "존재하지 않는 해시태그입니다."),
-    _HASHTAGS_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "HASHTAGS_002", "이미 존재하는 해시태그입니다.");
+    _HASHTAGS_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "HASHTAGS_002", "이미 존재하는 해시태그입니다."),
+
+    //Comments 관련
+    _COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND,"COMMENTS_001","존재하지 않는 댓글입니다."),
+
+    //Notices 관련
+    _NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND,"NOTICES_001","신고 내역이 존재하지 않습니다."),
+    _NOTICE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"NOTICES_002","같은 내용의 신고 내역이 존재합니다.");
 
     private final HttpStatus httpStatus;        // HTTP 상태 코드
     private final String code;                  // 내부적인 에러 코드. 도메인명 + 숫자로 구성. 숫자는 HTTP 상태코드 100의자리 참고
