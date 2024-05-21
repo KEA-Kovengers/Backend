@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b0c13ca-91bc-4e17-8f7a-b47756aa4568" name="Changes" comment="fix : delete wrong file">
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/global/kakao/ObjectStorageConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/user-service/src/main/java/com/newcord/userservice/global/kakao/ObjectStorageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/controller/FirstController.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/controller/FirstController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/ObjectStorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/ObjectStorageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/article-service/src/main/java/com/newcord/articleservice/global/kakao/dto/S3Result.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config" beforeDir="false" afterPath="$PROJECT_DIR$/config" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/article-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/article-service-module/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/user-service-module/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/user-service-module/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/user-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/user-service/build.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +26,7 @@
     </system>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/config" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -53,6 +45,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;d1e79e3c&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/gachonswacademy03/Desktop/KEA-Backend/Backend&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -60,6 +53,9 @@
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -71,8 +67,7 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.15989.150" />
-        <option value="bundled-js-predefined-1d06a55b98c1-91d5c284f522-JavaScript-IU-241.15989.150" />
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-53826d6a" />
       </set>
     </attachedChunks>
   </component>
@@ -92,6 +87,8 @@
       <workItem from="1715053956376" duration="60000" />
       <workItem from="1715274034350" duration="20000" />
       <workItem from="1715331983291" duration="611000" />
+      <workItem from="1716185330115" duration="118000" />
+      <workItem from="1716185642682" duration="1000" />
     </task>
     <task id="LOCAL-00001" summary="fix : delete wrong file">
       <option name="closed" value="true" />
