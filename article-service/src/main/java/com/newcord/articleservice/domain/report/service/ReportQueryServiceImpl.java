@@ -34,8 +34,12 @@ public class ReportQueryServiceImpl implements ReportQueryService {
     public Report getReportDetail(Long id){
         Report report = reportRepository.findById(id).orElse(null);
         if(report == null)
-            throw new ApiException(ErrorStatus._NOTICE_NOT_FOUND);;
+            throw new ApiException(ErrorStatus._REPORT_NOT_FOUND);;
         return report;
     }
 
+    @Override
+    public List<Report> getEachReportList(String type){
+        return reportRepository.findAllByType(type);
+    }
 }

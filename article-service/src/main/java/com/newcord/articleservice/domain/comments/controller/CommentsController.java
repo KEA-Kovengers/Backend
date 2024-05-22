@@ -38,7 +38,7 @@ public class CommentsController {
 
     @GetMapping("/commentlist/{postid}")
     @Operation(summary = "게시글 댓글 보기", description = "게시글 댓글 보기")
-    public ApiResponse<List<CommentsResponse.CommentsResponseDTO>> getCommentsList(@PathVariable Long postid){
+    public ApiResponse<List<Comments>> getCommentsList(@PathVariable Long postid){
         return ApiResponse.onSuccess(commentsQueryService.getCommentsList(postid));
     }
 

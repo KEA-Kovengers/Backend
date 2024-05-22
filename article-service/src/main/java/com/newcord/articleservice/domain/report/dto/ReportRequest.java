@@ -12,8 +12,9 @@ public class ReportRequest {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CreateReportRequestDTO{
-        private Long id;
+        private Long contendID;
         private Long userID;
         private String body;
+        private String type;
     }
 }

@@ -21,13 +21,13 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
     private final PostsRepository postsRepository;
 
     // 댓글 작성, 대댓글 작성
-    // 댓글은 commentID가 null
+    // 댓글은 commentID가 id
     // 대댓글은 commentID에 부모 댓글의 id
     @Override
     public Comments createComment(CommentsCreateRequestDTO commentsCreateRequestDTO){
         Comments comments=Comments.builder().
                 comment_id(commentsCreateRequestDTO.getCommentID())
-                .post_id(commentsCreateRequestDTO.getPostID())
+                .postId(commentsCreateRequestDTO.getPostID())
                 .user_id(commentsCreateRequestDTO.getUserID())
                 .isDeleted(false)
                 .body((commentsCreateRequestDTO.getBody()))
@@ -43,5 +43,4 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
         comments.setDeleted(true);
         return comments;
     }
-
 }

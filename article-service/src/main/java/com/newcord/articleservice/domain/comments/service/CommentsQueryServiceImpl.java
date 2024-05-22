@@ -5,10 +5,12 @@ import com.newcord.articleservice.domain.comments.entity.Comments;
 import com.newcord.articleservice.domain.comments.repository.CommentsRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -20,19 +22,9 @@ public class CommentsQueryServiceImpl implements CommentsQueryService{
     private final CommentsRepository commentsRepository;
 
     @Override
-    public List<CommentsResponseDTO> getCommentsList(Long postID){
-
-        List<CommentsResponseDTO> result = new ArrayList<>();
-        List<Comments> comments=commentsRepository.findByPost_id(postID);
-        for(Comments c: comments){
-            CommentsResponseDTO dto=CommentsResponseDTO.builder().
-                    id(c.getId())
-                    .commentID(c.getComment_id())
-                    .userID(c.getUser_id())
-                    .body(c.getBody())
-            .build();
-            result.add(dto);
-        }
-        return result;
+    public List<Comments> getCommentsList(Long postID){
+        List<Comments> comments = commentsRepository.findByPostId(postID);
+        comments.sort(Comparator.comparing(Comments::getComment_id));
+        return comments;
     }
 }

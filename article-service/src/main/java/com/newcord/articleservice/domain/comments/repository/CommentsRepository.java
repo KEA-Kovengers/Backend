@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface CommentsRepository extends JpaRepository<Comments,Long> {
 
-    @Query("SELECT c FROM Comments c WHERE c.post_id =:postID")
-    List<Comments> findByPost_id(Long postID);
+    @Query("SELECT c FROM Comments c WHERE c.postId =:postID")
+    List<Comments> findByPostId(Long postID);
+
+    //List<Comments> findByPostIdOrderByComment_idAsc(Long postId);
 }

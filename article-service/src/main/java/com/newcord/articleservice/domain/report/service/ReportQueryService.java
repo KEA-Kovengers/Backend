@@ -11,4 +11,6 @@ public interface ReportQueryService {
     List<Report> getUsersReportList(Long userID);
 
     Report getReportDetail(Long id);
+
+    List<Report> getEachReportList(String type);
 }

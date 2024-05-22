@@ -19,6 +19,12 @@ public class Report extends BaseJPATimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long user_id;
+
+    //신고 댓글 혹은 게시글의 아이디
+    private Long contentID;
+    private Long userID;
     private String body;
+
+    // 댓글이면 1, 게시글이면 2
+    private String type;
 }

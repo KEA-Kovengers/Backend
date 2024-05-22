@@ -22,8 +22,8 @@ public class ReportController {
     private final ReportCommandService reportCommandService;
     private final ReportQueryService reportQueryService;
 
-    @PostMapping("/comment")
-    @Operation(summary = "댓글 신고 하기",description = "댓글 신고 api")
+    @PostMapping("/create")
+    @Operation(summary = "신고 하기",description = "댓글 type=1, 게시글 type=2")
     public ApiResponse<Report> createCommentNotice(@RequestBody CreateReportRequestDTO createReportRequestDTO){
         return ApiResponse.onSuccess(reportCommandService.createReport(createReportRequestDTO));
     }
@@ -32,6 +32,12 @@ public class ReportController {
     @Operation(summary = "모든 신고 조회하기", description = "관리지가 사용하는 api입니다")
     public ApiResponse<List<Report>> getReportsList(){
         return ApiResponse.onSuccess(reportQueryService.getReportList());
+    }
+
+    @GetMapping("/reportlist/{type}")
+    @Operation(summary = "신고 종류별로 조회하기",description = "댓글이면 type=1, 게시글이면 type=2")
+    public ApiResponse<List<Report>> getEachReportList(@PathVariable String type){
+        return ApiResponse.onSuccess(reportQueryService.getEachReportList(type));
     }
 
     @GetMapping("/{userid}")

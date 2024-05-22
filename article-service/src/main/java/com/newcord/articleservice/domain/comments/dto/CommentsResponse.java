@@ -17,5 +17,6 @@ public class CommentsResponse {
         private Long commentID;
         private Long userID;
         private String body;
+        private Boolean isDeleted;
     }
 }
