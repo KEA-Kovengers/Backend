@@ -9,9 +9,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EditorRepository extends JpaRepository<Editor, String> {
-    Page<Editor> findByUserID(String userID, Pageable pageable);
-    Optional<Editor> findByPostIdAndUserID(Long postId, String userID);
+public interface EditorRepository extends JpaRepository<Editor, Long> {
+    Page<Editor> findByUserID(Long userID, Pageable pageable);
+    Optional<Editor> findByPostIdAndUserID(Long postId, Long userID);
     List<Editor> findByPostId(Long postId);
 
 }

@@ -14,7 +14,7 @@ public class ArticleComposeServiceImpl implements ArticleComposeService{
     private final EditorQueryService editorQueryService;
 
     @Override
-    public BlockSequenceUpdateResponseDTO updateBlockSequence(String userID, Long articleID,
+    public BlockSequenceUpdateResponseDTO updateBlockSequence(Long userID, Long articleID,
         BlockSequenceUpdateRequestDTO blockSequenceUpdateRequestDTO) {
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(articleID, userID);

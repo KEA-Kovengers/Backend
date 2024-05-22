@@ -8,5 +8,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public class WSRequest<T> implements Serializable {
     private final String uuid;
+    private final Long userID;
     private final T dto;
 }

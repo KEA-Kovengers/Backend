@@ -26,7 +26,7 @@ public class Editor extends BaseJPATimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String userID;
+    private Long userID;
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Posts post;
