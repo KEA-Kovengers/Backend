@@ -30,14 +30,14 @@ public class FolderController {
 
     @Operation(summary = "폴더 생성", description = "폴더를 생성합니다.")
     @PostMapping("/add")
-    public ApiResponse<FolderResponseDTO> addFolder(@UserID Long userID, @RequestBody FolderRequestDTO folderAddRequestDTO) {
-        return ApiResponse.onSuccess(folderCommandService.addFolder(userID, folderAddRequestDTO));
+    public ApiResponse<FolderResponseDTO> addFolder(@UserID Long userID, @RequestParam String folderName) {
+        return ApiResponse.onSuccess(folderCommandService.addFolder(userID, folderName));
     }
 
     @Operation(summary = "폴더 삭제", description = "폴더를 삭제합니다.")
     @DeleteMapping("/delete")
-    public ApiResponse<FolderResponseDTO> deleteFolder(@UserID Long userID,@RequestBody FolderRequestDTO folderDeleteRequestDTO) {
-        return ApiResponse.onSuccess(folderCommandService.deleteFolder(userID, folderDeleteRequestDTO));
+    public ApiResponse<FolderResponseDTO> deleteFolder(@UserID Long userID,@RequestParam String folderName) {
+        return ApiResponse.onSuccess(folderCommandService.deleteFolder(userID, folderName));
     }
 
     @Operation(summary = "폴더 조회", description = "유저가 가진 폴더 목록을 조회합니다.")
