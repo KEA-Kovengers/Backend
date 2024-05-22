@@ -30,7 +30,6 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     private final BlockCommandService blockCommandService;
     private final EditorQueryService editorQueryService;
     private final ArticlesCommandService articlesCommandService;
-    private final ArticleVersionComposeService articleVersionComposeService;
     private final ArticleVersionCommandService articleVersionCommandService;
 
     @Override
@@ -42,7 +41,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         Block block = blockCommandService.createBlock(blockCreateDTO, postId);
 
         // ArticleVersion관련 로직 수행
-        VersionOperation versionOperation = articleVersionComposeService.applyOperation(VersionOperation.builder()
+        VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
                 .id(block.getId())
                 .operationType(OperationType.BLOCK_INSERT)
                 .timestamp(blockCreateDTO.getCreated_by().getCreated_at())
@@ -74,9 +73,9 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
 
         // ArticleVersion관련 로직 수행
-        VersionOperation versionOperation = articleVersionComposeService.applyOperation(VersionOperation.builder()
+        VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
             .id(new ObjectId(blockContentUpdateDTO.getBlockId()))
-            .operationType(OperationType.BLOCK_INSERT)
+            .operationType(blockContentUpdateDTO.getOperationType())
             .timestamp(blockContentUpdateDTO.getUpdated_by().getUpdated_at())
             .position(blockContentUpdateDTO.getPosition())
             .content(blockContentUpdateDTO.getContent())

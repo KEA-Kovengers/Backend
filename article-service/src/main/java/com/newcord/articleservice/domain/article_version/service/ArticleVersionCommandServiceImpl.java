@@ -19,17 +19,28 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
     private final ArticleVersionRepository articleVersionRepository;
     private final Object lock = new Object();
 
+
     @Override
     @Transactional
-    public VersionOperation applyOperation(VersionOperation operation, ArticleVersion articleVersion, long operationIndex){
+    public VersionOperation applyOperation(VersionOperation operation, String version,
+        Long articleId) {
+        ArticleVersion articleVersion = articleVersionRepository.findById(articleId)
+            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
+
+        String[] versionArr = version.split("\\.");
+//        VersionOperation appliedOperation = this.applyOperation(operation, articleVersion,Long.parseLong(versionArr[1]));
+        VersionOperation appliedOperation = operation;
+
         synchronized (lock) {
             //버전상 충돌하는 경우 처리
 
-            // position 수정하고 DB에 저장
-
-
-            return operation;
+            // operation의 position 수정하고 DB에 저장
         }
+
+        articleVersion.getVersions().get(articleVersion.getVersions().size() - 1).getOperations().add(appliedOperation);
+        articleVersionRepository.save(articleVersion);
+
+        return appliedOperation;
     }
 
     @Override
