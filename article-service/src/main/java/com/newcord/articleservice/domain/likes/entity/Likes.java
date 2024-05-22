@@ -12,8 +12,7 @@ import lombok.*;
 public class Likes extends BaseJPATimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    private Integer post_id;
-    private Integer user_id;
+    private Long id;
+    private Long post_id;
+    private Long user_id;
 }
