@@ -66,7 +66,16 @@ public class BlockCommandServiceImpl implements BlockCommandService{
             block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
         //아래 부분은 position에 삽입하도록 수정
         else
-            block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
+        {
+            StringBuffer sb = new StringBuffer(block.getContent());
+            if(sb.length() < blockContentUpdateDTO.getPosition().intValue()){
+                sb.setLength(blockContentUpdateDTO.getPosition().intValue());
+                //문자열 연결하는데 인덱스 범위 초과하니 오류가 발생함
+            }
+            sb.insert(blockContentUpdateDTO.getPosition().intValue(), blockContentUpdateDTO.getContent());
+            block.updateContent(sb.toString(), blockContentUpdateDTO.getUpdated_by());
+        }
+
 
         // 블록 업데이트 후 저장
         blockRepository.save(block);

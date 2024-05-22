@@ -93,7 +93,10 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         return BlockContentUpdateResponseDTO.builder()
             .blockId(block.getId().toString())
             .articleVersion(articleVersionCommandService.getLatestVersion(postId))
+            .operationType(blockContentUpdateDTO.getOperationType())
+            .entityType(blockContentUpdateDTO.getEntityType())
             .position(blockContentUpdateDTO.getPosition())
+            .content(blockContentUpdateDTO.getContent())
             .updated_by(block.getUpdated_by())
             .build();
     }

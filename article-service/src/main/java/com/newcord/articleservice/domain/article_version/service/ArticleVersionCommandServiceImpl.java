@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.article_version.service;
 
 import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.article_version.entity.Version;
 import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
 import com.newcord.articleservice.domain.article_version.repository.ArticleVersionRepository;
@@ -22,9 +23,9 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
 
     @Override
     @Transactional
-    public VersionOperation applyOperation(VersionOperation operation, String version,
+    public VersionOperation applyOperation(VersionOperation clientOperation, String version,
         Long articleId) {
-        VersionOperation appliedOperation = operation;
+        VersionOperation appliedOperation = clientOperation;
         synchronized (lock) {
             //버전상 충돌하는 경우 처리
             ArticleVersion articleVersion = articleVersionRepository.findById(articleId)
@@ -36,15 +37,45 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
             List<Version> versions = articleVersion.getVersions().subList(Integer.parseInt(versionArr[0]),
                 articleVersion.getVersions().size());
 
-            // 버전의 operation을 돌며 position 증감
-//            for (Version v : versions) {
-//                for (VersionOperation vo : v.getOperations()) {
-//                    if (vo.getPosition() >= operation.getPosition()) {
-//                        vo.setPosition(vo.getPosition() + 1);
-//                    }
-//                }
-//            }
+            if(!appliedOperation.getOperationType().equals(OperationType.SEQUENCE_UPDATE)){
+                // 버전의 operation을 돌며 position 증감
+                for (Version v : versions) {
+                    int cnt = 0;
+                    for (VersionOperation serverOperation : v.getOperations()) {
+                        if(cnt <= Integer.parseInt(versionArr[1]))
+                            continue;
+                        if(serverOperation.getEntityType() != appliedOperation.getEntityType()) {
+                            continue;
+                        }
 
+                        if(appliedOperation.getOperationType().equals(OperationType.INSERT)){
+                            if(serverOperation.getOperationType().equals(OperationType.INSERT)) {
+                                if(appliedOperation.getPosition() > serverOperation.getPosition()) {
+                                    appliedOperation.addPosition(serverOperation.getContent().length());
+                                }
+                            }
+                            else if (appliedOperation.getOperationType().equals(OperationType.DELETE)) {
+                                if(appliedOperation.getPosition() > serverOperation.getPosition()){
+                                    appliedOperation.addPosition(-1);
+                                }
+                            }
+                        }
+                        else if(appliedOperation.getOperationType().equals(OperationType.DELETE)){
+                            if(serverOperation.getOperationType().equals(OperationType.INSERT)) {
+                                if(appliedOperation.getPosition() >= serverOperation.getPosition()) {
+                                    appliedOperation.addPosition(serverOperation.getContent().length());
+                                }
+                            }
+                            else if (appliedOperation.getOperationType().equals(OperationType.DELETE)) {
+                                if(appliedOperation.getPosition() <= serverOperation.getPosition()){
+                                    appliedOperation.addPosition(-1);
+                                }
+                            }
+                        }
+                        cnt++;
+                    }
+                }
+            }
 
             // operation의 position 수정하고 DB에 저장
             articleVersion.getVersions().get(articleVersion.getVersions().size() - 1).getOperations().add(appliedOperation);
