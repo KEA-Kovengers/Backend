@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.articles.dto;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
 import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
@@ -25,6 +26,7 @@ public class ArticleResponse {
         private Long position;
         private String articleVersion; // {version index}.{operation index} 형태
         private OperationType operationType;    // Operation Type (TEXT_INSERT, TEXT_DELETE, TAG)
+        private OperationEntityType entityType;  // Operation Entity Type
         private List<String> blockList;
         private BlockUpdatedBy updated_by;      // 수정자
     }

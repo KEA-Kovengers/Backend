@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.block.service;
 
 import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
 import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.article_version.entity.Version;
 import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
@@ -43,7 +44,8 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         // ArticleVersion관련 로직 수행
         VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
                 .id(block.getId())
-                .operationType(OperationType.BLOCK_INSERT)
+                .entityType(OperationEntityType.BLOCK)
+                .operationType(OperationType.INSERT)
                 .timestamp(blockCreateDTO.getCreated_by().getCreated_at())
                 .position(blockCreateDTO.getPosition())
                 .content(block.getContent())
@@ -60,6 +62,8 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         return BlockCreateResponseDTO.builder()
             .articleId(postId)
             .articleVersion(articleVersionCommandService.getLatestVersion(postId))
+            .operationType(OperationType.INSERT)
+            .entityType(OperationEntityType.BLOCK)
             .blockDTO(BlockDTO.toDTO(block))
             .position(blockCreateDTO.getPosition())
             .blockList(article.getBlock_list())
@@ -75,6 +79,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         // ArticleVersion관련 로직 수행
         VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
             .id(new ObjectId(blockContentUpdateDTO.getBlockId()))
+            .entityType(blockContentUpdateDTO.getEntityType())
             .operationType(blockContentUpdateDTO.getOperationType())
             .timestamp(blockContentUpdateDTO.getUpdated_by().getUpdated_at())
             .position(blockContentUpdateDTO.getPosition())

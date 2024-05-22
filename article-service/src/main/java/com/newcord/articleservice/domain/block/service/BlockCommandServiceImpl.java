@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
 import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
@@ -61,7 +62,7 @@ public class BlockCommandServiceImpl implements BlockCommandService{
 
         // DTO로 받은 내용으로 블록 업데이트
 
-        if(blockContentUpdateDTO.getOperationType().equals(OperationType.TAG))
+        if(blockContentUpdateDTO.getEntityType().equals(OperationEntityType.TAG))
             block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
         //아래 부분은 position에 삽입하도록 수정
         else

@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.block.dto;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
 import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.block.entity.BlockCreatedBy;
 import com.newcord.articleservice.domain.block.entity.BlockParent;
@@ -38,6 +39,7 @@ public class BlockRequest {
         private String blockId;                 // 수정할 block ID
         private String articleVersion; // {version index}.{operation index} 형태
         private OperationType operationType;    // Operation Type (TEXT_INSERT, TEXT_DELETE, TAG)
+        private OperationEntityType entityType;  // Operation Entity Type
         private Long position;                  // 블럭 내에서 위치
         private String content;                 // 내용               OperationType이 TEXT_INSERT, TEXT_DELETE인 경우 필수
         private BlockUpdatedBy updated_by;      // 수정자

@@ -24,23 +24,33 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
     @Transactional
     public VersionOperation applyOperation(VersionOperation operation, String version,
         Long articleId) {
-        ArticleVersion articleVersion = articleVersionRepository.findById(articleId)
-            .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
-
-        String[] versionArr = version.split("\\.");
-//        VersionOperation appliedOperation = this.applyOperation(operation, articleVersion,Long.parseLong(versionArr[1]));
         VersionOperation appliedOperation = operation;
-
         synchronized (lock) {
             //버전상 충돌하는 경우 처리
+            ArticleVersion articleVersion = articleVersionRepository.findById(articleId)
+                .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
+
+            String[] versionArr = version.split("\\.");
+
+            //요청온 버전부터 operation을 읽어오기 위한 버전 리스트
+            List<Version> versions = articleVersion.getVersions().subList(Integer.parseInt(versionArr[0]),
+                articleVersion.getVersions().size());
+
+            // 버전의 operation을 돌며 position 증감
+//            for (Version v : versions) {
+//                for (VersionOperation vo : v.getOperations()) {
+//                    if (vo.getPosition() >= operation.getPosition()) {
+//                        vo.setPosition(vo.getPosition() + 1);
+//                    }
+//                }
+//            }
+
 
             // operation의 position 수정하고 DB에 저장
+            articleVersion.getVersions().get(articleVersion.getVersions().size() - 1).getOperations().add(appliedOperation);
+            articleVersionRepository.save(articleVersion);
+            return appliedOperation;
         }
-
-        articleVersion.getVersions().get(articleVersion.getVersions().size() - 1).getOperations().add(appliedOperation);
-        articleVersionRepository.save(articleVersion);
-
-        return appliedOperation;
     }
 
     @Override
