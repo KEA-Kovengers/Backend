@@ -96,4 +96,29 @@ public class KakaoController {
         }
     }
 
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃", description = "리프레시 토큰을 받아 사용자 정보를 삭제합니다.")
+    @ResponseBody
+    public ApiResponse<Void> logout(@RequestHeader("X-REFRESH-TOKEN") String refreshToken) {
+        boolean isRefreshTokenValid = jwtTokenProvider.validateRefreshToken(refreshToken);
+        if (isRefreshTokenValid) {
+            kakaoAuthService.deleteUserByRefreshToken(refreshToken);
+            return ApiResponse.onSuccess(null);
+        } else {
+            throw new ApiException(ErrorStatus._REFRESH_TOKEN_INVALID);
+        }
+    }
+
+    @PostMapping("/withdraw")
+    @Operation(summary = "회원 탈퇴", description = "리프레시 토큰을 받아 사용자 정보를 삭제하고 카카오 연결을 끊습니다.")
+    @ResponseBody
+    public ApiResponse<Void> withdraw(@RequestHeader("X-REFRESH-TOKEN") String refreshToken) {
+        boolean isRefreshTokenValid = jwtTokenProvider.validateRefreshToken(refreshToken);
+        if (isRefreshTokenValid) {
+            kakaoAuthService.deleteUserAndUnlinkKakao(refreshToken);
+            return ApiResponse.onSuccess(null);
+        } else {
+            throw new ApiException(ErrorStatus._REFRESH_TOKEN_INVALID);
+        }
+    }
 }

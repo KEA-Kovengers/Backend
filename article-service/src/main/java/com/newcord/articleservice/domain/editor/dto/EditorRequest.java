@@ -12,13 +12,13 @@ public class EditorRequest {
     @Getter
     public static class EditorAddRequestDTO{
         private Long postId;
-        private String userID;
+        private Long userID;
     }
 
     @Builder
     @Getter
     public static class DeleteEditorRequestDTO{
         private Long postId;
-        private String userID;
+        private Long userID;
     }
 }
