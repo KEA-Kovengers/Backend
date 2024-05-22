@@ -4,21 +4,21 @@ import com.newcord.userservice.user.domain.Users;
 import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 public class UsersRequest {
 
     @Builder
     @Getter
     public static class UsersRequestDTO {
-        private Long id;
         private String nickName;
         private String blogName;
         private String bio;
         private String profileImg;
 
-        public Users toEntity(UsersRequestDTO dto){
+        public Users toEntity(Long userID,UsersRequestDTO dto){
             return Users.builder()
-                    .id(dto.getId())
+                    .id(userID)
                     .nickName(dto.getNickName())
                     .blogName(dto.getBlogName())
                     .bio(dto.getBio())
@@ -26,6 +26,14 @@ public class UsersRequest {
                     .build();
         }
 
+    }
+
+    @Builder
+    @Getter
+    @Setter
+    public static class UsersNameRequestDTO{
+        private String nickName;
+        private String blogName;
     }
 
 }

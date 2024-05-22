@@ -31,7 +31,8 @@ public enum ErrorStatus implements BaseErrorCode {
 
     _USER_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH_001", "데이터베이스에 존재하지 않는 사용자입니다."),
     _ACCESS_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_002", "엑세스 토큰이 만료되었습니다."),
-    _REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_003", "리프레시 토큰이 만료되었습니다.");
+    _REFRESH_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "AUTH_003", "리프레시 토큰이 만료되었습니다."),
+    _INVALID_AUTH_HEADER(HttpStatus.BAD_REQUEST, "AUTH_004", "잘못된 헤더입니다."),;
 
 
 

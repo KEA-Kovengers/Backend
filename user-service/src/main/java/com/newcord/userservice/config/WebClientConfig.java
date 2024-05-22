@@ -1,4 +1,4 @@
-package com.newcord.userservice.auth.config;
+package com.newcord.userservice.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
