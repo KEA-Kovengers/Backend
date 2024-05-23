@@ -23,11 +23,11 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
     // 댓글은 commentID가 id
     // 대댓글은 commentID에 부모 댓글의 id
     @Override
-    public Comments createComment(CommentsCreateRequestDTO commentsCreateRequestDTO){
+    public Comments createComment(Long userID,CommentsCreateRequestDTO commentsCreateRequestDTO){
         Comments comments=Comments.builder().
                 comment_id(commentsCreateRequestDTO.getCommentID())
                 .postId(commentsCreateRequestDTO.getPostID())
-                .user_id(commentsCreateRequestDTO.getUserID())
+                .user_id(userID)
                 .isDeleted(false)
                 .body((commentsCreateRequestDTO.getBody()))
         .build();

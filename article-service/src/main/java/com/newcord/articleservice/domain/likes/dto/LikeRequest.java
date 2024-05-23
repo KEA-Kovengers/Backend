@@ -14,7 +14,7 @@ public class LikeRequest {
     public static class LikeRequestDTO{
         private Long id;
         private Long post_id;
-        private Long user_id;
+   //     private Long user_id;
     }
 
     @Builder
@@ -24,7 +24,7 @@ public class LikeRequest {
     public static class CreateLikeRequestDTO{
 
         private Long post_id;
-        private Long user_id;
+      //  private Long user_id;
     }
 
 }

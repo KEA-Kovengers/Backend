@@ -20,15 +20,15 @@ public class ReportCommandServiceImpl implements ReportCommandService {
     private final ReportRepository reportRepository;
 
     @Override
-    public Report createReport(CreateReportRequestDTO createReportRequestDTO){
-   List<Report> reportList= reportRepository.findAllByUserIDAndContentID(createReportRequestDTO.getUserID(), createReportRequestDTO.getContendID());
+    public Report createReport(Long userID,CreateReportRequestDTO createReportRequestDTO){
+   List<Report> reportList= reportRepository.findAllByUserIDAndContentID(userID, createReportRequestDTO.getContendID());
         if(!reportList.isEmpty()){
             log.info(reportList.toString());
             throw new ApiException((ErrorStatus._REPORT_ALREADY_EXISTS));
         }
         Report report = Report.builder()
                 .contentID(createReportRequestDTO.getContendID())
-                        .userID(createReportRequestDTO.getUserID())
+                        .userID(userID)
                 .body(createReportRequestDTO.getBody())
                 .type(createReportRequestDTO.getType())
                 .build();

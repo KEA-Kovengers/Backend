@@ -18,9 +18,9 @@ public class LikeCommandServiceImpl implements LikeCommandService{
 
     //좋아요
     @Override
-    public Likes createLike(CreateLikeRequestDTO createLikeRequestDTO){
+    public Likes createLike(Long userID,CreateLikeRequestDTO createLikeRequestDTO){
         Likes likes=Likes.builder()
-                .user_id(createLikeRequestDTO.getUser_id())
+                .user_id(userID)
                 .post_id(createLikeRequestDTO.getPost_id())
                 .build();
         likeRepository.save(likes);
