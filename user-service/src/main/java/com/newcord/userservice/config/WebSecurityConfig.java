@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 )
                 // 회원가입, 로그인 관련 API는 Jwt 인증 없이 접근 가능
                 .authorizeHttpRequests((requests) ->
-                        requests.requestMatchers("/users/auth/**","/","/index.html","/v3/api-docs/**","/swagger-ui/index.html","/swagger-ui/**", "/swagger-resources/**").permitAll()
+                        requests.requestMatchers("/users/auth/**","/users/auth/login","/","/index.html","/v3/api-docs/**","/swagger-ui/index.html","/swagger-ui/**", "/swagger-resources/**").permitAll()
                         // 나머지 모든 API는 Jwt 인증 필요
                         .anyRequest().authenticated())
                 .addFilter(corsConfig.corsFilter()) //CorsFilter 등록

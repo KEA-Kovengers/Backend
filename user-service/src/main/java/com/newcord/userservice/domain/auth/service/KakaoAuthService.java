@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -60,10 +61,11 @@ public class KakaoAuthService {
 
     // 리프레시 토큰 DB 저장
     @Transactional
-    public void saveRefreshToken(Long userId, String refreshToken) {
+    public void saveToken(Long userId, String refreshToken, String accessToken) {
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
         user.setRefreshToken(refreshToken);
+        user.setAccessToken(accessToken);
         usersRepository.save(user);
     }
 
@@ -78,22 +80,35 @@ public class KakaoAuthService {
 
     // 카카오 로그인: 회원가입 여부 확인, JWT 엑세스/리프레시 토큰 발급
     @Transactional
-    public ApiResponse<HashMap<String, String>> authCheck(String accessToken) {
-        Long userId = getUser(accessToken); // 토큰으로 정보 가져옴
+    public ApiResponse<HashMap<String, String>> authCheck(String kakaoToken) {
+        Long userId = getUser(kakaoToken); // 토큰으로 정보 가져옴
         boolean userExists = isUserExists(userId); // 유저 존재 하는지 확인
 
         if (!userExists) {
-            createUser(accessToken);
+            createUser(kakaoToken);
+        } else{ // 관리자인 경우 판별
+            Optional<Users> userOptional = usersRepository.findById(userId);
+            Users user = userOptional.get();
+            if ("ADMIN".equals(user.getRole())) {
+                saveKakaoToken(userId, kakaoToken);
 
+                HashMap<String, String> map = new HashMap<>();
+                map.put("userId", userId.toString());
+                map.put("accessToken", user.getAccessToken());
+                map.put("refreshToken", user.getRefreshToken());
+                map.put("status", "admin");
+
+                return ApiResponse.onSuccess(map);
+            }
         }
-
-        saveKakaoToken(userId, accessToken);
+        saveKakaoToken(userId, kakaoToken);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
-        saveRefreshToken(userId, refreshToken);
+        String accessToken = jwtTokenProvider.createToken(userId.toString());
+        saveToken(userId, refreshToken, accessToken);
 
         HashMap<String, String> map = new HashMap<>();
         map.put("userId", userId.toString());
-        map.put("token", jwtTokenProvider.createToken(userId.toString()));
+        map.put("accessToken", accessToken);
         map.put("refreshToken", refreshToken);
         map.put("status", userExists ? "old" : "new");
 

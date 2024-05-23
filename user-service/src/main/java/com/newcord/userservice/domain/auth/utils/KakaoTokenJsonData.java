@@ -13,8 +13,8 @@ import reactor.core.publisher.Flux;
 public class KakaoTokenJsonData {
     private final WebClient webClient;
 
-    @Value("${kakao.redirect_uri}")
-    private String REDIRECT_URI;
+//    @Value("${kakao.redirect_uri}")
+    private String REDIRECT_URI="http://localhost:8081/users/auth/login";
 
     @Value("${kakao.api_key}")
     private String CLIENT_ID;
