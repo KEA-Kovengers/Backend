@@ -30,7 +30,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
     private final EditorRepository editorRepository;
 
     @Override
-    public EditorAddResponseDTO addEditor(String userID, EditorAddRequestDTO editorAddDTO) {
+    public EditorAddResponseDTO addEditor(Long userID, EditorAddRequestDTO editorAddDTO) {
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(editorAddDTO.getPostId(), userID);
 
@@ -47,7 +47,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
     }
 
     @Override
-    public DeleteEditorResponseDTO deleteEditor(String userID,
+    public DeleteEditorResponseDTO deleteEditor(Long userID,
         DeleteEditorRequestDTO deleteEditorRequestDTO) {
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(deleteEditorRequestDTO.getPostId(), userID);
@@ -76,7 +76,6 @@ public class EditorComposeServiceImpl implements EditorComposeService{
             }
             postsCommandService.deletePost(deleteEditorRequestDTO.getPostId());
         }
-
 
         return deleteEditorResponseDTO;
     }

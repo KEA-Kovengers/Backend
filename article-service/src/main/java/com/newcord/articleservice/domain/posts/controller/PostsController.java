@@ -11,6 +11,7 @@ import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateRespon
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -46,31 +47,31 @@ public class PostsController {
 
     @Operation(summary = "게시글 생성", description = "게시글을 생성합니다.")
     @PostMapping("/createPost")
-    public ApiResponse<PostCreateResponseDTO> createPost(@RequestBody PostCreateRequestDTO postCreateRequestDTO) {
-        return ApiResponse.onSuccess(postsComposeService.createPost("testID", postCreateRequestDTO));
+    public ApiResponse<PostCreateResponseDTO> createPost(@UserID Long userID, @RequestBody PostCreateRequestDTO postCreateRequestDTO) {
+        return ApiResponse.onSuccess(postsComposeService.createPost(userID, postCreateRequestDTO));
     }
 
     @Operation(summary = "게시글 조회", description = "게시글을 조회합니다.")
     @GetMapping("/{postID}")
-    public ApiResponse<PostDetailResponseDTO> getPost(@PathVariable Long postID) {
+    public ApiResponse<PostDetailResponseDTO> getPost(@UserID Long userID, @PathVariable Long postID) {
         return ApiResponse.onSuccess(postsComposeService.getPostDetail(postID));
     }
 
     @Operation(summary = "게시글 목록 조회", description = "유저의 게시글 목록을 조회합니다.")
     @GetMapping("/list/{userID}")
-    public ApiResponse<PostListResponseDTO> getPostList(@PathVariable String userID, @RequestParam Integer page, @RequestParam Integer size){
+    public ApiResponse<PostListResponseDTO> getPostList(@PathVariable Long userID, @RequestParam Integer page, @RequestParam Integer size){
         return ApiResponse.onSuccess(editorQueryService.getPostListByUserID(userID, page, size));
     }
 
     @Operation(summary = "게시글 편집", description = "게시글을 편집합니다.")
     @PostMapping("/editPost")
-    public ApiResponse<Posts> editPost(@RequestBody PostUpdateRequestDTO updateRequestDTO) {
-        return ApiResponse.onSuccess(postsComposeService.updatePost("testID", updateRequestDTO));
+    public ApiResponse<Posts> editPost(@UserID Long userID, @RequestBody PostUpdateRequestDTO updateRequestDTO) {
+        return ApiResponse.onSuccess(postsComposeService.updatePost(userID, updateRequestDTO));
     }
 
     @Operation(summary = "게시글 해시태그 수정", description = "게시글에 해시태그를 수정합니다. 입력된 리스트 그대로 저장되기에 게시글에 대한 해시태그를 모두 입력바랍니다.")
     @PostMapping("/updateHashtags")
-    public ApiResponse<PostDetailResponseDTO> updateHashtags(@RequestBody PostUpdateHashtagsRequestDTO hashtagsRequestDTO) {
-        return ApiResponse.onSuccess(postsComposeService.updateHashtags("testID", hashtagsRequestDTO));
+    public ApiResponse<PostDetailResponseDTO> updateHashtags(@UserID Long userID, @RequestBody PostUpdateHashtagsRequestDTO hashtagsRequestDTO) {
+        return ApiResponse.onSuccess(postsComposeService.updateHashtags(userID, hashtagsRequestDTO));
     }
 }
