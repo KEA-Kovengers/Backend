@@ -2,6 +2,7 @@ package com.newcord.userservice.config;
 
 import com.newcord.userservice.auth.jwt.JwtAuthFilter;
 import com.newcord.userservice.auth.jwt.JwtTokenProvider;
+import jakarta.servlet.DispatcherType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,8 +29,8 @@ public class WebSecurityConfig {
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 // 회원가입, 로그인 관련 API는 Jwt 인증 없이 접근 가능
-                .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("users/auth/**").permitAll()
+                .authorizeHttpRequests((requests) ->
+                        requests.requestMatchers("/users/auth/**","/","/index.html","/swagger-ui/index.html").permitAll()
                         // 나머지 모든 API는 Jwt 인증 필요
                         .anyRequest().authenticated())
                 .addFilter(corsConfig.corsFilter()) //CorsFilter 등록
