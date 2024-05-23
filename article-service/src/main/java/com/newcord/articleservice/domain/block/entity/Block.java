@@ -18,18 +18,12 @@ public class Block implements Serializable {
         private ObjectId id;
         private BlockParent parent;
         private boolean has_children;
-        private String blockType;
         private String content;
         private BlockCreatedBy created_by;
         private BlockUpdatedBy updated_by;
 
         public void updateContent(String content, BlockUpdatedBy updated_by) {
             this.content = content;
-            this.updated_by = updated_by;
-        }
-
-        public void updateBlockType(String blockType, BlockUpdatedBy updated_by) {
-            this.blockType = blockType;
             this.updated_by = updated_by;
         }
 }

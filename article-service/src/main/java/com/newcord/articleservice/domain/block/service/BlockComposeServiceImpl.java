@@ -1,5 +1,12 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
+import com.newcord.articleservice.domain.article_version.entity.Version;
+import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionCommandService;
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionComposeService;
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.InsertBlockRequestDTO;
 import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
@@ -15,6 +22,7 @@ import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,6 +31,7 @@ public class BlockComposeServiceImpl implements BlockComposeService{
     private final BlockCommandService blockCommandService;
     private final EditorQueryService editorQueryService;
     private final ArticlesCommandService articlesCommandService;
+    private final ArticleVersionCommandService articleVersionCommandService;
 
     @Override
     public BlockCreateResponseDTO createBlock(Long userID, BlockCreateRequestDTO blockCreateDTO, Long postId) {
@@ -32,14 +41,29 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         //block 생성
         Block block = blockCommandService.createBlock(blockCreateDTO, postId);
 
+        // ArticleVersion관련 로직 수행
+        VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
+                .id(block.getId())
+                .entityType(OperationEntityType.BLOCK)
+                .operationType(OperationType.INSERT)
+                .timestamp(blockCreateDTO.getCreated_by().getCreated_at())
+                .position(blockCreateDTO.getPosition())
+                .content(block.getContent())
+                .updated_by(block.getUpdated_by())
+            .build(), blockCreateDTO.getArticleVersion(), postId);
+
+
         // Article의 blockList에 block 추가
         Article article = articlesCommandService.insertBlock(postId, InsertBlockRequestDTO.builder()
                 .block(block)
-                .position(blockCreateDTO.getPosition())
+                .position(versionOperation.getPosition())
             .build());
 
         return BlockCreateResponseDTO.builder()
             .articleId(postId)
+            .articleVersion(articleVersionCommandService.getLatestVersion(postId))
+            .operationType(OperationType.INSERT)
+            .entityType(OperationEntityType.BLOCK)
             .blockDTO(BlockDTO.toDTO(block))
             .position(blockCreateDTO.getPosition())
             .blockList(article.getBlock_list())
@@ -52,10 +76,27 @@ public class BlockComposeServiceImpl implements BlockComposeService{
         // 권한 확인
         editorQueryService.getEditorByPostIdAndUserID(postId, userID);
 
+        // ArticleVersion관련 로직 수행
+        VersionOperation versionOperation = articleVersionCommandService.applyOperation(VersionOperation.builder()
+            .id(new ObjectId(blockContentUpdateDTO.getBlockId()))
+            .entityType(blockContentUpdateDTO.getEntityType())
+            .operationType(blockContentUpdateDTO.getOperationType())
+            .timestamp(blockContentUpdateDTO.getUpdated_by().getUpdated_at())
+            .position(blockContentUpdateDTO.getPosition())
+            .content(blockContentUpdateDTO.getContent())
+            .updated_by(blockContentUpdateDTO.getUpdated_by())
+            .build(), blockContentUpdateDTO.getArticleVersion(), postId);
+        //====
+        blockContentUpdateDTO.setPosition(versionOperation.getPosition());
         Block block = blockCommandService.updateBlock(blockContentUpdateDTO);
 
         return BlockContentUpdateResponseDTO.builder()
-            .blockDTO(BlockDTO.toDTO(block))
+            .blockId(block.getId().toString())
+            .articleVersion(articleVersionCommandService.getLatestVersion(postId))
+            .operationType(blockContentUpdateDTO.getOperationType())
+            .entityType(blockContentUpdateDTO.getEntityType())
+            .position(blockContentUpdateDTO.getPosition())
+            .content(blockContentUpdateDTO.getContent())
             .updated_by(block.getUpdated_by())
             .build();
     }

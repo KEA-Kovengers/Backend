@@ -58,16 +58,16 @@ public class ArticlesCommandServiceImpl implements ArticlesCommandService{
         Article article = articlesRepository.findById(articleID)
             .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
 
-        for (int i = 0; i < blockSequenceUpdateRequestDTO.getBlockList().size(); i++) {
-            int idx = article.getBlock_list().indexOf(blockSequenceUpdateRequestDTO.getBlockList().get(i));
-            if(idx == -1)
-                throw new ApiException(ErrorStatus._BLOCK_NOT_FOUND);
 
-            // 원래 있던 블럭을 삭제하고 새로운 위치에 추가
-            article.getBlock_list().remove(idx);
-            article.getBlock_list().add(blockSequenceUpdateRequestDTO.getPosition().get(i).intValue(),
-                blockSequenceUpdateRequestDTO.getBlockList().get(i));
-        }
+        int idx = article.getBlock_list().indexOf(blockSequenceUpdateRequestDTO.getBlockID());
+        if(idx == -1)
+            throw new ApiException(ErrorStatus._BLOCK_NOT_FOUND);
+
+        // 원래 있던 블럭을 삭제하고 새로운 위치에 추가
+        article.getBlock_list().remove(idx);
+        article.getBlock_list().add(blockSequenceUpdateRequestDTO.getPosition().intValue(),
+            blockSequenceUpdateRequestDTO.getBlockID());
+
 
         articlesRepository.save(article);
 
