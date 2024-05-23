@@ -1,8 +1,7 @@
 package com.newcord.userservice.config;
 
-import com.newcord.userservice.auth.jwt.JwtAuthFilter;
-import com.newcord.userservice.auth.jwt.JwtTokenProvider;
-import jakarta.servlet.DispatcherType;
+import com.newcord.userservice.domain.auth.jwt.JwtAuthFilter;
+import com.newcord.userservice.domain.auth.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
