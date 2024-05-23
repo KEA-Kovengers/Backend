@@ -27,8 +27,7 @@ public class FriendCommandServiceImpl implements FriendCommandService{
     private final FriendRepository friendRepository;
 
     @Override
-    public FriendResponseDTO createFriendship(CreateFriendRequestDTO createfriendRequestDTO){
-        Long fromID=createfriendRequestDTO.getFromID();
+    public FriendResponseDTO createFriendship(Long fromID, CreateFriendRequestDTO createfriendRequestDTO){
         Long toID=createfriendRequestDTO.getToID();
         // 유저 정보를 모두 가져옴
         Users fromUser = usersRepository.findById(fromID).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));

@@ -8,7 +8,7 @@ public interface FriendCommandService {
 
 
 
-    FriendResponseDTO createFriendship(CreateFriendRequestDTO createfriendRequestDTO);
+    FriendResponseDTO createFriendship(Long fromID, CreateFriendRequestDTO createfriendRequestDTO);
 
 
 

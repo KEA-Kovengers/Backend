@@ -9,8 +9,9 @@ public class FriendRequest {
 
     @Builder
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class CreateFriendRequestDTO{
-        private Long fromID;
         private Long toID;
     }
 

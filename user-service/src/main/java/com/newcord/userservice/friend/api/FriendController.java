@@ -1,5 +1,6 @@
 package com.newcord.userservice.friend.api;
 
+import com.newcord.userservice.auth.annotation.UserID;
 import com.newcord.userservice.friend.dto.FriendRequest.*;
 import com.newcord.userservice.friend.dto.FriendResponse.*;
 import com.newcord.userservice.friend.service.FriendCommandService;
@@ -44,9 +45,9 @@ public class FriendController {
 
     @PostMapping("/request")
     @Operation(summary = "친구 요청",description = "친구 요청하기")
-    public ApiResponse<FriendResponseDTO> sendFriendshipRequest(@RequestBody CreateFriendRequestDTO createfriendRequestDTO) {
+    public ApiResponse<FriendResponseDTO> sendFriendshipRequest(@UserID Long fromID, @RequestBody CreateFriendRequestDTO createfriendRequestDTO) {
 
-        return ApiResponse.onSuccess(friendCommandService.createFriendship(createfriendRequestDTO));
+        return ApiResponse.onSuccess(friendCommandService.createFriendship(fromID, createfriendRequestDTO));
     }
 
     @GetMapping("/received/{userid}")
