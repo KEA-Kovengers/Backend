@@ -13,7 +13,6 @@ public class CommentsRequest {
     @NoArgsConstructor
     public static class CommentsCreateRequestDTO{
         private Long postID;
-       // private Long userID;
         private Long commentID;
        private String body;
     }
