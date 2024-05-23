@@ -5,6 +5,7 @@ import com.newcord.articleservice.domain.comments.dto.CommentsResponse;
 import com.newcord.articleservice.domain.comments.entity.Comments;
 import com.newcord.articleservice.domain.comments.service.CommentsCommandService;
 import com.newcord.articleservice.domain.comments.service.CommentsQueryService;
+import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -32,8 +33,8 @@ public class CommentsController {
 
     @PostMapping("/create")
     @Operation(summary = "댓글 생성",description = "댓글일 경우 commentID=null, 대댓글일 경우 댓글 id를 넣어주세요")
-    public ApiResponse<Comments> createComment(@RequestBody CommentsCreateRequestDTO commentsCreateRequestDTO){
-        return ApiResponse.onSuccess(commentsCommandService.createComment(commentsCreateRequestDTO));
+    public ApiResponse<Comments> createComment(@UserID Long userID, @RequestBody CommentsCreateRequestDTO commentsCreateRequestDTO){
+        return ApiResponse.onSuccess(commentsCommandService.createComment(userID,commentsCreateRequestDTO));
     }
 
     @GetMapping("/commentlist/{postid}")
