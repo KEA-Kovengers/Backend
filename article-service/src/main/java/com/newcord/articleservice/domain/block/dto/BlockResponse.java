@@ -1,5 +1,7 @@
 package com.newcord.articleservice.domain.block.dto;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockCreatedBy;
 import com.newcord.articleservice.domain.block.entity.BlockParent;
@@ -19,7 +21,6 @@ public class BlockResponse {
         private String id;
         private BlockParent parent;
         private boolean has_children;
-        private String blockType;
         private String content;
         private BlockCreatedBy created_by;
         private BlockUpdatedBy updated_by;
@@ -29,7 +30,6 @@ public class BlockResponse {
                 .id(block.getId().toString())
                 .parent(block.getParent())
                 .has_children(block.isHas_children())
-                .blockType(block.getBlockType())
                 .content(block.getContent())
                 .created_by(block.getCreated_by())
                 .updated_by(block.getUpdated_by())
@@ -42,6 +42,9 @@ public class BlockResponse {
     @Getter
     public static class BlockCreateResponseDTO{
         private Long articleId;
+        private String articleVersion;
+        private OperationType operationType;
+        private OperationEntityType entityType;  // Operation Entity Type
         private BlockDTO blockDTO;
         private Long position;
         private List<String> blockList;
@@ -52,7 +55,12 @@ public class BlockResponse {
     @AllArgsConstructor
     @Getter
     public static class BlockContentUpdateResponseDTO {
-        private BlockDTO blockDTO;
+        private String blockId;                 // 수정할 block ID
+        private String articleVersion; // {version index}.{operation index} 형태
+        private OperationType operationType;    // Operation Type (TEXT_INSERT, TEXT_DELETE, TAG)
+        private OperationEntityType entityType;  // Operation Entity Type
+        private Long position;                  // 블럭 내에서 위치
+        private String content;                 // 내용               OperationType이 TEXT_INSERT, TEXT_DELETE인 경우 필수
         private BlockUpdatedBy updated_by;  // 수정자
     }
 
