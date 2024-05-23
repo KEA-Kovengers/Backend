@@ -50,7 +50,7 @@ public class JwtTokenProvider {
                 .setClaims(claims) // 정보 저장
                 .setIssuer("kovengers")
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + (10 * 3600 * 1000))) // 토큰 유효시각 설정 (10시간)
+                .setExpiration(new Date(System.currentTimeMillis() + (accessTokenValiditySeconds * 100 * 1000))) // 토큰 유효시각 설정 (50시간)
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 암호화 알고리즘과, secret 값
                 .compact();
     }
@@ -61,6 +61,7 @@ public class JwtTokenProvider {
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)
+                .setIssuer("kovengers")
                 .setIssuedAt(now)
                 .setExpiration(new Date(System.currentTimeMillis()+ (refreshTokenValiditySeconds * 1000))) // 리프레시 토큰 유효시각 설정 (1주일)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
@@ -69,7 +70,8 @@ public class JwtTokenProvider {
 
     // 인증 정보 조회
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+        String userId = this.getUserPk(token);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
@@ -110,7 +112,7 @@ public class JwtTokenProvider {
     // Request의 Header에서 token 값 가져오기
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")) {
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);
         }
         return null;

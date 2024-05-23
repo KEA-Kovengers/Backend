@@ -28,7 +28,7 @@ public class KakaoAuthService {
 
     // 카카오에서 엑세스 토큰 받아와서 회원정보 가져오고 검증함
     @Transactional
-    public Long isSignedUp(String token) {
+    public Long getUser(String token) {
         KakaoUserInfoResponse userInfo = kakaoUserInfo.getUserInfo(token);
         log.info("회원 정보 입니다.{}", userInfo);
         return userInfo.getId();
@@ -36,8 +36,7 @@ public class KakaoAuthService {
 
     @Transactional
     public boolean isUserExists(Long userId) {
-        Users user = usersRepository.findById(userId).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
-        return user != null;
+        return usersRepository.findById(userId).isPresent();
     }
 
     // 유저 정보 추가
@@ -49,6 +48,7 @@ public class KakaoAuthService {
         Users user = Users.builder()
                 .id(userInfo.getId())
                 .nickName(userInfo.getProperties().getNickname())
+                .blogName(userInfo.getProperties().getNickname()+"의 블로그")
                 .profileImg(userInfo.getProperties().getProfile_image())
                 .role("USER")
                 .build();
@@ -79,8 +79,13 @@ public class KakaoAuthService {
     // 카카오 로그인: 회원가입 여부 확인, JWT 엑세스/리프레시 토큰 발급
     @Transactional
     public ApiResponse<HashMap<String, String>> authCheck(String accessToken) {
-        Long userId = isSignedUp(accessToken);
-        createUser(accessToken);
+        Long userId = getUser(accessToken); // 토큰으로 정보 가져옴
+        boolean userExists = isUserExists(userId); // 유저 존재 하는지 확인
+
+        if (!userExists) {
+            createUser(accessToken);
+
+        }
 
         saveKakaoToken(userId, accessToken);
         String refreshToken = jwtTokenProvider.createRefreshToken(userId.toString());
@@ -90,13 +95,14 @@ public class KakaoAuthService {
         map.put("userId", userId.toString());
         map.put("token", jwtTokenProvider.createToken(userId.toString()));
         map.put("refreshToken", refreshToken);
+        map.put("status", userExists ? "old" : "new");
 
         return ApiResponse.onSuccess(map);
     }
 
     @Transactional
-    public void deleteUserAndUnlinkKakao(String refreshToken) {
-        Long userId = getUserIdFromToken(refreshToken);
+    public void deleteUserAndUnlinkKakao(String token) {
+        Long userId = getUserIdFromToken(token);
         Users user = usersRepository.findById(userId)
                 .orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
         String kakaoToken = user.getKakaoToken();
