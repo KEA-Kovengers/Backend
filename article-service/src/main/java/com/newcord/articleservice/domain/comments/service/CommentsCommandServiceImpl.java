@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentsCommandServiceImpl implements CommentsCommandService{
 
     private final CommentsRepository commentsRepository;
-    private final PostsRepository postsRepository;
 
     // 댓글 작성, 대댓글 작성
     // 댓글은 commentID가 id

@@ -2,6 +2,7 @@ package com.newcord.articleservice.domain.report.service;
 
 import com.newcord.articleservice.domain.report.entity.Report;
 import com.newcord.articleservice.domain.report.repository.ReportRepository;
+import com.newcord.articleservice.domain.report.type.ReportType;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class ReportQueryServiceImpl implements ReportQueryService {
     }
 
     @Override
-    public List<Report> getEachReportList(String type){
+    public List<Report> getEachReportList(ReportType type){
         return reportRepository.findAllByType(type);
     }
 }

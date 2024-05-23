@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.report.entity;
 
+import com.newcord.articleservice.domain.report.type.ReportType;
 import com.newcord.articleservice.global.common.BaseJPATimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -26,5 +27,5 @@ public class Report extends BaseJPATimeEntity {
     private String body;
 
     // 댓글이면 1, 게시글이면 2
-    private String type;
+    private ReportType type;
 }

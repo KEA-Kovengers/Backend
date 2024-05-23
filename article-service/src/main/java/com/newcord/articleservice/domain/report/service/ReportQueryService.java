@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.report.service;
 
 import com.newcord.articleservice.domain.report.entity.Report;
+import com.newcord.articleservice.domain.report.type.ReportType;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface ReportQueryService {
 
     Report getReportDetail(Long id);
 
-    List<Report> getEachReportList(String type);
+    List<Report> getEachReportList(ReportType type);
 }

@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.report.dto;
 
+import com.newcord.articleservice.domain.report.type.ReportType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,6 +16,6 @@ public class ReportRequest {
         private Long contendID;
         private Long userID;
         private String body;
-        private String type;
+        private ReportType type;
     }
 }

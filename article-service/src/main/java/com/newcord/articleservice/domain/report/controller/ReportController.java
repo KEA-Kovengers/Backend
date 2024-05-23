@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.report.dto.ReportRequest.*;
 import com.newcord.articleservice.domain.report.entity.Report;
 import com.newcord.articleservice.domain.report.service.ReportCommandService;
 import com.newcord.articleservice.domain.report.service.ReportQueryService;
+import com.newcord.articleservice.domain.report.type.ReportType;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +24,7 @@ public class ReportController {
     private final ReportQueryService reportQueryService;
 
     @PostMapping("/create")
-    @Operation(summary = "신고 하기",description = "댓글 type=1, 게시글 type=2")
+    @Operation(summary = "신고 하기",description = "type에 COMMENT or POST")
     public ApiResponse<Report> createCommentNotice(@RequestBody CreateReportRequestDTO createReportRequestDTO){
         return ApiResponse.onSuccess(reportCommandService.createReport(createReportRequestDTO));
     }
@@ -35,8 +36,8 @@ public class ReportController {
     }
 
     @GetMapping("/reportlist/{type}")
-    @Operation(summary = "신고 종류별로 조회하기",description = "댓글이면 type=1, 게시글이면 type=2")
-    public ApiResponse<List<Report>> getEachReportList(@PathVariable String type){
+    @Operation(summary = "신고 종류별로 조회하기",description = "type에 COMMENT or POST")
+    public ApiResponse<List<Report>> getEachReportList(@PathVariable ReportType type){
         return ApiResponse.onSuccess(reportQueryService.getEachReportList(type));
     }
 

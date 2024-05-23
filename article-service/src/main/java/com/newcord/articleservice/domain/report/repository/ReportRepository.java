@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.report.repository;
 
 import com.newcord.articleservice.domain.report.entity.Report;
+import com.newcord.articleservice.domain.report.type.ReportType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findAllByUser_id(Long userID);
 
     @Query("SELECT c FROM Report c WHERE c.type =:type")
-    List<Report> findAllByType(String type);
+    List<Report> findAllByType(ReportType type);
 
     List<Report> findAllByUserIDAndContentID(Long userID,Long contentID);
 
