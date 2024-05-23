@@ -102,6 +102,7 @@ public class PostsComposeServiceImpl implements PostsComposeService{
             .id(posts.getId())
             .thumbnail(posts.getThumbnail())
             .title(posts.getTitle())
+            .articleVersion(articleVersionCommandService.getLatestVersion(posts.getId()))
             .body(posts.getBody())
             .status(posts.getStatus())
             .views(posts.getViews())

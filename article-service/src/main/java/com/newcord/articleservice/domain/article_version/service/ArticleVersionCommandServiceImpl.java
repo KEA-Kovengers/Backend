@@ -111,7 +111,9 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
         List<Version> versions = articleVersion.getVersions();
         int lastVersionIdx = versions.size() - 1;
         List<VersionOperation> operations = versions.get(lastVersionIdx).getOperations();
-        int lastOperation = operations.size() - 1;
+        int lastOperation = 0;
+        if(!operations.isEmpty())
+            lastOperation = operations.size() - 1;
 
         return lastVersionIdx + "." + lastOperation;
     }

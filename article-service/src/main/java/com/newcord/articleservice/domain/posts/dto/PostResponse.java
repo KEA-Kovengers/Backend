@@ -31,6 +31,7 @@ public class PostResponse {
         private Long id;
         private String thumbnail;
         private String title;
+        private String articleVersion;
         private String body;
         private PostStatus status;
         private Long views;

@@ -65,6 +65,18 @@ public class BlockCommandServiceImpl implements BlockCommandService{
         if(blockContentUpdateDTO.getEntityType().equals(OperationEntityType.TAG))
             block.updateContent(blockContentUpdateDTO.getContent(), blockContentUpdateDTO.getUpdated_by());
         //아래 부분은 position에 삽입하도록 수정
+        else if(blockContentUpdateDTO.getOperationType().equals(OperationType.DELETE))
+        {
+            //삭제 로직 구현해야함
+            StringBuffer sb = new StringBuffer(block.getContent());
+            if(sb.length() < blockContentUpdateDTO.getPosition().intValue()){
+                sb.setLength(blockContentUpdateDTO.getPosition().intValue());
+                //문자열 연결하는데 인덱스 범위 초과하니 오류가 발생함
+            }
+            sb.delete(blockContentUpdateDTO.getPosition().intValue(), blockContentUpdateDTO.getPosition().intValue()
+                    + blockContentUpdateDTO.getContent().length());
+            block.updateContent(sb.toString(), blockContentUpdateDTO.getUpdated_by());
+        }
         else
         {
             StringBuffer sb = new StringBuffer(block.getContent());
