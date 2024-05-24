@@ -37,6 +37,11 @@ pipeline {
                 }
             }
         }
+        stage('Pull Git Submodules') {
+            steps {
+                sh 'git submodule update --init --recursive'
+            }
+        }
         stage('Copy YAML File') {
             steps {
                 script{
