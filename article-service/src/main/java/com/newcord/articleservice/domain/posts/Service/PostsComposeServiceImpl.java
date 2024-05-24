@@ -22,8 +22,12 @@ import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -143,21 +147,44 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return makePostDetailResponseDTO(posts);
     }
 
-    @Override
-    public List<PostDetailResponseDTO> getPostByHashTag(String TagName) {
-        List<PostDetailResponseDTO> result = new ArrayList<>();
-        List<Posts> post = postsQueryService.getPostbyHashTag(TagName);
+//    @Override
+//    public List<PostDetailResponseDTO> getPostByHashTag(String TagName) {
+//        List<PostDetailResponseDTO> result = new ArrayList<>();
+//        List<Posts> post = postsQueryService.getPostbyHashTag(TagName);
+//
+//        for (Posts p : post) {
+//            PostDetailResponseDTO postDetailResponseDTO = PostDetailResponseDTO.builder()
+//                    .id(p.getId())
+//                    .views(p.getViews())
+//                    .title(p.getTitle())
+//                    .body(p.getBody())
+//                    .thumbnail(p.getThumbnail())
+//                    .build();
+//            result.add(postDetailResponseDTO);
+//        }
+//        return result;
+//    }
 
-        for (Posts p : post) {
-            PostDetailResponseDTO postDetailResponseDTO = PostDetailResponseDTO.builder()
-                    .id(p.getId())
-                    .views(p.getViews())
-                    .title(p.getTitle())
-                    .body(p.getBody())
-                    .thumbnail(p.getThumbnail())
-                    .build();
-            result.add(postDetailResponseDTO);
-        }
-        return result;
+    @Override
+    public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size){
+        PageRequest pageRequest=PageRequest.of(page,size);
+
+        Page<Posts> posts=postsQueryService.getPostbyHashTag(TagName,page,size);
+
+        List<PostResponseDTO> postResponseDTOS=posts.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
+        Page<PostResponseDTO> postResponseDTOPage= new PageImpl<>(postResponseDTOS, pageRequest, posts.getTotalElements());
+        return SocialPostListDTO.builder()
+                .postsList(postResponseDTOPage)
+                .build();
+    }
+
+    private PostResponseDTO convertToDTO(Posts post) {
+        return PostResponseDTO.builder()
+                .id(post.getId())
+                .views(post.getViews())
+                .title(post.getTitle())
+                .body(post.getBody())
+                .thumbnail(post.getThumbnail())
+                .build();
     }
 }

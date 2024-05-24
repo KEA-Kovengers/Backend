@@ -68,14 +68,14 @@ public class PostsController {
 
     @Operation(summary = "소셜 피드 전체조회", description = "소셜 피드 게시글을 전체 조회합니다")
     @GetMapping("/social")
-    public ApiResponse<List<PostResponse.PostResponseDTO>> getSocialFeed(){
-        return ApiResponse.onSuccess(postsQueryService.getPostList());
+    public ApiResponse<PostResponse.SocialPostListDTO> getSocialFeed(@RequestParam Integer page, @RequestParam Integer size){
+        return ApiResponse.onSuccess(postsQueryService.getPostList(page,size));
     }
 
     @Operation(summary = "소셜 피드 해시태그로 조회", description = "소셜 피드 게시글을 해시태그별로 조회합니다")
     @GetMapping("/social/{tag}")
-    public ApiResponse<List<PostDetailResponseDTO>> getPostByTag(@PathVariable String tag){
-        return ApiResponse.onSuccess(postsComposeService.getPostByHashTag(tag));
+    public ApiResponse<PostResponse.SocialPostListDTO> getPostByTag(@PathVariable String tag, @RequestParam Integer page, @RequestParam Integer size){
+        return ApiResponse.onSuccess(postsComposeService.getPostByHashTag(tag,page,size));
     }
 
 

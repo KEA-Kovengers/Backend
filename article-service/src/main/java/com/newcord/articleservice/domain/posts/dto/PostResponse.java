@@ -53,4 +53,10 @@ public static class PostResponseDTO{
     public static class PostListResponseDTO{
         private Page<Editor> postList;
     }
+
+    @Builder
+    @Getter
+    public static class SocialPostListDTO{
+        private Page<PostResponseDTO> postsList;
+    }
 }

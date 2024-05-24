@@ -6,11 +6,15 @@ import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -27,30 +31,55 @@ public class PostsQueryServiceImpl implements PostsQueryService{
     }
 
     //소셜피드에서 게시글 전체조회
-    @Override
-    public List<PostResponseDTO> getPostList(){
-        List<Posts> posts=postsRepository.findAll();
-        List<PostResponseDTO> result=new ArrayList<>();
-        for(Posts p:posts){
-        result.add(toDTO(p));
-        }
-        return result;
-    }
+//    @Override
+//    public List<PostResponseDTO> getPostList(){
+//        List<Posts> posts=postsRepository.findAll();
+//        List<PostResponseDTO> result=new ArrayList<>();
+//        for(Posts p:posts){
+//        result.add(toDTO(p));
+//        }
+//        return result;
+//    }
+//
+//    public PostResponseDTO toDTO(Posts post){
+//        return PostResponseDTO.builder()
+//                .id(post.getId())
+//                .body(post.getBody())
+//                .title(post.getTitle())
+//                .views(post.getViews())
+//                .thumbnail(post.getThumbnail())
+//                .build();
+//    }
+@Override
+public SocialPostListDTO getPostList(Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+    Page<Posts> postsPage = postsRepository.findAll(pageRequest);
 
-    public PostResponseDTO toDTO(Posts post){
+    List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+            .map(this::convertToDTO)
+            .collect(Collectors.toList());
+
+    Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
+
+    return SocialPostListDTO.builder()
+            .postsList(postResponseDTOPage)
+            .build();
+}
+    private PostResponseDTO convertToDTO(Posts post) {
         return PostResponseDTO.builder()
                 .id(post.getId())
-                .body(post.getBody())
-                .title(post.getTitle())
                 .views(post.getViews())
+                .title(post.getTitle())
+                .body(post.getBody())
                 .thumbnail(post.getThumbnail())
                 .build();
     }
 
-
     @Override
-    public List<Posts> getPostbyHashTag(String tag){
-        return postsRepository.findPostsByHashtagName(tag);
+    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return postsRepository.findPostsByHashtagName(tag,pageRequest);
     }
 
 }

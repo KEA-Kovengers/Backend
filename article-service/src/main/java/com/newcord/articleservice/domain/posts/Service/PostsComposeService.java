@@ -19,5 +19,5 @@ public interface PostsComposeService {
     PostDetailResponseDTO updateHashtags(Long userID, PostUpdateHashtagsRequestDTO postUpdateHashtagsRequestDTO);        //해시태그 업데이트 (대체)
 
 
-    List<PostDetailResponseDTO> getPostByHashTag(String TagName);
+    PostResponse.SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size);
 }
