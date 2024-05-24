@@ -1,14 +1,12 @@
 package com.newcord.articleservice.domain.posts.Service;
 
-import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
-import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
-import com.newcord.articleservice.domain.block.service.BlockQueryService;
-import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
-import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
+import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
+
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,4 +25,32 @@ public class PostsQueryServiceImpl implements PostsQueryService{
             throw new ApiException(ErrorStatus._POSTS_NOT_FOUND);;
         return posts;
     }
+
+    //소셜피드에서 게시글 전체조회
+    @Override
+    public List<PostResponseDTO> getPostList(){
+        List<Posts> posts=postsRepository.findAll();
+        List<PostResponseDTO> result=new ArrayList<>();
+        for(Posts p:posts){
+        result.add(toDTO(p));
+        }
+        return result;
+    }
+
+    public PostResponseDTO toDTO(Posts post){
+        return PostResponseDTO.builder()
+                .id(post.getId())
+                .body(post.getBody())
+                .title(post.getTitle())
+                .views(post.getViews())
+                .thumbnail(post.getThumbnail())
+                .build();
+    }
+
+
+    @Override
+    public List<Posts> getPostbyHashTag(String tag){
+        return postsRepository.findPostsByHashtagName(tag);
+    }
+
 }

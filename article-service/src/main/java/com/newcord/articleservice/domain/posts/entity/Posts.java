@@ -4,16 +4,8 @@ import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.global.common.BaseJPATimeEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +30,7 @@ public class Posts extends BaseJPATimeEntity {
     @Default
     private Long views = 0L;
 
-    @ManyToMany
+    @ManyToMany()
     @JoinTable(
         name = "post_hashtags",
         joinColumns = @JoinColumn(name = "post_id"),

@@ -3,9 +3,12 @@ package com.newcord.articleservice.domain.posts.Service;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateHashtagsRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
+import com.newcord.articleservice.domain.posts.dto.PostResponse;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+
+import java.util.List;
 
 public interface PostsComposeService {
     PostCreateResponseDTO createPost(Long userID, PostCreateRequestDTO postCreateDTO);        //게시글 생성
@@ -16,4 +19,5 @@ public interface PostsComposeService {
     PostDetailResponseDTO updateHashtags(Long userID, PostUpdateHashtagsRequestDTO postUpdateHashtagsRequestDTO);        //해시태그 업데이트 (대체)
 
 
+    List<PostDetailResponseDTO> getPostByHashTag(String TagName);
 }

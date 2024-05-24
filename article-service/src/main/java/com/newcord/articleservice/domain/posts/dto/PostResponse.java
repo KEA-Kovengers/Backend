@@ -24,7 +24,15 @@ public class PostResponse {
         private Long id;
     }
 
-
+@Builder
+@Getter
+public static class PostResponseDTO{
+        private Long id;
+        private Long views;
+        private String title;
+        private String body;
+        private String thumbnail;
+}
     @Builder
     @Getter
     public static class PostDetailResponseDTO{
