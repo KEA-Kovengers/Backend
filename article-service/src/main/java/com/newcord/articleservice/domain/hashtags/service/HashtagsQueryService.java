@@ -8,4 +8,7 @@ public interface HashtagsQueryService {
     Hashtags findByID(Long id);
     Hashtags findByTagName(String tagName);
     Optional<Hashtags> findByTagNameOptional(String tagName);
+
+    List<Hashtags> findIdByTagName(String tagName);
+
 }

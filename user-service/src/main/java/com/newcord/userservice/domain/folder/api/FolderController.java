@@ -9,6 +9,7 @@ import com.newcord.userservice.domain.folder.service.FolderCommandService;
 import com.newcord.userservice.domain.folder.service.FolderQueryService;
 import com.newcord.userservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +29,13 @@ public class FolderController {
 
     @Operation(summary = "폴더 생성", description = "폴더를 생성합니다.")
     @PostMapping("/add")
-    public ApiResponse<FolderResponse.FolderResponseDTO> addFolder(@UserID Long userID, @RequestParam String folderName) {
+    public ApiResponse<FolderResponse.FolderResponseDTO> addFolder(@Schema(hidden = true) @UserID Long userID, @RequestParam String folderName) {
         return ApiResponse.onSuccess(folderCommandService.addFolder(userID, folderName));
     }
 
     @Operation(summary = "폴더 삭제", description = "폴더를 삭제합니다.")
     @DeleteMapping("/delete")
-    public ApiResponse<FolderResponse.FolderResponseDTO> deleteFolder(@UserID Long userID, @RequestParam String folderName) {
+    public ApiResponse<FolderResponse.FolderResponseDTO> deleteFolder(@Schema(hidden = true) @UserID Long userID, @RequestParam String folderName) {
         return ApiResponse.onSuccess(folderCommandService.deleteFolder(userID, folderName));
     }
 
