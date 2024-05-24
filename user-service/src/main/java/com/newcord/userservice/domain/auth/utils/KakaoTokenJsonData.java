@@ -14,7 +14,7 @@ public class KakaoTokenJsonData {
     private final WebClient webClient;
 
 //    @Value("${kakao.redirect_uri}")
-    private String REDIRECT_URI="http://http://172.16.211.43/users/auth/login";
+    private String REDIRECT_URI="http://newcord.kro.kr/users/users/auth/login";
 
     @Value("${kakao.api_key}")
     private String CLIENT_ID;
