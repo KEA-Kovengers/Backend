@@ -30,26 +30,6 @@ public class PostsQueryServiceImpl implements PostsQueryService{
         return posts;
     }
 
-    //소셜피드에서 게시글 전체조회
-//    @Override
-//    public List<PostResponseDTO> getPostList(){
-//        List<Posts> posts=postsRepository.findAll();
-//        List<PostResponseDTO> result=new ArrayList<>();
-//        for(Posts p:posts){
-//        result.add(toDTO(p));
-//        }
-//        return result;
-//    }
-//
-//    public PostResponseDTO toDTO(Posts post){
-//        return PostResponseDTO.builder()
-//                .id(post.getId())
-//                .body(post.getBody())
-//                .title(post.getTitle())
-//                .views(post.getViews())
-//                .thumbnail(post.getThumbnail())
-//                .build();
-//    }
 @Override
 public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);

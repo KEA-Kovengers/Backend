@@ -30,7 +30,7 @@ public class Posts extends BaseJPATimeEntity {
     @Default
     private Long views = 0L;
 
-    @ManyToMany()
+    @ManyToMany
     @JoinTable(
         name = "post_hashtags",
         joinColumns = @JoinColumn(name = "post_id"),

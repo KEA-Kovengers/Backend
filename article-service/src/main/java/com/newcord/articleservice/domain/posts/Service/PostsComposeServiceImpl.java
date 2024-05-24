@@ -147,24 +147,6 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return makePostDetailResponseDTO(posts);
     }
 
-//    @Override
-//    public List<PostDetailResponseDTO> getPostByHashTag(String TagName) {
-//        List<PostDetailResponseDTO> result = new ArrayList<>();
-//        List<Posts> post = postsQueryService.getPostbyHashTag(TagName);
-//
-//        for (Posts p : post) {
-//            PostDetailResponseDTO postDetailResponseDTO = PostDetailResponseDTO.builder()
-//                    .id(p.getId())
-//                    .views(p.getViews())
-//                    .title(p.getTitle())
-//                    .body(p.getBody())
-//                    .thumbnail(p.getThumbnail())
-//                    .build();
-//            result.add(postDetailResponseDTO);
-//        }
-//        return result;
-//    }
-
     @Override
     public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size){
         PageRequest pageRequest=PageRequest.of(page,size);
