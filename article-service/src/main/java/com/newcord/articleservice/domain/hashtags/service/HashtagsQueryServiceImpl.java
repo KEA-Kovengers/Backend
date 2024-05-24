@@ -34,4 +34,10 @@ public class HashtagsQueryServiceImpl implements HashtagsQueryService{
         return hashtagsRepository.findByTagName(tagName);
     }
 
+
+    @Override
+    public List<Hashtags> findIdByTagName(String tagName){
+        return hashtagsRepository.findAllByTagName(tagName);
+    }
+
 }

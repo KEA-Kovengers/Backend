@@ -5,6 +5,7 @@ pipeline {
         DOCKER_HUB_USERNAME = 'kovengers'
         IMAGE_NAME_ARTICLE_SERVICE = 'article-service'
         IMAGE_NAME_USER_SERVICE = 'user-service'
+        IMAGE_NAME_NOTICE_SERVICE = 'notice-service'
         VERSION = "${env.BUILD_NUMBER}" // Jenkins 빌드 번호를 버전으로 사용합니다.
     }
     stages {
@@ -18,6 +19,7 @@ pipeline {
                             echo "This build was started manually."
                             env.ARTICLE_SERVICE_CHANGED = 'true'
                             env.USER_SERVICE_CHANGED = 'true'
+                            env.NOTICE_SERVICE_CHANGED = 'true'
                     } else {
                         echo "This build was not started manually."
 
@@ -31,7 +33,8 @@ pipeline {
                         def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
                         echo "Changes: ${changes}"
                         env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
-                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'   
+                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false' 
+                        env.NOTICE_SERVICE_CHANGED = changes.contains('notice-service') ? 'true' : 'false'   
                     }
                     
                 }
@@ -59,6 +62,13 @@ pipeline {
                             echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
                     }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        dir('article-service') {
+                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION} .")
+
+                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
+                        }
+                    }
                 }
             }
         }
@@ -82,6 +92,14 @@ pipeline {
 
                             echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
+                        if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                            // 'latest' 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:latest").push()
+                            // 버전 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}").push()
+
+                            echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
+                        }
                     }
                 }
             }
@@ -98,6 +116,11 @@ pipeline {
                         sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'  
                         sh 'docker rmi registry.hub.docker.com/${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'                  
                         echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
+                    }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'  
+                        sh 'docker rmi registry.hub.docker.com/${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'                  
+                        echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
                     }
                 }
             }

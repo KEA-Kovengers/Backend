@@ -9,6 +9,7 @@ import com.newcord.userservice.domain.friend.service.FriendQueryService;
 import com.newcord.userservice.global.common.response.ApiResponse;
 import com.newcord.userservice.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class FriendController {
 
     @PostMapping("/request")
     @Operation(summary = "친구 요청",description = "친구 요청하기")
-    public ApiResponse<FriendResponse.FriendResponseDTO> sendFriendshipRequest(@UserID Long fromID, @RequestBody FriendRequest.CreateFriendRequestDTO createfriendRequestDTO) {
+    public ApiResponse<FriendResponse.FriendResponseDTO> sendFriendshipRequest(@Schema(hidden = true) @UserID Long fromID, @RequestBody FriendRequest.CreateFriendRequestDTO createfriendRequestDTO) {
 
         return ApiResponse.onSuccess(friendCommandService.createFriendship(fromID, createfriendRequestDTO));
     }

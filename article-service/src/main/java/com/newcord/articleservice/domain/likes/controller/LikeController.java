@@ -7,6 +7,7 @@ import com.newcord.articleservice.domain.likes.service.LikeQueryService;
 import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +27,9 @@ public class LikeController {
 
     @PostMapping("/create")
     @Operation(summary = "좋아요 생성",description = "좋아요 생성")
-    public ApiResponse<Likes> createLike(@UserID Long userID, @RequestBody CreateLikeRequestDTO createLikeRequestDTO){
+    public ApiResponse<Likes> createLike(
+            @Schema(hidden = true) @UserID Long userID, @RequestBody CreateLikeRequestDTO createLikeRequestDTO){
+        System.err.println("userID = " + userID);
         return ApiResponse.onSuccess(likeCommandService.createLike(userID,createLikeRequestDTO));
     }
 
@@ -38,7 +41,7 @@ public class LikeController {
 
     @GetMapping("/likelist")
     @Operation(summary = "좋아요 내역 조회",description = "좋아요 목록 조회")
-    public ApiResponse<List<Likes>> getLikeList(@UserID Long userid){
+    public ApiResponse<List<Likes>> getLikeList(@Schema(hidden = true) @UserID Long userid){
         return ApiResponse.onSuccess(likeQueryService.getLikeList(userid));
     }
 }
