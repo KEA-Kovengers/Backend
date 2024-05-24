@@ -16,5 +16,6 @@ public class ArticleVersion {
     @Id
     private Long id;                    //게시글 아이디
     private List<Version> versions;
+
 }
 

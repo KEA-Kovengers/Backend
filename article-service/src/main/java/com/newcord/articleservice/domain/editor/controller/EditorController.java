@@ -3,9 +3,7 @@ package com.newcord.articleservice.domain.editor.controller;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
-import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorResponseDTO;
-import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorAddResponseDTO;
-import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorListResponseDTO;
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.service.EditorCommandService;
 import com.newcord.articleservice.domain.editor.service.EditorComposeService;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
@@ -22,6 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Tag(name = "게시글 편집자(참여자) API", description = "편집자(참여자) 관련 API")
 @RestController
@@ -49,5 +49,12 @@ public class EditorController {
     public ApiResponse<EditorListResponseDTO> getEditorList(@PathVariable Long postId) {
         return ApiResponse.onSuccess(editorQueryService.getAllEditorsByPostId(postId));
     }
+
+    @Operation(summary = "공동작업자 로그 조회 API",description = "작업자들의 블럭 업데이트 목록을 조회합니다.")
+    @GetMapping("/log/{postId}")
+    public ApiResponse<List<EditorLogResponseDTO>> getEditorsLogData(@PathVariable Long postId){
+        return ApiResponse.onSuccess(editorComposeService.getEditorsLogData(postId));
+    }
+
 
 }

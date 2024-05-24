@@ -18,4 +18,5 @@ public class ArticlesQueryServiceImpl implements ArticlesQueryService{
     public Article findArticleById(Long articleId) {
         return articlesRepository.findById(articleId).orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
     }
+
 }

@@ -1,8 +1,9 @@
 package com.newcord.articleservice.domain.editor.dto;
 
 import java.util.List;
-import lombok.Builder;
-import lombok.Getter;
+
+import lombok.*;
+import org.bson.types.ObjectId;
 
 // 게시글 편집자 관련 API 응답 DTO
 public class EditorResponse {
@@ -32,6 +33,16 @@ public class EditorResponse {
     public static class EditorListResponseDTO{
         private Long postId;
         private List<Long> userID;
+    }
+
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @ToString
+    public static class EditorLogResponseDTO{
+        private Long userID;
+        private String blockId;
     }
 
 }

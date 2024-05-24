@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.bson.types.ObjectId;
 
 @Builder
@@ -16,7 +17,7 @@ public class VersionOperation {
     private long position;                          //블럭 내에서 위치
     private String content;
     private BlockUpdatedBy updated_by;
-
+// contorl+tab plz
     public void addPosition(long position) {
         this.position += position;
     }

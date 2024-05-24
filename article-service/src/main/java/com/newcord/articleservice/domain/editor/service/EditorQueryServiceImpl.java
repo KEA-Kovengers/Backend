@@ -1,18 +1,19 @@
 package com.newcord.articleservice.domain.editor.service;
 
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorListResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -48,4 +49,5 @@ public class EditorQueryServiceImpl implements EditorQueryService{
             .userID(editorRepository.findByPostId(postId).stream().map(Editor::getUserID).toList())
             .build();
     }
+
 }
