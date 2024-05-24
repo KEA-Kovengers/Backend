@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.block.dto.BlockResponse.*;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -23,5 +27,21 @@ public class BlockQueryServiceImpl implements BlockQueryService{
         }
 
         return BlockDTO.toDTO(block);
+    }
+
+    @Override
+    public List<BlockLogDataResponseDTO> getBlockCreator(Long creator_id) {
+        List<Block> blocks=blockRepository.findByCreatedByCreatorId(creator_id);
+        
+        List<BlockLogDataResponseDTO> result = new ArrayList<>();
+        for(Block block:blocks){
+            BlockLogDataResponseDTO blockLogDataResponseDTO=BlockLogDataResponseDTO.builder()
+                    .creatorId(block.getCreated_by().getCreator_id())
+                    .blockId(block.getId().toString())
+                    .build();
+            System.err.println("blockLogDataResponseDTO = " + blockLogDataResponseDTO);
+            result.add(blockLogDataResponseDTO);
+        }
+        return result;
     }
 }

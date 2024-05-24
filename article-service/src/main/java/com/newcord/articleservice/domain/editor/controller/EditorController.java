@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.controller;
 
+import com.newcord.articleservice.domain.block.dto.BlockResponse.*;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
@@ -13,6 +14,7 @@ import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,6 +57,8 @@ public class EditorController {
     public ApiResponse<List<EditorLogResponseDTO>> getEditorsLogData(@PathVariable Long postId){
         return ApiResponse.onSuccess(editorComposeService.getEditorsLogData(postId));
     }
+
+
 
 
 }

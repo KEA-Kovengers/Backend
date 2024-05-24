@@ -71,4 +71,11 @@ public class BlockResponse {
         private String blockId;
         private List<String> blockList;
     }
+
+    @Builder
+    @Getter
+    public static class BlockLogDataResponseDTO{
+        private String blockId;
+        private Long creatorId;
+    }
 }

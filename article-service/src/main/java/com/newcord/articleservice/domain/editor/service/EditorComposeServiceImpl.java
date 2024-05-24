@@ -107,7 +107,6 @@ public class EditorComposeServiceImpl implements EditorComposeService{
                 VersionOperation operation = operations.get(i);
                 for (int j = 0; j < userIdsCount; j++) {
                     if (operation.getUpdated_by().getUpdater_id().equals(userIds.get(j))) {
-
                         EditorLogResponseDTO editorLogResponseDTO = EditorLogResponseDTO.builder()
                                 .userID(userIds.get(j))
                                 .blockId(operation.getId().toString())
@@ -117,26 +116,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
                 }
             }
         }
-
     return result;
     }
-
-//    @Override
-//    public EditorResponse.EditorLogResponseDTO getEditorsLogData(Long postID) {
-//        EditorResponse.EditorListResponseDTO editorListResponseDTO=editorQueryService.getAllEditorsByPostId(postID);
-//        List<Long> userid= editorListResponseDTO.getUserID();
-//        int userIdsCount =userid.size();
-//        int cnt=0;
-//        Article article=articlesQueryService.findArticleById(postID);
-//        ArticleVersion articleVersion=articleVersionQueryService.findArticleVersionById(article.getId());
-//           // 각 버전의 operations 리스트에 접근
-//        for (Version version : articleVersion.getVersions()) {
-//            for (int j=0;j<userIdsCount;j++){
-//                if(version.getOperations()[cnt])
-//            }
-//        }
-//    }
-
-
 }
 
