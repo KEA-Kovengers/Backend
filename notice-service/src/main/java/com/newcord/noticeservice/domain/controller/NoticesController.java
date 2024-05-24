@@ -19,4 +19,11 @@ public class NoticesController {
         return noticesService.saveNotices(notices);
     }
 
+    @GetMapping(value = "/subscribe/{user_id}", produces = "text/event-stream")
+    public SseEmitter subscribe(@PathVariable Long user_id,
+                                @RequestHeader(value = "Last-Event-ID", required = false, defaultValue = "") String lastEventId) {
+        return noticesService.subscribe(Long.toString(user_id), lastEventId);
+    }
+
+
 }

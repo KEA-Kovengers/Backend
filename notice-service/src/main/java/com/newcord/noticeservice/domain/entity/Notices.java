@@ -27,11 +27,4 @@ public class Notices implements Serializable {
     private StatusType status;
     @CreatedDate
     private LocalDateTime created_at;
-
-    @Builder
-    public Notices(Long user_id, String body, NoticeType type) {
-        this.user_id = user_id;
-        this.body = body;
-        this.type = type;
-    }
 }
