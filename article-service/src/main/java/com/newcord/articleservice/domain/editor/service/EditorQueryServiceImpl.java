@@ -44,9 +44,10 @@ public class EditorQueryServiceImpl implements EditorQueryService{
 
     @Override
     public EditorListResponseDTO getAllEditorsByPostId(Long postId) {
+
         return EditorListResponseDTO.builder()
             .postId(postId)
-            .userID(editorRepository.findByPostId(postId).stream().map(Editor::getUserID).toList())
+            .userID(editorRepository.findAllByPostId(postId).stream().map(Editor::getUserID).toList())
             .build();
     }
 

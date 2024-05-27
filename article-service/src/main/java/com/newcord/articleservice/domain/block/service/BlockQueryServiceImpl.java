@@ -32,16 +32,16 @@ public class BlockQueryServiceImpl implements BlockQueryService{
     @Override
     public List<BlockLogDataResponseDTO> getBlockCreator(Long creator_id) {
         List<Block> blocks=blockRepository.findByCreatedByCreatorId(creator_id);
-        
         List<BlockLogDataResponseDTO> result = new ArrayList<>();
         for(Block block:blocks){
             BlockLogDataResponseDTO blockLogDataResponseDTO=BlockLogDataResponseDTO.builder()
                     .creatorId(block.getCreated_by().getCreator_id())
                     .blockId(block.getId().toString())
                     .build();
-            System.err.println("blockLogDataResponseDTO = " + blockLogDataResponseDTO);
+            
             result.add(blockLogDataResponseDTO);
         }
+        System.out.println("result = " + result);
         return result;
     }
 }

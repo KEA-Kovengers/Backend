@@ -95,8 +95,10 @@ public class EditorComposeServiceImpl implements EditorComposeService{
     @Override
     public List<EditorLogResponseDTO> getEditorsLogData(Long postID) {
         EditorListResponseDTO editorListResponseDTO = editorQueryService.getAllEditorsByPostId(postID);
+        System.out.println("editorListResponseDTO = " + editorListResponseDTO.getUserID());
         List<Long> userIds = editorListResponseDTO.getUserID();
         int userIdsCount = userIds.size();
+        System.out.println("userIdsCount = " + userIdsCount);
         List<EditorLogResponseDTO> result = new ArrayList<>();
         Article article = articlesQueryService.findArticleById(postID);
         ArticleVersion articleVersion = articleVersionQueryService.findArticleVersionById(article.getId());
