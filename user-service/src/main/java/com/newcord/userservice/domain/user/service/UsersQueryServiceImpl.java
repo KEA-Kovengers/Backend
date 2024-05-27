@@ -7,9 +7,11 @@ import com.newcord.userservice.domain.user.domain.Users;
 import com.newcord.userservice.domain.user.dto.UsersResponse.UsersResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UsersQueryServiceImpl implements UsersQueryService {
     private final UsersRepository usersRepository;
 

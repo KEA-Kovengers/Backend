@@ -36,7 +36,6 @@ public class WebSecurityConfig {
                 .addFilter(corsConfig.corsFilter()) //CorsFilter 등록
                 // Http 요청에 대한 Jwt 유효성 선 검사
                 .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 }

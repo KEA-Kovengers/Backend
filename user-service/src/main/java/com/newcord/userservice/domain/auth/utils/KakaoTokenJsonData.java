@@ -14,7 +14,7 @@ public class KakaoTokenJsonData {
     private final WebClient webClient;
 
 //    @Value("${kakao.redirect_uri}")
-    private String REDIRECT_URI="http://http://172.16.211.43/users/auth/login";
+    private String REDIRECT_URI="http://localhost:3000/api/auth/login";
 
     @Value("${kakao.api_key}")
     private String CLIENT_ID;
