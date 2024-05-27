@@ -62,9 +62,4 @@ public class BlockController {
         return response;
     }
 
-    @Operation(summary = "공동작업자 블럭 생성자 조회 API",description = "작업자들의 생성 블럭 목록을 조회합니다.")
-    @GetMapping("/log/{userid}")
-    public ApiResponse<List<BlockResponse.BlockLogDataResponseDTO>> getBlockCreator(@PathVariable Long userid){
-        return ApiResponse.onSuccess(blockQueryService.getBlockCreator(userid));
-    }
 }

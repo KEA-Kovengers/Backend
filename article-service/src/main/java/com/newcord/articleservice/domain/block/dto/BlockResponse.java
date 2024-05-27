@@ -10,6 +10,7 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class BlockResponse {
 
@@ -74,6 +75,8 @@ public class BlockResponse {
 
     @Builder
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BlockLogDataResponseDTO{
         private String blockId;
         private Long creatorId;

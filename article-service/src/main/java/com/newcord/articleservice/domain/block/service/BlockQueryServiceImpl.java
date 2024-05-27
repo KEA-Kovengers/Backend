@@ -38,10 +38,10 @@ public class BlockQueryServiceImpl implements BlockQueryService{
                     .creatorId(block.getCreated_by().getCreator_id())
                     .blockId(block.getId().toString())
                     .build();
-            
+
             result.add(blockLogDataResponseDTO);
         }
-        System.out.println("result = " + result);
+
         return result;
     }
 }

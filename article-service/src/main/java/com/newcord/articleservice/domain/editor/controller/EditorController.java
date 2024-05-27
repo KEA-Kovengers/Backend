@@ -1,7 +1,9 @@
 package com.newcord.articleservice.domain.editor.controller;
 
+import com.newcord.articleservice.domain.block.dto.BlockResponse;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.*;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
+import com.newcord.articleservice.domain.block.service.BlockQueryService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
@@ -33,6 +35,7 @@ import java.util.List;
 public class EditorController {
     private final EditorComposeService editorComposeService;
     private final EditorQueryService editorQueryService;
+    private final BlockQueryService blockQueryService;
 
     @Operation(summary = "편집자 삭제 API", description = "게시글 편집자 목록에서 입력받은 유저를 삭제합니다. 본인 삭제 외에 다른 유저 삭제용으로도 사용 가능합니다.")
     @DeleteMapping("/deleteUser")
@@ -59,6 +62,11 @@ public class EditorController {
         return ApiResponse.onSuccess(editorComposeService.getEditorsLogData(postId));
     }
 
+    @Operation(summary = "공동작업자 블럭 생성자 조회 API",description = "작업자들의 생성 블럭 목록을 조회합니다.")
+    @GetMapping("/log/creator/{userid}")
+    public ApiResponse<List<BlockResponse.BlockLogDataResponseDTO>> getBlockCreator(@PathVariable Long userid){
+        return ApiResponse.onSuccess(blockQueryService.getBlockCreator(userid));
+    }
 
 
 

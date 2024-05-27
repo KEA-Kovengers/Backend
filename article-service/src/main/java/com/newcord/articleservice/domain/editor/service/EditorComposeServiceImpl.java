@@ -19,8 +19,8 @@ import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
@@ -95,30 +95,31 @@ public class EditorComposeServiceImpl implements EditorComposeService{
     @Override
     public List<EditorLogResponseDTO> getEditorsLogData(Long postID) {
         EditorListResponseDTO editorListResponseDTO = editorQueryService.getAllEditorsByPostId(postID);
-        System.out.println("editorListResponseDTO = " + editorListResponseDTO.getUserID());
+
         List<Long> userIds = editorListResponseDTO.getUserID();
         int userIdsCount = userIds.size();
-        System.out.println("userIdsCount = " + userIdsCount);
-        List<EditorLogResponseDTO> result = new ArrayList<>();
+
+        Set<EditorLogResponseDTO> uniqueResults = new HashSet<>();
         Article article = articlesQueryService.findArticleById(postID);
         ArticleVersion articleVersion = articleVersionQueryService.findArticleVersionById(article.getId());
 
         for (Version version : articleVersion.getVersions()) {
             List<VersionOperation> operations = version.getOperations();
-            for (int i = 0; i < operations.size(); i++) {
-                VersionOperation operation = operations.get(i);
-                for (int j = 0; j < userIdsCount; j++) {
-                    if (operation.getUpdated_by().getUpdater_id().equals(userIds.get(j))) {
+            for (VersionOperation operation : operations) {
+                for (Long userId : userIds) {
+                    if (operation.getUpdated_by().getUpdater_id().equals(userId)) {
                         EditorLogResponseDTO editorLogResponseDTO = EditorLogResponseDTO.builder()
-                                .userID(userIds.get(j))
+                                .userID(userId)
                                 .blockId(operation.getId().toString())
                                 .build();
-                        result.add(editorLogResponseDTO);
+
+                        uniqueResults.add(editorLogResponseDTO);
                     }
                 }
             }
         }
-    return result;
+
+        return new ArrayList<>(uniqueResults);
     }
 }
 
