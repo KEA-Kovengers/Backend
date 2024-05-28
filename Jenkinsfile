@@ -7,6 +7,7 @@ pipeline {
         IMAGE_NAME_USER_SERVICE = 'user-service'
         IMAGE_NAME_NOTICE_SERVICE = 'notice-service'
         VERSION = "${env.BUILD_NUMBER}" // Jenkins 빌드 번호를 버전으로 사용합니다.
+        K8S_REPO = 'https://github.com/KEA-Kovengers/kubernetes-yaml.git'
     }
     stages {
         stage('Check Git Changes') {
@@ -43,6 +44,23 @@ pipeline {
         stage('Pull Git Submodules') {
             steps {
                 sh 'git submodule update --init --recursive'
+            }
+        }
+        stage('Copy application.yml') {
+            script {
+                if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                    sh 'mkdir -p article-service/src/main/resources'
+                    sh 'cp config/article-service-module/application.yml article-service/src/main/resources/'
+                }
+                if (env.USER_SERVICE_CHANGED == 'true') {
+                    sh 'mkdir -p user-service/src/main/resources'
+                    sh 'cp config/article-service-module/application.yml user-service/src/main/resources/'
+                }
+                if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                    sh 'mkdir -p notice-service/src/main/resources'
+                    sh 'cp config/notice-service-module/application.yml notice-service/src/main/resources/'
+                }
+                
             }
         }
         stage('Build Docker images') {
