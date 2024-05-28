@@ -53,10 +53,9 @@ pipeline {
         stage('Update K8S ConfigMap') {
             steps {
                 script {
-
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap article-service-config'
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
