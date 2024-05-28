@@ -59,11 +59,11 @@ pipeline {
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
                     }
                     if (env.NOTICE_SERVICE_CHANGED == 'true') {
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
                     }
                 }
             }
