@@ -25,6 +25,7 @@ pipeline {
                             env.ARTICLE_SERVICE_CHANGED = 'true'
                             env.USER_SERVICE_CHANGED = 'true'
                             env.NOTICE_SERVICE_CHANGED = 'true'
+                            env.CONFIG_CHANGED = 'true'
                     } else {
                         echo "This build was not started manually."
 
@@ -40,6 +41,7 @@ pipeline {
                         env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
                         env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false' 
                         env.NOTICE_SERVICE_CHANGED = changes.contains('notice-service') ? 'true' : 'false'   
+                        env.CONFIG_CHANGED = changes.contains('config') ? 'true' : 'false'
                     }
                     
                 }
@@ -53,18 +55,15 @@ pipeline {
         stage('Update K8S ConfigMap') {
             steps {
                 script {
-                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                    if (env.CONFIG_CHANGED == 'true') {
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap article-service-config'
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
-                    }
-                    if (env.USER_SERVICE_CHANGED == 'true') {
+                    
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
-                    }
-                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
-                    }
+                    
+                        // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
+                        // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
                 }
             }
         }
