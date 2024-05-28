@@ -64,6 +64,7 @@ pipeline {
                     
                         // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
                         // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml -o yaml --dry-run=client | sudo kubectl --kubeconfig=/home/ubuntu/kubeconfig-kovengers.yaml apply -f -'
+                    }
                 }
             }
         }
