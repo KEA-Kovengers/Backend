@@ -46,22 +46,24 @@ pipeline {
                 sh 'git submodule update --init --recursive'
             }
         }
-        stage('Copy application.yml') {
-            steps{
-                script {
-                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                        sh 'mkdir -p article-service/src/main/resources'
-                        sh 'cp config/article-service-module/application.yml article-service/src/main/resources/'
+        stage('Update K8S ConfigMap') {
+            steps {
+                withCredentials([kubeconfig(credentialsId: 'newcord-kubeconfig', variable: 'KUBECONFIG')]{
+                    script {
+                        if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                            sh 'kubectl delete configmap article-service-config'
+                            sh 'kubectl create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
+                        }
+                        if (env.USER_SERVICE_CHANGED == 'true') {
+                            sh 'kubectl delete configmap user-service-config'
+                            sh 'kubectl create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
+                        }
+                        if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                            sh 'kubectl delete configmap notice-service-config'
+                            sh 'kubectl create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
+                        }
                     }
-                    if (env.USER_SERVICE_CHANGED == 'true') {
-                        sh 'mkdir -p user-service/src/main/resources'
-                        sh 'cp config/article-service-module/application.yml user-service/src/main/resources/'
-                    }
-                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                        sh 'mkdir -p notice-service/src/main/resources'
-                        sh 'cp config/notice-service-module/application.yml notice-service/src/main/resources/'
-                    }
-                }
+                } 
             }
         }
         stage('Build Docker images') {
