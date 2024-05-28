@@ -21,7 +21,6 @@ public class FriendResponse {
     public static class FriendInfoResponseDTO{
         private Long friendshipID;
         private Long userID;
-        private Long friendID;
         private FriendshipStatus status;
         private boolean isFrom;
         private String nickName;
