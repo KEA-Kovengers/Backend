@@ -28,7 +28,7 @@ public class FriendComposeServiceImpl implements FriendComposeService{
             UsersResponseDTO usersResponseDTO=usersQueryService.getUserInfo(friendInfoResponseDTO.getFriendID());
             FriendInfoResponseDTO dto=FriendInfoResponseDTO.builder()
                     .friendshipID(friendInfoResponseDTO.getFriendshipID())
-                    .userID(userid)
+                    .userID(friendInfoResponseDTO.getFriendID())
                     .status(friendInfoResponseDTO.getStatus())
                     .isFrom(friendInfoResponseDTO.isFrom())
                     .nickName(usersResponseDTO.getNickName())
@@ -45,13 +45,13 @@ public class FriendComposeServiceImpl implements FriendComposeService{
     public List<FriendInfoResponseDTO> getWaitingFriendList(Long userid){
     List<FriendResponseDTO> friendResponseDTOS=friendQueryService.getWaitingFriendList(userid);
     List<FriendInfoResponseDTO> result=new ArrayList<>();
-    for (FriendResponseDTO friendInfoResponseDTO : friendResponseDTOS){
-        UsersResponseDTO usersResponseDTO=usersQueryService.getUserInfo(friendInfoResponseDTO.getFriendID());
+    for (FriendResponseDTO friendResponseDTO : friendResponseDTOS){
+        UsersResponseDTO usersResponseDTO=usersQueryService.getUserInfo(friendResponseDTO.getFriendID());
         FriendInfoResponseDTO dto=FriendInfoResponseDTO.builder()
-                .friendshipID(friendInfoResponseDTO.getFriendshipID())
-                .userID(userid)
-                .status(friendInfoResponseDTO.getStatus())
-                .isFrom(friendInfoResponseDTO.isFrom())
+                .friendshipID(friendResponseDTO.getFriendshipID())
+                .userID(friendResponseDTO.getFriendID())
+                .status(friendResponseDTO.getStatus())
+                .isFrom(friendResponseDTO.isFrom())
                 .nickName(usersResponseDTO.getNickName())
                 .blogName(usersResponseDTO.getBlogName())
                 .bio(usersResponseDTO.getBio())
