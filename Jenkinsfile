@@ -57,9 +57,9 @@ pipeline {
                 script {
                     if (env.CONFIG_CHANGED == 'true') {
                         dir('config') {
-                            sh 'kubectl create configmap article-service-config --from-file=article-service-module/application.yml --dry-run=client -o yaml > article-service-configmap.yml'
-                            sh 'kubectl create configmap user-service-config --from-file=user-service-module/application.yml --dry-run=client -o yaml > user-service-configmap.yml'
-                            // sh 'kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
+                            sh 'sudo kubectl create configmap article-service-config --from-file=article-service-module/application.yml --dry-run=client -o yaml > article-service-configmap.yml'
+                            sh 'sudo kubectl create configmap user-service-config --from-file=user-service-module/application.yml --dry-run=client -o yaml > user-service-configmap.yml'
+                            // sh 'sudo kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
                             sh 'git add backend/configmap/article-service-configmap.yml'
                             sh 'git add backend/configmap/user-service-configmap.yml'
                             // sh 'git add backend/configmap/notice-service-configmap.yml'
