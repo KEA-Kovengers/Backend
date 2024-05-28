@@ -104,6 +104,20 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
     }
 
     @Override
+    public Version updateVersion(Long articleID){
+        ArticleVersion articleVersion = articleVersionRepository.findById(articleID)
+                .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
+
+        Version version = Version.builder()
+                .timestamp(LocalDateTime.now())
+                .operations(new ArrayList<>())
+                .build();
+        articleVersion.getVersions().add(version);
+        articleVersionRepository.save(articleVersion);
+        return version;
+    }
+
+    @Override
     public String getLatestVersion(Long articleID) {
         ArticleVersion articleVersion = articleVersionRepository.findById(articleID)
             .orElseThrow(() -> new ApiException(ErrorStatus._ARTICLE_NOT_FOUND));
