@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 import lombok.*;
 import lombok.Builder.Default;
+import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
@@ -25,8 +26,10 @@ public class Posts extends BaseJPATimeEntity {
     private String thumbnail;
     private String title;
     private String body;
-    @Enumerated(EnumType.ORDINAL)
-    private PostStatus status;
+   // @Enumerated(EnumType.STRING)
+    @Default
+    private PostStatus status = PostStatus.EDIT;
+
     @Default
     private Long views = 0L;
 

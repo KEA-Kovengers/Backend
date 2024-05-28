@@ -19,14 +19,16 @@ public class PostRequest {
         private String title;
         private String body;
         private List<String> hashtags;
-        private PostStatus status;
+
+//        @Builder.Default
+//        private PostStatus status = PostStatus.EDIT;
 
         public Posts toEntity(PostCreateRequestDTO dto){
             return Posts.builder()
                     .thumbnail(dto.getThumbnail())
                     .title(dto.getTitle())
                     .body(dto.getBody())
-                    .status(dto.getStatus())
+                 //  .status(dto.getStatus())
                     .build();
         }
     }
@@ -37,7 +39,7 @@ public class PostRequest {
         private Long id;
         private String thumbnail;
         private String title;
-        @Enumerated(EnumType.ORDINAL)
+       // @Enumerated(EnumType.ORDINAL)
         private PostStatus status;
     }
 
