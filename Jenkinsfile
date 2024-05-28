@@ -72,17 +72,17 @@ pipeline {
                         dir('config') {
                             sshagent(['k8s_git']) {
                                 sh 'mkdir -p ~/.ssh'
-                                sh 'ssh-keyscan github.com >> ~/.ssh/known_hosts'
+                                sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
                                 sh 'rm -rf kubernetes-yaml' // Add this line
                                 sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
                             }
-                            dir('kubernetes-yaml') {
+                            dir('kubernetes-yaml/backend') {
                                 sh 'git config user.email "kmjung1515@naver.com"'
                                 sh 'git config user.name "wooing1084"'
-                                sh 'cp ../article-service-configmap.yml .'
-                                sh 'cp ../user-service-configmap.yml .'
-                                sh 'git add backend/article-service-configmap.yml'
-                                sh 'git add backend/user-service-configmap.yml'
+                                sh 'cp ../../rticle-service-configmap.yml .'
+                                sh 'cp ../../user-service-configmap.yml .'
+                                sh 'git add article-service-configmap.yml'
+                                sh 'git add user-service-configmap.yml'
                                 sh 'git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
