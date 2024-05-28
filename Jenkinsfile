@@ -56,10 +56,10 @@ pipeline {
             steps {
                 script {
                     if (env.CONFIG_CHANGED == 'true') {
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap article-service-config'
+                        // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap article-service-config'
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
                     
-                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
+                        // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
                         sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
                     
                         // sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
