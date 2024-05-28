@@ -47,20 +47,21 @@ pipeline {
             }
         }
         stage('Copy application.yml') {
-            script {
-                if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                    sh 'mkdir -p article-service/src/main/resources'
-                    sh 'cp config/article-service-module/application.yml article-service/src/main/resources/'
+            steps{
+                script {
+                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                        sh 'mkdir -p article-service/src/main/resources'
+                        sh 'cp config/article-service-module/application.yml article-service/src/main/resources/'
+                    }
+                    if (env.USER_SERVICE_CHANGED == 'true') {
+                        sh 'mkdir -p user-service/src/main/resources'
+                        sh 'cp config/article-service-module/application.yml user-service/src/main/resources/'
+                    }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        sh 'mkdir -p notice-service/src/main/resources'
+                        sh 'cp config/notice-service-module/application.yml notice-service/src/main/resources/'
+                    }
                 }
-                if (env.USER_SERVICE_CHANGED == 'true') {
-                    sh 'mkdir -p user-service/src/main/resources'
-                    sh 'cp config/article-service-module/application.yml user-service/src/main/resources/'
-                }
-                if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                    sh 'mkdir -p notice-service/src/main/resources'
-                    sh 'cp config/notice-service-module/application.yml notice-service/src/main/resources/'
-                }
-                
             }
         }
         stage('Build Docker images') {
