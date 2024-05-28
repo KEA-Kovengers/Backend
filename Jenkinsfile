@@ -77,13 +77,13 @@ pipeline {
                                 sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
                             }
                             dir('kubernetes-yaml/backend') {
-                                sh 'git config user.email "kmjung1515@naver.com"'
-                                sh 'git config user.name "wooing1084"'
+                                sh 'git config user.email "keakovengers@gmail.com"'
+                                sh 'git config user.name "kovengers"'
                                 sh 'cp ../../article-service-configmap.yml .'
                                 sh 'cp ../../user-service-configmap.yml .'
                                 sh 'git add article-service-configmap.yml'
                                 sh 'git add user-service-configmap.yml'
-                                sh 'git commit -m "Update ConfigMap"'
+                                sh 'git diff --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
                                 }
