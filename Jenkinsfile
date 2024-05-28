@@ -77,8 +77,8 @@ pipeline {
                                 sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
                             }
                             dir('kubernetes-yaml/backend') {
-                                sh 'git config user.email "keakovengers@gmail.com"'
-                                sh 'git config user.name "kovengers"'
+                                sh 'git config user.email "kmjung1515@naver.com"'
+                                sh 'git config user.name "wooing1084"'
                                 sh 'cp ../../article-service-configmap.yml .'
                                 sh 'cp ../../user-service-configmap.yml .'
                                 sh 'git add article-service-configmap.yml'
