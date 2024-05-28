@@ -48,7 +48,7 @@ pipeline {
         }
         stage('Update K8S ConfigMap') {
             steps {
-                withCredentials([kubeconfig(credentialsId: 'newcord-kubeconfig', variable: 'KUBECONFIG')]{
+                withCredentials([kubeconfig(credentialsId: 'newcord-kubeconfig', variable: 'KUBECONFIG')]){
                     script {
                         if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                             sh 'kubectl delete configmap article-service-config'
