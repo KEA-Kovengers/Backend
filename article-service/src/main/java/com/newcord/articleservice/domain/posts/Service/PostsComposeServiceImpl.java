@@ -1,5 +1,4 @@
 package com.newcord.articleservice.domain.posts.Service;
-
 import com.newcord.articleservice.domain.article_version.service.ArticleVersionCommandService;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
 import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
@@ -18,50 +17,57 @@ import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostCreateResponseDTO;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostDetailResponseDTO;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.global.common.exception.ApiException;
+import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class PostsComposeServiceImpl implements PostsComposeService {
     private final PostsCommandService postsCommandService;
     private final PostsQueryService postsQueryService;
-
     private final EditorCommandService editorCommandService;
     private final EditorQueryService editorQueryService;
-
     private final ArticlesCommandService articlesCommandService;
-
     private final HashtagsQueryService hashtagsQueryService;
     private final HashtagsCommandService hashtagsCommandService;
-
     private final ArticlesQueryService articlesQueryService;
     private final BlockQueryService blockQueryService;
-
     private final ArticleVersionCommandService articleVersionCommandService;
-
     private final RabbitMQService rabbitMQService;
+    private static Map<String, Integer> sessionCnt = new HashMap<>();
 
-    @Override
+
     public String createPostEditSession(String articleID) {
         rabbitMQService.createFanoutExchange(articleID);
+
+        if (sessionCnt.containsKey(articleID)) {
+            sessionCnt.put(articleID, sessionCnt.get(articleID) + 1);
+        } else {
+            sessionCnt.put(articleID, 1);
+        }
+
         return "편집세션이 생성되었습니다.";
     }
 
     @Override
     public String deletePostEditSession(String articleID) {
         rabbitMQService.deleteTopic(articleID);
+        if (sessionCnt.get(articleID) > 0) {
+            sessionCnt.put(articleID, sessionCnt.get(articleID) - 1);
+        } else throw new ApiException(ErrorStatus._INTERNAL_SERVER_ERROR);
         return "편집세션이 삭제되었습니다.";
     }
 
@@ -149,14 +155,23 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return makePostDetailResponseDTO(posts);
     }
 
+    @Scheduled(fixedRate = 540000)
+    public void increaseId() {
+        for (Map.Entry<String, Integer> entry : sessionCnt.entrySet()) {
+            if (sessionCnt.get(entry.getKey()) > 0) {
+                articleVersionCommandService.updateVersion(Long.valueOf(entry.getKey()));
+            }
+        }
+    }
+
     @Override
-    public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size){
-        PageRequest pageRequest=PageRequest.of(page,size);
+    public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        Page<Posts> posts=postsQueryService.getPostbyHashTag(TagName,page,size);
+        Page<Posts> posts = postsQueryService.getPostbyHashTag(TagName, page, size);
 
-        List<PostResponseDTO> postResponseDTOS=posts.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
-        Page<PostResponseDTO> postResponseDTOPage= new PageImpl<>(postResponseDTOS, pageRequest, posts.getTotalElements());
+        List<PostResponseDTO> postResponseDTOS = posts.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
+        Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOS, pageRequest, posts.getTotalElements());
         return SocialPostListDTO.builder()
                 .postsList(postResponseDTOPage)
                 .build();

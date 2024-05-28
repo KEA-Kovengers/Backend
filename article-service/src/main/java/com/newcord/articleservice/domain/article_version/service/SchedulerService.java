@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SchedulerService {
 
-    @Scheduled(cron = "*/5 * * * * *")
-    public void scheduleRun(){
-        System.out.println(" 테스트 = 5초마다 실행");
-    }
+//    @Scheduled(cron = "*/5 * * * * *")
+//    public void scheduleRun(){
+//        System.out.println(" 테스트 = 5초마다 실행");
+//    }
 }
