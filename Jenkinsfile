@@ -8,6 +8,10 @@ pipeline {
         IMAGE_NAME_NOTICE_SERVICE = 'notice-service'
         VERSION = "${env.BUILD_NUMBER}" // Jenkins 빌드 번호를 버전으로 사용합니다.
         K8S_REPO = 'https://github.com/KEA-Kovengers/kubernetes-yaml.git'
+        PATH = "/home/ubuntu/:$PATH"
+        KUBE_CONFIG = "/home/ubuntu/kubeconfig-kovengers.yaml"
+        KUBECONFIG = "/home/ubuntu/kubeconfig-kovengers.yaml"
+
     }
     stages {
         stage('Check Git Changes') {
