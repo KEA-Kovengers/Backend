@@ -55,22 +55,23 @@ pipeline {
         stage('Update K8S ConfigMap') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'KOV-githubapp', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        if (env.CONFIG_CHANGED == 'true') {
-                            dir('config') {
-                                sh 'git config user.email "kmjung1515@naver.com"'
-                                sh 'git config user.name "wooing1084"'
-                                sh 'sudo kubectl create configmap article-service-config --from-file=article-service-module/application.yml --dry-run=client -o yaml > article-service-configmap.yml'
-                                sh 'sudo kubectl create configmap user-service-config --from-file=user-service-module/application.yml --dry-run=client -o yaml > user-service-configmap.yml'
-                                // sh 'sudo kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
-                                sh 'git add article-service-configmap.yml'
-                                sh 'git add user-service-configmap.yml'
-                                // sh 'git add backend/configmap/notice-service-configmap.yml'
-                                sh 'git commit -m "Update ConfigMap"'
-                                sh "git push https://${USERNAME}:${PASSWORD}@${env.K8S_REPO} kakao-cloud"
+                    if (env.CONFIG_CHANGED == 'true') {
+                        dir('config') {
+                            sh 'git config user.email "kmjung1515@naver.com"'
+                            sh 'git config user.name "wooing1084"'
+                            sh 'sudo kubectl create configmap article-service-config --from-file=article-service-module/application.yml --dry-run=client -o yaml > article-service-configmap.yml'
+                            sh 'sudo kubectl create configmap user-service-config --from-file=user-service-module/application.yml --dry-run=client -o yaml > user-service-configmap.yml'
+                            // sh 'sudo kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
+                            sh 'git add article-service-configmap.yml'
+                            sh 'git add user-service-configmap.yml'
+                            // sh 'git add backend/configmap/notice-service-configmap.yml'
+                            sh 'git commit -m "Update ConfigMap"'
+                            sshagent(['k8s_git']){
+                                sh "git push git@github.com:KEA-Kovengers/kubernetes-yaml.git kakao-cloud"
                             }
                         }
                     }
+                    
                 }
             }
         }
