@@ -53,17 +53,18 @@ pipeline {
         stage('Update K8S ConfigMap') {
             steps {
                 script {
+
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                        sh 'sudo kubectl delete configmap article-service-config'
-                        sh 'sudo kubectl create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap article-service-config'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
-                        sh 'sudo kubectl delete configmap user-service-config'
-                        sh 'sudo kubectl create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap user-service-config'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
                     }
                     if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                        sh 'sudo kubectl delete configmap notice-service-config'
-                        sh 'sudo kubectl create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG delete configmap notice-service-config'
+                        sh 'sudo kubectl --kubeconfig=$KUBE_CONFIG create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
                     }
                 }
             }
