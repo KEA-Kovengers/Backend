@@ -16,4 +16,18 @@ public class FriendResponse {
         private boolean isFrom;
     }
 
+    @Builder
+    @Getter
+    public static class FriendInfoResponseDTO{
+        private Long friendshipID;
+        private Long userID;
+        private Long friendID;
+        private FriendshipStatus status;
+        private boolean isFrom;
+        private String nickName;
+        private String blogName;
+        private String bio;
+        private String profileImg;
+    }
+
 }
