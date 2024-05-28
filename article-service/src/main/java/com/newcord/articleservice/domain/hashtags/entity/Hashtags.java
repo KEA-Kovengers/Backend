@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.hashtags.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.global.common.BaseJPATimeEntity;
 import jakarta.persistence.Column;
@@ -27,6 +28,7 @@ public class Hashtags extends BaseJPATimeEntity {
     private String tagName;
 
     @ManyToMany(mappedBy = "hashtags")
+    @JsonBackReference
     @Default
     private Set<Posts> posts = new HashSet<>();
 }
