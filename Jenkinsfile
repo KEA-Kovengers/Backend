@@ -80,8 +80,8 @@ pipeline {
                                 sh 'git config user.name "wooing1084"'
                                 sh 'cp ../article-service-configmap.yml .'
                                 sh 'cp ../user-service-configmap.yml .'
-                                sh 'git add article-service-configmap.yml'
-                                sh 'git add user-service-configmap.yml'
+                                sh 'git add backend/configmap/article-service-configmap.yml'
+                                sh 'git add backend/configmap/user-service-configmap.yml'
                                 sh 'git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
