@@ -54,16 +54,16 @@ pipeline {
             steps {
                 script {
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                        sh 'kubectl delete configmap article-service-config'
-                        sh 'kubectl create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
+                        sh 'sudo kubectl delete configmap article-service-config'
+                        sh 'sudo kubectl create configmap article-service-config --from-file=application.yml=config/article-service-module/application.yml'
                     }
                     if (env.USER_SERVICE_CHANGED == 'true') {
-                        sh 'kubectl delete configmap user-service-config'
-                        sh 'kubectl create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
+                        sh 'sudo kubectl delete configmap user-service-config'
+                        sh 'sudo kubectl create configmap user-service-config --from-file=application.yml=config/user-service-module/application.yml'
                     }
                     if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                        sh 'kubectl delete configmap notice-service-config'
-                        sh 'kubectl create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
+                        sh 'sudo kubectl delete configmap notice-service-config'
+                        sh 'sudo kubectl create configmap notice-service-config --from-file=application.yml=config/notice-service-module/application.yml'
                     }
                 }
             }
