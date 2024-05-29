@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
@@ -31,6 +32,7 @@ public class Posts extends BaseJPATimeEntity {
     private Long views = 0L;
 
     @ManyToMany
+    @JsonManagedReference
     @JoinTable(
         name = "post_hashtags",
         joinColumns = @JoinColumn(name = "post_id"),

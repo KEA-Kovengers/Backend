@@ -28,14 +28,11 @@ public class FriendQueryServiceImpl implements FriendQueryService{
 
     @Override
     public List<FriendResponseDTO> getWaitingFriendList(Long userid){
-
         Users users = usersRepository.findById(userid).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
-
         List<Friend> friendshipList = users.getFriendList();
         log.info(friendshipList.toString());
         // 조회된 결과 객체를 담을 Dto 리스트
         List<FriendResponseDTO> result = new ArrayList<>();
-
         for (Friend x : friendshipList) {
             // 보낸 요청이 아니고 && 수락 대기중인 요청만 조회
             if (!x.isFrom() && x.getStatus() == FriendshipStatus.WAITING) {
@@ -56,12 +53,9 @@ public class FriendQueryServiceImpl implements FriendQueryService{
     @Override
     public List<FriendResponseDTO> getAcceptFriendList(Long userid){
         Users users = usersRepository.findById(userid).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
-
         List<Friend> friendshipList = users.getFriendList();
-
         // 조회된 결과 객체를 담을 Dto 리스트
         List<FriendResponseDTO> result = new ArrayList<>();
-
         for (Friend x : friendshipList) {
             // 보낸 요청이 아니고 && 수락한 요청 조회
             if (x.getStatus() == FriendshipStatus.ACCEPT) {
