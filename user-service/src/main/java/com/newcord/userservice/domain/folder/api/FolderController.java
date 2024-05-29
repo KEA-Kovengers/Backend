@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("/users/folder")
+@RequestMapping("/folder")
 @Tag(name = "Folder", description = "폴더 API")
 public class FolderController {
 
@@ -40,7 +40,7 @@ public class FolderController {
     }
 
     @Operation(summary = "폴더 조회", description = "유저가 가진 폴더 목록을 조회합니다.")
-    @GetMapping("/{userId}")
+    @GetMapping("/view/{userId}")
     public ApiResponse<List> getFolderList(@PathVariable Long userId) {
         return ApiResponse.onSuccess(folderQueryService.getFolderList(userId));
     }
@@ -58,7 +58,7 @@ public class FolderController {
     }
 
     @Operation(summary = "폴더 별 게시글 조회", description = "폴더에 속해있는 게시글 목록을 조회합니다.")
-    @GetMapping("/post/{folderId}")
+    @GetMapping("/view/post/{folderId}")
     public ApiResponse<List> getFolderPostList(@PathVariable Long folderId) {
         return ApiResponse.onSuccess(folderQueryService.getFolderPostList(folderId));
     }

@@ -19,7 +19,7 @@ import java.util.List;
 public class FirstController {
     private final ObjectStorageService s3Service;
 
-    @PostMapping(value = "/users/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "이미지 업로드", description = "이미지를 오브젝트 스토리지에 올리고 url을 반환합니다.")
     public String uploadObject(@RequestPart MultipartFile file) {
         List<MultipartFile> list = new ArrayList<>();
