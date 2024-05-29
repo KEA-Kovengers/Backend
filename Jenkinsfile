@@ -79,10 +79,19 @@ pipeline {
                             dir('kubernetes-yaml/backend') {
                                 sh 'git config user.email "keakovengers@gmail.com"'
                                 sh 'git config user.name "kovengers"'
-                                sh 'cp ../../article-service-configmap.yml .'
-                                sh 'cp ../../user-service-configmap.yml .'
-                                sh 'git add article-service-configmap.yml'
-                                sh 'git add user-service-configmap.yml'
+                                dir('article-service'){
+                                    sh 'cp ../../../article-service-configmap.yml .'
+                                    sh 'git add article-service-configmap.yml'
+                                }
+                                dir('user-service'){
+                                    sh 'cp ../../../user-service-configmap.yml .'
+                                    sh 'git add user-service-configmap.yml'
+                                }
+                                // dir('notice-service'){
+                                //     sh 'cp ../../../notice-service-configmap.yml .'
+                                //     sh 'git add user-service-configmap.yml'
+                                // }
+                                
                                 sh 'git diff --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
