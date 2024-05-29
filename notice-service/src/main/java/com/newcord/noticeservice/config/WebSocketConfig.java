@@ -1,11 +1,11 @@
 package com.newcord.noticeservice.config;
 
-import com.newcord.noticeservice.webSocket.NoticeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
@@ -21,9 +21,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     private String RELAY_USERNAME;
     @Value("${spring.rabbitmq.password}")
     private String RELAY_PASSWORD;
-
-    @Autowired
-    private NoticeInterceptor noticeInterceptor;
+    @Value("${spring.rabbitmq.virtual-host}")
+    private String VIRTUAL_HOST;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
@@ -38,8 +37,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setRelayHost(RELAY_HOST)
                 .setRelayPort(RELAY_PORT)
                 .setClientLogin(RELAY_USERNAME)
-                .setClientPasscode(RELAY_PASSWORD);
+                .setClientPasscode(RELAY_PASSWORD)
+                .setVirtualHost(VIRTUAL_HOST);
         // 클라이언트가 메시지를 보낼 때 사용할 prefix 설정 (/app -> @MessageMapping에 자동으로 매핑됨)
-        registry.setApplicationDestinationPrefixes("/app");
-    }
+        //메시지 발행 url
+        registry.setPathMatcher(new AntPathMatcher("."));
+        registry.setApplicationDestinationPrefixes("/pub");    }
 }

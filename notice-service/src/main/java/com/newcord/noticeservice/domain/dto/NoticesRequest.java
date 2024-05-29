@@ -10,9 +10,11 @@ public class NoticesRequest {
 
     @Builder
     @Getter
+    @Setter
     public static class NoticesRequestDTO {
         private Long user_id;
         private String body;
         private NoticeType type;
+        private LocalDateTime created_at;
     }
 }
