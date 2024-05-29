@@ -20,4 +20,9 @@ public class LikeQueryServiceImpl implements LikeQueryService{
     public List<Likes> getLikeList(Long userid){
         return likeRepository.findAllByUser_id(userid);
     }
+
+    @Override
+    public List<Likes> getLikeUserid(Long postid){
+        return likeRepository.findAllByPost_id(postid);
+    }
 }
