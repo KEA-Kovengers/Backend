@@ -10,12 +10,14 @@ import com.newcord.userservice.global.common.exception.ApiException;
 import com.newcord.userservice.global.common.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class FolderQueryServiceImpl implements FolderQueryService {
 
     private final FolderRepository folderRepository;

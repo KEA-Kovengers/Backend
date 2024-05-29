@@ -12,11 +12,13 @@ import com.newcord.userservice.global.common.exception.ApiException;
 import com.newcord.userservice.global.common.response.code.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FolderCommandServiceImpl implements FolderCommandService{
     private final FolderRepository folderRepository;
     private final FolderPostRepository folderPostRepository;
