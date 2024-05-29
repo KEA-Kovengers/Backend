@@ -27,7 +27,6 @@ public class Posts extends BaseJPATimeEntity {
     private String thumbnail;
     private String title;
     private String body;
-   // @Enumerated(EnumType.STRING)
     @Default
     private PostStatus status = PostStatus.EDIT;
 
