@@ -26,8 +26,6 @@ public class EditorQueryServiceImpl implements EditorQueryService{
         PageRequest pageRequest = PageRequest.of(page, size);
 
         Page<Editor> editors = editorRepository.findByUserID(userID, pageRequest);
-
-
         return PostListResponseDTO.builder()
                 .postList(editors)
                 .build();

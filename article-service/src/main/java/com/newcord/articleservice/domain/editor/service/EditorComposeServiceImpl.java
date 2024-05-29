@@ -15,6 +15,7 @@ import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorR
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorAddResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
+import com.newcord.articleservice.domain.log.dto.LogResponse.*;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.entity.Posts;
@@ -38,7 +39,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
     private final ArticlesQueryService articlesQueryService;
     private final BlockCommandService blockCommandService;
 
-    private final ArticleVersionQueryService articleVersionQueryService;
+
     private final EditorRepository editorRepository;
 
     @Override
@@ -92,34 +93,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
         return deleteEditorResponseDTO;
     }
 
-    @Override
-    public List<EditorLogResponseDTO> getEditorsLogData(Long postID) {
-        EditorListResponseDTO editorListResponseDTO = editorQueryService.getAllEditorsByPostId(postID);
 
-        List<Long> userIds = editorListResponseDTO.getUserID();
-        int userIdsCount = userIds.size();
 
-        Set<EditorLogResponseDTO> uniqueResults = new HashSet<>();
-        Article article = articlesQueryService.findArticleById(postID);
-        ArticleVersion articleVersion = articleVersionQueryService.findArticleVersionById(article.getId());
-
-        for (Version version : articleVersion.getVersions()) {
-            List<VersionOperation> operations = version.getOperations();
-            for (VersionOperation operation : operations) {
-                for (Long userId : userIds) {
-                    if (operation.getUpdated_by().getUpdater_id().equals(userId)) {
-                        EditorLogResponseDTO editorLogResponseDTO = EditorLogResponseDTO.builder()
-                                .userID(userId)
-                                .blockId(operation.getId().toString())
-                                .build();
-
-                        uniqueResults.add(editorLogResponseDTO);
-                    }
-                }
-            }
-        }
-
-        return new ArrayList<>(uniqueResults);
-    }
 }
 

@@ -10,6 +10,7 @@ import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.service.EditorCommandService;
 import com.newcord.articleservice.domain.editor.service.EditorComposeService;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
+import com.newcord.articleservice.domain.log.dto.LogResponse;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
@@ -55,19 +56,6 @@ public class EditorController {
     public ApiResponse<EditorListResponseDTO> getEditorList(@PathVariable Long postId) {
         return ApiResponse.onSuccess(editorQueryService.getAllEditorsByPostId(postId));
     }
-
-    @Operation(summary = "공동작업자 로그 조회 API",description = "작업자들의 블럭 업데이트 목록을 조회합니다.")
-    @GetMapping("/log/{postId}")
-    public ApiResponse<List<EditorLogResponseDTO>> getEditorsLogData(@PathVariable Long postId){
-        return ApiResponse.onSuccess(editorComposeService.getEditorsLogData(postId));
-    }
-
-    @Operation(summary = "공동작업자 블럭 생성자 조회 API",description = "작업자들의 생성 블럭 목록을 조회합니다.")
-    @GetMapping("/log/creator/{userid}")
-    public ApiResponse<List<BlockResponse.BlockLogDataResponseDTO>> getBlockCreator(@PathVariable Long userid){
-        return ApiResponse.onSuccess(blockQueryService.getBlockCreator(userid));
-    }
-
 
 
 }

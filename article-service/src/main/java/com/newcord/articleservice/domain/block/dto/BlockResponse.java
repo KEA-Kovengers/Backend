@@ -73,12 +73,4 @@ public class BlockResponse {
         private List<String> blockList;
     }
 
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class BlockLogDataResponseDTO{
-        private String blockId;
-        private Long creatorId;
-    }
 }

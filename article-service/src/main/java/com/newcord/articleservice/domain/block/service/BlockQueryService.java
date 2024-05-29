@@ -8,5 +8,4 @@ import java.util.List;
 public interface BlockQueryService {
     BlockDTO getBlockDetail(String blockId);     //블럭 상세 검색 (ID 기반)
 
-    List<BlockLogDataResponseDTO> getBlockCreator(Long creator_id);
 }

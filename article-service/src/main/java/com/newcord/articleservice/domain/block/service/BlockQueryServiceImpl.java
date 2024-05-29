@@ -29,19 +29,4 @@ public class BlockQueryServiceImpl implements BlockQueryService{
         return BlockDTO.toDTO(block);
     }
 
-    @Override
-    public List<BlockLogDataResponseDTO> getBlockCreator(Long creator_id) {
-        List<Block> blocks=blockRepository.findByCreatedByCreatorId(creator_id);
-        List<BlockLogDataResponseDTO> result = new ArrayList<>();
-        for(Block block:blocks){
-            BlockLogDataResponseDTO blockLogDataResponseDTO=BlockLogDataResponseDTO.builder()
-                    .creatorId(block.getCreated_by().getCreator_id())
-                    .blockId(block.getId().toString())
-                    .build();
-
-            result.add(blockLogDataResponseDTO);
-        }
-
-        return result;
-    }
 }

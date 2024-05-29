@@ -17,7 +17,6 @@ public class VersionOperation {
     private long position;                          //블럭 내에서 위치
     private String content;
     private BlockUpdatedBy updated_by;
-// contorl+tab plz
     public void addPosition(long position) {
         this.position += position;
     }

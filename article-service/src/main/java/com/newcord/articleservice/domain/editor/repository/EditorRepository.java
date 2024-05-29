@@ -14,7 +14,6 @@ public interface EditorRepository extends JpaRepository<Editor, Long> {
     Page<Editor> findByUserID(Long userID, Pageable pageable);
     Optional<Editor> findByPostIdAndUserID(Long postId, Long userID);
     List<Editor> findByPostId(Long postId);
-
     List<Editor> findAllByPostId(Long postId);
 
 }

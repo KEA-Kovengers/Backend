@@ -36,25 +36,4 @@ public class EditorResponse {
         private List<Long> userID;
     }
 
-    @Builder
-    @Getter
-    public static class EditorLogResponseDTO {
-        private Long userID;
-        private String blockId;
-
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            EditorLogResponseDTO that = (EditorLogResponseDTO) o;
-            return Objects.equals(userID, that.userID) &&
-                    Objects.equals(blockId, that.blockId);
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(userID, blockId);
-        }
-    }
 }
