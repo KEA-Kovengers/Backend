@@ -33,13 +33,11 @@ public class RabbitMQServiceImpl implements RabbitMQService{
             .durable(true)
             .build();
         rabbitAdmin.declareExchange(exchange);
-        System.out.println("topicName = " + topicName);
         return "Topic created " + topicName;
     }
 
     @Override
     public String deleteTopic(String topicName) {
-        System.out.println("topicName = " + topicName);
         rabbitAdmin.deleteExchange(topicName);
         return "Topic deleted " + topicName;
     }

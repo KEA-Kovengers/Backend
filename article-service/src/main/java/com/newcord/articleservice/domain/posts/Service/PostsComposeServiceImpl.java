@@ -71,6 +71,20 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return "편집세션이 삭제되었습니다.";
     }
 
+/*
+    15분 단위로 increaseId()함수 실행
+    실행시에 현재 웹소켓 세선에 연결된 유저가 있으면
+    articleVersion 업데이트
+    유저 없으면 실행되도 업데이트 안됨
+*/
+@Scheduled(fixedRate = 540000)
+    public void increaseId() {
+        for (Map.Entry<String, Integer> entry : sessionCnt.entrySet()) {
+            if (sessionCnt.get(entry.getKey()) > 0) {
+                articleVersionCommandService.updateVersion(Long.valueOf(entry.getKey()));
+            }
+        }
+    }
     @Override
     public PostCreateResponseDTO createPost(Long userID, PostCreateRequestDTO postCreateDTO) {
         Posts posts = postsCommandService.createPost(userID, postCreateDTO);
@@ -155,14 +169,7 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return makePostDetailResponseDTO(posts);
     }
 
-    @Scheduled(fixedRate = 540000)
-    public void increaseId() {
-        for (Map.Entry<String, Integer> entry : sessionCnt.entrySet()) {
-            if (sessionCnt.get(entry.getKey()) > 0) {
-                articleVersionCommandService.updateVersion(Long.valueOf(entry.getKey()));
-            }
-        }
-    }
+
 
     @Override
     public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size) {

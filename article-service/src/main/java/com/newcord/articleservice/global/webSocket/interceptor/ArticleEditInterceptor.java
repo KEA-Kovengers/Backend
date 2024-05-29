@@ -22,8 +22,8 @@ public class ArticleEditInterceptor implements ChannelInterceptor {
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         // 인바운드 메시지를 가로채는 로직
 
-        System.out.println("running");
 
+        System.out.println("Inbound Message: " + message);
         if (message == null) {
             return message;
         }
@@ -45,13 +45,6 @@ public class ArticleEditInterceptor implements ChannelInterceptor {
         // 필요한 작업 수행
         handleSubscription(destination, headerAccessor);
         return message;
-    }
-
-
-    @Scheduled(fixedRate = 1000)
-    public void increaseId(){
-        //increase id if article id exist
-
     }
 
 
