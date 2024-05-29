@@ -21,10 +21,10 @@ public class Notices implements Serializable {
 
     @Id
     private ObjectId id;
-    private Long user_id;
-    private String body;
-    private NoticeType type;
-    private StatusType status;
+    private Long user_id; // 알림 받는 유저 아이디
+    private String body; // 알림 내용
+    private NoticeType type; // 알림 종류
+    private StatusType status; // 알림 확인 여부
     @CreatedDate
     private LocalDateTime created_at;
 }

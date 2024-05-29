@@ -9,5 +9,4 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 @Service
 public interface NoticesService {
     Notices saveNotices(Notices notices); // 테스트
-    SseEmitter subscribe(String receiver_id, String lastEventId); // 구독 설정
 }
