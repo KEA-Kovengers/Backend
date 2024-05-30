@@ -191,13 +191,15 @@ pipeline {
                             sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
                             sh 'rm -rf kubernetes-yaml' // Add this line
                             sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
+                            sh 'git config user.email "keakovengers@gmail.com"'
+                            sh 'git config user.name "kovengers"'
                         }
                         if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                        dir('kubernetes-yaml/backend/article-service'){
-                            sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}|' article-service.yaml"
-                            sh 'git add article-service.yaml'
-                            sh 'git diff --exit-code || git commit -m "Update article service image tag"'
-                        }
+                            dir('kubernetes-yaml/backend/article-service'){
+                                sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}|' article-service.yaml"
+                                sh 'git add article-service.yaml'
+                                sh 'git diff --exit-code || git commit -m "Update article service image tag"'
+                            }
                         }
                         if (env.USER_SERVICE_CHANGED == 'true') {
                             dir('kubernetes-yaml/backend/user-service'){
@@ -217,7 +219,6 @@ pipeline {
                             sh 'git push origin kakao-cloud'
                         }
                     }
-                    
                 }
             }
         }
