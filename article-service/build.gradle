@@ -55,6 +55,9 @@ tasks.named('test') {
 
 processResources.dependsOn('copyGitSubmodule')
 task copyGitSubmodule(type: Copy) {
+	doFirst {
+		mkdir 'src/main/resources'
+	}
     from '../config/article-service-module'
     include '*.yml'
     into 'src/main/resources'
