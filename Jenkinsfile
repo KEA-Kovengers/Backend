@@ -191,6 +191,8 @@ pipeline {
                             sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
                             sh 'rm -rf kubernetes-yaml' // Add this line
                             sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
+                            sh 'git config user.email "keakovengers@gmail.com"'
+                            sh 'git config user.name "kovengers"'
                             sh 'git pull origin git@github.com:KEA-Kovengers/kubernetes-yaml.git kakao-cloud'
                         }
                         if (env.ARTICLE_SERVICE_CHANGED == 'true') {
@@ -215,8 +217,6 @@ pipeline {
                         //     }
                         // }
                         sshagent(['k8s_git']) {
-                            sh 'git config user.email "keakovengers@gmail.com"'
-                            sh 'git config user.name "kovengers"'
                             sh 'git push git@github.com:KEA-Kovengers/kubernetes-yaml.git kakao-cloud'
                         }
                     }
