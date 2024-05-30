@@ -185,6 +185,8 @@ pipeline {
                             sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
                             sh 'rm -rf kubernetes-yaml' // Add this line
                             sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
+                            sh 'cd kubernetes-yaml'
+                            sh 'git checkout -b kakao-cloud || git checkout kakao-cloud' // Add this line
                         }
                     }
                     if (env.ARTICLE_SERVICE_CHANGED == 'true') {
