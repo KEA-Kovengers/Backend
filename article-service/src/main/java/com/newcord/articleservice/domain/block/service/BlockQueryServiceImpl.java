@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.block.service;
 
+import com.newcord.articleservice.domain.block.dto.BlockResponse.*;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.repository.BlockRepository;
@@ -9,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -24,4 +28,5 @@ public class BlockQueryServiceImpl implements BlockQueryService{
 
         return BlockDTO.toDTO(block);
     }
+
 }

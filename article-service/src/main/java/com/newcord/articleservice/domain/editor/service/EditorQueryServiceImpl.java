@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.service;
 
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorListResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
@@ -7,16 +8,19 @@ import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponse
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,7 +39,6 @@ public class EditorQueryServiceImpl implements EditorQueryService{
 
         Page<Editor> filteredEditorsPage = new PageImpl<>(filteredEditors, pageRequest, filteredEditors.size());
 
-
         return PostListResponseDTO.builder()
                 .postList(filteredEditorsPage)
                 .build();
@@ -52,9 +55,11 @@ public class EditorQueryServiceImpl implements EditorQueryService{
 
     @Override
     public EditorListResponseDTO getAllEditorsByPostId(Long postId) {
+
         return EditorListResponseDTO.builder()
             .postId(postId)
-            .userID(editorRepository.findByPostId(postId).stream().map(Editor::getUserID).toList())
+            .userID(editorRepository.findAllByPostId(postId).stream().map(Editor::getUserID).toList())
             .build();
     }
+
 }

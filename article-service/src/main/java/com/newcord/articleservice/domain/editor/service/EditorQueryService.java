@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.service;
 
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorListResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.PostListResponseDTO;
