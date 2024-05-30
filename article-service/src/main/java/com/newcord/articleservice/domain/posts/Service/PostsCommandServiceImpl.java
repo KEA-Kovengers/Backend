@@ -10,9 +10,11 @@ import com.newcord.articleservice.global.common.response.code.status.ErrorStatus
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PostsCommandServiceImpl implements PostsCommandService{
     private final PostsRepository postsRepository;
 
@@ -23,7 +25,6 @@ public class PostsCommandServiceImpl implements PostsCommandService{
     public Posts createPost(Long userID, PostCreateRequestDTO postCreateDTO) {
         Posts newPosts = postCreateDTO.toEntity(postCreateDTO);
         postsRepository.save(newPosts);
-
         return newPosts;
     }
 
