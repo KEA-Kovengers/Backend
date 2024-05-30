@@ -70,10 +70,10 @@ pipeline {
                         }
                     }
                     if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                        dir('article-service') {
+                        dir('notice-service') {
                             docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION} .")
 
-                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
+                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
                         }
                     }
                 }
@@ -169,7 +169,7 @@ pipeline {
                                 }
                                 dir('notice-service'){
                                     sh 'cp ../../../notice-service-configmap.yml .'
-                                    sh 'git add user-service-configmap.yml'
+                                    sh 'git add notice-service-configmap.yml'
                                 }
                                 sh 'git diff --cached --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
