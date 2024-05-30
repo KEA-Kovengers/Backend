@@ -35,6 +35,13 @@ dependencies {
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
+processResources.dependsOn('copyGitSubmodule')
+task copyGitSubmodule(type: Copy) {
+	from '../config/notice-service-module'
+	include '*.yml'
+	into 'src/main/resources'
+}
+
 tasks.named('bootBuildImage') {
 	builder = 'paketobuildpacks/builder-jammy-base:latest'
 }
