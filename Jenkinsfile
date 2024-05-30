@@ -216,7 +216,7 @@ pipeline {
                         sshagent(['k8s_git']) {
                             sh 'git config user.email "keakovengers@gmail.com"'
                             sh 'git config user.name "kovengers"'
-                            sh 'git push origin kakao-cloud'
+                            sh 'git push git@github.com:KEA-Kovengers/kubernetes-yaml.git kakao-cloud'
                         }
                     }
                 }
