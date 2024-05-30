@@ -172,7 +172,7 @@ pipeline {
                                 //     sh 'git add user-service-configmap.yml'
                                 // }
                                 
-                                sh 'git diff --exit-code || git commit -m "Update ConfigMap"'
+                                sh 'git diff --cached --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
                                 }
@@ -211,7 +211,7 @@ pipeline {
                             // }
                             sh 'git add -A'
                             sh 'git status'
-                            sh 'git diff --exit-code || git commit -m "Update service image tag"'
+                            sh 'git diff --cached --exit-code || git commit -m "Update service image tag"'
                             sshagent(['k8s_git']) {
                                 sh 'git push origin kakao-cloud'
                             }
