@@ -210,7 +210,7 @@ pipeline {
                             //     }
                             // }
                             sshagent(['k8s_git']) {
-                                sh 'git add .'
+                                sh 'git add -A'
                                 sh 'git diff --exit-code || git commit -m "Update service image tag"'
                                 sh 'git push origin kakao-cloud'
                             }
