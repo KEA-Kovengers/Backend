@@ -5,6 +5,7 @@ pipeline {
         DOCKER_HUB_USERNAME = 'kovengers'
         IMAGE_NAME_ARTICLE_SERVICE = 'article-service'
         IMAGE_NAME_USER_SERVICE = 'user-service'
+        IMAGE_NAME_NOTICE_SERVICE = 'notice-service'
         VERSION = "${env.BUILD_NUMBER}" // Jenkins 빌드 번호를 버전으로 사용합니다.
     }
     stages {
@@ -18,6 +19,7 @@ pipeline {
                             echo "This build was started manually."
                             env.ARTICLE_SERVICE_CHANGED = 'true'
                             env.USER_SERVICE_CHANGED = 'true'
+                            env.NOTICE_SERVICE_CHANGED = 'true'
                     } else {
                         echo "This build was not started manually."
 
@@ -31,33 +33,16 @@ pipeline {
                         def changes = sh(script: "git diff --name-only ${lastBuildCommit} HEAD", returnStdout: true).trim()
                         echo "Changes: ${changes}"
                         env.ARTICLE_SERVICE_CHANGED = changes.contains('article-service') ? 'true' : 'false'
-                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false'   
+                        env.USER_SERVICE_CHANGED = changes.contains('user-service') ? 'true' : 'false' 
+                        env.NOTICE_SERVICE_CHANGED = changes.contains('notice-service') ? 'true' : 'false'   
                     }
                     
                 }
             }
         }
-        stage('Copy YAML File') {
+        stage('Pull Git Submodules') {
             steps {
-                script{
-                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
-                    // YAML 파일을 credential로부터 읽어와서 특정 위치에 복사
-                    withCredentials([file(credentialsId: 'article-application', variable: 'ARTICLE_YML_FILE')]) {
-                        // 파일 복사 명령 실행
-                        sh('sudo mkdir -p ' + WORKSPACE + '/config/article-service-module/')
-                        sh('sudo cp ' + ARTICLE_YML_FILE + ' ' + WORKSPACE + '/config/article-service-module/application.yml')
-                    }
-                    }
-                    if (env.USER_SERVICE_CHANGED == 'true') {
-                        // YAML 파일을 credential로부터 읽어와서 특정 위치에 복사
-                        withCredentials([file(credentialsId: 'user-application', variable: 'USER_YML_FILE')]) {
-                            // 파일을 빌드 디렉토리 내 특정 위치로 복사
-                            // 파일 복사 명령 실행
-                            sh('sudo mkdir -p ' + WORKSPACE + '/config/user-service-module/')
-                            sh('sudo cp ' + USER_YML_FILE + ' ' + WORKSPACE + '/config/user-service-module/application.yml')
-                        }
-                    }
-                }
+                sh 'git submodule update --init --recursive'
             }
         }
         stage('Build Docker images') {
@@ -75,6 +60,13 @@ pipeline {
                             docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION} .")
 
                             echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
+                        }
+                    }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        dir('article-service') {
+                            docker.build("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}", "-t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:latest -t ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION} .")
+
+                            echo "Build ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}"
                         }
                     }
                 }
@@ -100,6 +92,14 @@ pipeline {
 
                             echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                         }
+                        if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                            // 'latest' 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:latest").push()
+                            // 버전 태그 푸시
+                            docker.image("${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}").push()
+
+                            echo "Push ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
+                        }
                     }
                 }
             }
@@ -117,20 +117,14 @@ pipeline {
                         sh 'docker rmi registry.hub.docker.com/${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}'                  
                         echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}"
                     }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'  
+                        sh 'docker rmi registry.hub.docker.com/${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'                  
+                        echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
+                    }
                 }
             }
         }
-        
-        stage('Kubernetes deploy') {
-            steps{
-                script {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
-                        sh 'kubectl --kubeconfig=$KUBECONFIG rollout restart deployment'
-                    }
-                }
-            }    
-        }
-
         stage('Save Last Commit Hash') {
             steps {
                 script {

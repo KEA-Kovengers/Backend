@@ -5,6 +5,6 @@ import com.newcord.articleservice.domain.comments.dto.CommentsResponse;
 import com.newcord.articleservice.domain.comments.entity.Comments;
 
 public interface CommentsCommandService {
-    Comments createComment(CommentsCreateRequestDTO commentsCreateRequestDTO);
+    Comments createComment(Long userID,CommentsCreateRequestDTO commentsCreateRequestDTO);
     Comments deleteComment(CommentsRequestDTO commentsRequestDTO);
 }

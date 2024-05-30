@@ -5,8 +5,10 @@ import com.newcord.articleservice.domain.report.entity.Report;
 import com.newcord.articleservice.domain.report.service.ReportCommandService;
 import com.newcord.articleservice.domain.report.service.ReportQueryService;
 import com.newcord.articleservice.domain.report.type.ReportType;
+import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,8 +27,8 @@ public class ReportController {
 
     @PostMapping("/create")
     @Operation(summary = "신고 하기",description = "type에 COMMENT or POST")
-    public ApiResponse<Report> createCommentNotice(@RequestBody CreateReportRequestDTO createReportRequestDTO){
-        return ApiResponse.onSuccess(reportCommandService.createReport(createReportRequestDTO));
+    public ApiResponse<Report> createCommentNotice(@Schema(hidden = true) @UserID Long userID, @RequestBody CreateReportRequestDTO createReportRequestDTO){
+        return ApiResponse.onSuccess(reportCommandService.createReport(userID,createReportRequestDTO));
     }
 
     @GetMapping("/all")
@@ -41,10 +43,10 @@ public class ReportController {
         return ApiResponse.onSuccess(reportQueryService.getEachReportList(type));
     }
 
-    @GetMapping("/{userid}")
+    @GetMapping("/reportlist")
     @Operation(summary = "내가 신고한 내역보기", description = "내가 신고한 내역 보는 api")
-    public ApiResponse<List<Report>> getUserReportList(@PathVariable Long userid){
-        return ApiResponse.onSuccess(reportQueryService.getUsersReportList(userid));
+    public ApiResponse<List<Report>> getUserReportList(@Schema(hidden = true) @UserID Long userID){
+        return ApiResponse.onSuccess(reportQueryService.getUsersReportList(userID));
     }
 
     @GetMapping("/detail/{id}")

@@ -28,6 +28,7 @@ public class WSResponse<T> {
     private final String dest;
     private final String code;
     private final String message;
+//    private final String articleVersion;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private T result;
 
