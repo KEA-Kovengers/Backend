@@ -70,12 +70,6 @@ pipeline {
                 script {
                     if (env.CONFIG_CHANGED == 'true') {
                         dir('config') {
-                            sshagent(['k8s_git']) {
-                                sh 'mkdir -p ~/.ssh'
-                                sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
-                                sh 'rm -rf kubernetes-yaml' // Add this line
-                                sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
-                            }
                             dir('kubernetes-yaml/backend') {
                                 sh 'git config user.email "keakovengers@gmail.com"'
                                 sh 'git config user.name "kovengers"'
@@ -178,6 +172,41 @@ pipeline {
                         sh 'docker rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'  
                         sh 'docker rmi registry.hub.docker.com/${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}'                  
                         echo "rmi ${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}"
+                    }
+                }
+            }
+        }
+        stage('Update Kubernetes YAML') {
+            steps {
+                script {
+                    dir('config'){
+                        sshagent(['k8s_git']) {
+                            sh 'mkdir -p ~/.ssh'
+                            sh 'if [ ! -f ~/.ssh/known_hosts ]; then ssh-keyscan github.com >> ~/.ssh/known_hosts; fi'
+                            sh 'rm -rf kubernetes-yaml' // Add this line
+                            sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
+                        }
+                    }
+                    if (env.ARTICLE_SERVICE_CHANGED == 'true') {
+                        dir('config/kubernetes-yaml/backend/article-service'){
+                            sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}|' article-service.yaml"
+                            sh 'git add article-service.yaml'
+                        }
+                    }
+                    if (env.USER_SERVICE_CHANGED == 'true') {
+                        dir('config/kubernetes-yaml/backend/user-service'){
+                            sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}|' user-service.yaml"
+                            sh 'git add user-service.yml'
+                        }
+                    }
+                    if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                        dir('config/kubernetes-yaml/backend/notice-service'){
+                            sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}|' notice-service.yaml"
+                            sh 'git add notice-service.yml'
+                        }
+                    }
+                    sshagent(['k8s_git']) {
+                        sh 'git push origin kakao-cloud'
                     }
                 }
             }
