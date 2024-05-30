@@ -139,7 +139,7 @@ pipeline {
                         dir('config') {
                             sh 'sudo kubectl create configmap article-service-config --from-file=article-service-module/application.yml --dry-run=client -o yaml > article-service-configmap.yml'
                             sh 'sudo kubectl create configmap user-service-config --from-file=user-service-module/application.yml --dry-run=client -o yaml > user-service-configmap.yml'
-                            // sh 'sudo kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
+                            sh 'sudo kubectl create configmap notice-service-config --from-file=notice-service-module/application.yml --dry-run=client -o yaml > notice-service-configmap.yml'
                         }
                     }
                 }
@@ -167,11 +167,10 @@ pipeline {
                                     sh 'cp ../../../user-service-configmap.yml .'
                                     sh 'git add user-service-configmap.yml'
                                 }
-                                // dir('notice-service'){
-                                //     sh 'cp ../../../notice-service-configmap.yml .'
-                                //     sh 'git add user-service-configmap.yml'
-                                // }
-                                
+                                dir('notice-service'){
+                                    sh 'cp ../../../notice-service-configmap.yml .'
+                                    sh 'git add user-service-configmap.yml'
+                                }
                                 sh 'git diff --cached --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
@@ -203,12 +202,12 @@ pipeline {
                                     sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}|' user-service.yaml"
                                 }
                             }
-                            // if (env.NOTICE_SERVICE_CHANGED == 'true') {
-                            //     dir('backend/notice-service'){
-                            //         sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}|' notice-service.yaml"
-                            //         sh 'git add notice-service.yaml'
-                            //     }
-                            // }
+                            if (env.NOTICE_SERVICE_CHANGED == 'true') {
+                                dir('backend/notice-service'){
+                                    sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}|' notice-service.yaml"
+                                    sh 'git add notice-service.yaml'
+                                }
+                            }
                             sh 'git config user.email "keakovengers@gmail.com"'
                             sh 'git config user.name "kovengers"'
                             sh 'git add -A'
