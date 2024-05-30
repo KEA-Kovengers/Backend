@@ -196,25 +196,22 @@ pipeline {
                             if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                                 dir('backend/article-service'){
                                     sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}|' article-service.yaml"
-                                    sh 'git add article-service.yaml'
-                                    sh 'git diff --exit-code || git commit -m "Update article service image tag"'
                                 }
                             }
                             if (env.USER_SERVICE_CHANGED == 'true') {
                                 dir('backend/user-service'){
                                     sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_USER_SERVICE}:${VERSION}|' user-service.yaml"
-                                    sh 'git add user-service.yaml'
-                                    sh 'git diff --exit-code || git commit -m "Update user service image tag"'
                                 }
                             }
                             // if (env.NOTICE_SERVICE_CHANGED == 'true') {
                             //     dir('backend/notice-service'){
                             //         sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_NOTICE_SERVICE}:${VERSION}|' notice-service.yaml"
                             //         sh 'git add notice-service.yaml'
-                            //         sh 'git diff --exit-code || git commit -m "Update notice service image tag"'
                             //     }
                             // }
                             sshagent(['k8s_git']) {
+                                sh 'git add *'
+                                sh 'git diff --exit-code || git commit -m "Update service image tag"'
                                 sh 'git push origin kakao-cloud'
                             }
                         }
