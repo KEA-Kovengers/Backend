@@ -215,7 +215,7 @@ pipeline {
                             //     }
                             // }
                             sshagent(['k8s_git']) {
-                                sh 'git push kakao-cloud'
+                                sh 'git push origin kakao-cloud'
                             }
                         }
                     }
