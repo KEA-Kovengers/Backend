@@ -213,7 +213,7 @@ pipeline {
                             sh 'git config user.name "kovengers"'
                             sh 'git add -A'
                             sh 'git status'
-                            sh 'git diff --cached --exit-code || git commit -a "Update service image tag"'
+                            sh 'git diff --cached --exit-code || git commit -m "Update service image tag"'
                             sshagent(['k8s_git']) {
                                 sh 'git push origin kakao-cloud'
                             }
