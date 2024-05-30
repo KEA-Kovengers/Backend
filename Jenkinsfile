@@ -172,7 +172,7 @@ pipeline {
                                 //     sh 'git add user-service-configmap.yml'
                                 // }
                                 
-                                sh 'git commit -a "Update ConfigMap"'
+                                sh 'git diff --cached --exit-code || git commit -m "Update ConfigMap"'
                                 sshagent(['k8s_git']) {
                                     sh 'git push origin kakao-cloud'
                                 }
@@ -193,8 +193,6 @@ pipeline {
                             sh 'git clone git@github.com:KEA-Kovengers/kubernetes-yaml.git'
                         }
                         dir('kubernetes-yaml') {
-                            sh 'git config user.email "keakovengers@gmail.com"'
-                            sh 'git config user.name "kovengers"'
                             if (env.ARTICLE_SERVICE_CHANGED == 'true') {
                                 dir('backend/article-service'){
                                     sh "sed -i 's|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:.*|${DOCKER_HUB_USERNAME}/${IMAGE_NAME_ARTICLE_SERVICE}:${VERSION}|' article-service.yaml"
@@ -211,9 +209,11 @@ pipeline {
                             //         sh 'git add notice-service.yaml'
                             //     }
                             // }
+                            sh 'git config user.email "keakovengers@gmail.com"'
+                            sh 'git config user.name "kovengers"'
                             sh 'git add -A'
                             sh 'git status'
-                            sh 'git commit -a "Update service image tag"'
+                            sh 'git diff --cached --exit-code || git commit -a "Update service image tag"'
                             sshagent(['k8s_git']) {
                                 sh 'git push origin kakao-cloud'
                             }
