@@ -209,9 +209,10 @@ pipeline {
                             //         sh 'git add notice-service.yaml'
                             //     }
                             // }
+                            sh 'git add -A'
+                            sh 'git status'
+                            sh 'git diff --exit-code || git commit -m "Update service image tag"'
                             sshagent(['k8s_git']) {
-                                sh 'git add -A'
-                                sh 'git diff --exit-code || git commit -m "Update service image tag"'
                                 sh 'git push origin kakao-cloud'
                             }
                         }
