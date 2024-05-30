@@ -24,7 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Friend", description = "친구 API")
-@RequestMapping("/users/friend")
+@RequestMapping("/friend")
 public class FriendController {
 
     private final UserService userService;
@@ -63,7 +63,7 @@ private final FriendComposeService friendComposeService;
         return ApiResponse.onSuccess(friendCommandService.rejectFriendshipRequest(friendRequestDTO));
     }
 
-    @GetMapping("/friend/{userid}")
+    @GetMapping("/view/{userid}")
     @Operation(summary = "친구 목록",description = "내 친구 목록보기")
     public ApiResponse<List<FriendResponse.FriendInfoResponseDTO>> getAcceptFriendInfo(@PathVariable Long userid){
         return ApiResponse.onSuccess(friendComposeService.getAcceptFriendList(userid));

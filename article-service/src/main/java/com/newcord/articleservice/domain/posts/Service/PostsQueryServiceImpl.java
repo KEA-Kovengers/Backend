@@ -2,6 +2,7 @@ package com.newcord.articleservice.domain.posts.Service;
 
 import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
@@ -36,8 +37,10 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
     Page<Posts> postsPage = postsRepository.findAll(pageRequest);
 
     List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+            .filter(post -> post.getStatus() == PostStatus.POST)
             .map(this::convertToDTO)
             .collect(Collectors.toList());
+
 
     Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
 
@@ -52,6 +55,7 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .title(post.getTitle())
                 .body(post.getBody())
                 .thumbnail(post.getThumbnail())
+                .status(post.getStatus())
                 .build();
     }
 

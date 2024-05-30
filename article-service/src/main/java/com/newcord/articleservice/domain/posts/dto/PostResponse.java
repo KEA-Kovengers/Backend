@@ -32,6 +32,8 @@ public static class PostResponseDTO{
         private String title;
         private String body;
         private String thumbnail;
+    private PostStatus status;
+
 }
     @Builder
     @Getter
