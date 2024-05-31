@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.article_version.service;
 
 import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.OperationEntityType;
 import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.article_version.entity.Version;
 import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
@@ -46,6 +47,12 @@ public class ArticleVersionCommandServiceImpl implements ArticleVersionCommandSe
                             continue;
                         if(serverOperation.getEntityType() != appliedOperation.getEntityType()) {
                             continue;
+                        }
+                        // 텍스트 수정(블럭 내부)인 경우, 같은 블럭끼리만 OT수행해야함
+                        if(serverOperation.getEntityType().equals(OperationEntityType.TEXT)){
+                            if(!serverOperation.getId().equals(appliedOperation.getId())){
+                                continue;
+                            }
                         }
 
                         if(appliedOperation.getOperationType().equals(OperationType.INSERT)){

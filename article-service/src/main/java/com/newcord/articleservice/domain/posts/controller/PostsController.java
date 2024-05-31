@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.posts.controller;
 
+import com.newcord.articleservice.domain.editor.dto.EditorResponse;
 import com.newcord.articleservice.domain.editor.service.EditorQueryService;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsComposeService;
@@ -62,7 +63,7 @@ public class PostsController {
 
     @Operation(summary = "게시글 목록 조회", description = "유저의 게시글 목록을 조회합니다.")
     @GetMapping("/list/{userID}")
-    public ApiResponse<PostListResponseDTO> getPostList(@PathVariable Long userID, @RequestParam Integer page, @RequestParam Integer size){
+    public ApiResponse<EditorResponse.EditorPostListResponseDTO> getPostList(@PathVariable Long userID, @RequestParam Integer page, @RequestParam Integer size){
         return ApiResponse.onSuccess(editorQueryService.getPostListByUserID(userID, page, size));
     }
 

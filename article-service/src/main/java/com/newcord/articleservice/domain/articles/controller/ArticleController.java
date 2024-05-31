@@ -1,7 +1,11 @@
 package com.newcord.articleservice.domain.articles.controller;
 
 import com.newcord.articleservice.domain.articles.dto.ArticleRequest.BlockSequenceUpdateRequestDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.HashtagUpdateRequestDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.TitleUpdateRequestDTO;
 import com.newcord.articleservice.domain.articles.dto.ArticleResponse.BlockSequenceUpdateResponseDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleResponse.HashtagUpdateResponseDTO;
+import com.newcord.articleservice.domain.articles.dto.ArticleResponse.TitleUpdateResponseDTO;
 import com.newcord.articleservice.domain.articles.service.ArticleComposeService;
 import com.newcord.articleservice.global.common.WSRequest;
 import com.newcord.articleservice.global.common.response.WSResponse;
@@ -24,6 +28,25 @@ public class ArticleController {
     public WSResponse<BlockSequenceUpdateResponseDTO> updateBlockSequence(WSRequest<BlockSequenceUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
         BlockSequenceUpdateResponseDTO responseDTO = articleComposeService.updateBlockSequence(requestDTO.getUserID(), postID, requestDTO.getDto());
         WSResponse<BlockSequenceUpdateResponseDTO> response = WSResponse.onSuccess("/updateBlockSequence/"+postID, requestDTO.getUuid(), responseDTO);
+        rabbitMQService.sendMessage(postID.toString(), "", response);
+
+        return response;
+    }
+
+    //제목 수정 ws api
+    @MessageMapping("/updateTitle/{postID}")
+    public WSResponse<TitleUpdateResponseDTO> updateTitle(WSRequest<TitleUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
+        TitleUpdateResponseDTO responseDTO = articleComposeService.updateTitle(requestDTO.getUserID(), postID, requestDTO.getDto());
+        WSResponse<TitleUpdateResponseDTO> response = WSResponse.onSuccess("/updateTitle/"+postID, requestDTO.getUuid(), responseDTO);
+        rabbitMQService.sendMessage(postID.toString(), "", response);
+
+        return response;
+    }
+    // 해시태그 수정 ws api
+    @MessageMapping("/updateHashtags/{postID}")
+    public WSResponse<HashtagUpdateResponseDTO> updateHashtag(WSRequest<HashtagUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
+        HashtagUpdateResponseDTO responseDTO = articleComposeService.updateHashtags(requestDTO.getUserID(), postID, requestDTO.getDto());
+        WSResponse<HashtagUpdateResponseDTO> response = WSResponse.onSuccess("/updateHashtags/"+postID, requestDTO.getUuid(), responseDTO);
         rabbitMQService.sendMessage(postID.toString(), "", response);
 
         return response;

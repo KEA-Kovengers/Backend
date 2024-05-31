@@ -18,7 +18,4 @@ public interface PostsComposeService {
     PostDetailResponseDTO getPostDetail(Long postID);        //게시글 상세 검색 (ID 기반)
     PostDetailResponseDTO updateHashtags(Long userID, PostUpdateHashtagsRequestDTO postUpdateHashtagsRequestDTO);
 
-
-
-   // PostResponse.SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size);
 }

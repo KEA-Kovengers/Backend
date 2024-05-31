@@ -1,5 +1,7 @@
 package com.newcord.articleservice.domain.posts.Service;
 
+import com.newcord.articleservice.domain.comments.repository.CommentsRepository;
+import com.newcord.articleservice.domain.likes.repository.LikeRepository;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
@@ -22,7 +24,8 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PostsQueryServiceImpl implements PostsQueryService{
     private final PostsRepository postsRepository;
-
+private final LikeRepository likeRepository;
+private final CommentsRepository commentsRepository;
     @Override
     public Posts getPost(Long postId) {
         Posts posts = postsRepository.findById(postId).orElse(null);
@@ -37,7 +40,14 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
     Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
 
     List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
-            .map(this::convertToDTO)
+            .map(post -> {
+                PostResponseDTO dto = convertToDTO(post);
+                int likeCnt = likeRepository.findAllByPost_id(post.getId()).size();
+                int commentCnt=commentsRepository.findByPostId(post.getId()).size();
+                dto.setCommentCnt(commentCnt);
+                dto.setLikeCnt(likeCnt);
+                return dto;
+            })
             .collect(Collectors.toList());
 
 
@@ -58,19 +68,20 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .build();
     }
 
-//    @Override
-//    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
-//        PageRequest pageRequest = PageRequest.of(page, size);
-//        return postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
-//    }
-
     @Override
     public SocialPostListDTO getPostbyHashTag(String tag, Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Posts> postsPage = postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
 
         List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
-                .map(this::convertToDTO)
+                .map(post -> {
+                    PostResponseDTO dto = convertToDTO(post);
+                    int likeCnt = likeRepository.findAllByPost_id(post.getId()).size();
+                    int commentCnt=commentsRepository.findByPostId(post.getId()).size();
+                    dto.setCommentCnt(commentCnt);
+                    dto.setLikeCnt(likeCnt);
+                    return dto;
+                })
                 .collect(Collectors.toList());
 
 

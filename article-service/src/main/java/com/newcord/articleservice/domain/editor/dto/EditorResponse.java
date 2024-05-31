@@ -3,8 +3,11 @@ package com.newcord.articleservice.domain.editor.dto;
 import java.util.List;
 import java.util.Objects;
 
+import com.newcord.articleservice.domain.editor.entity.Editor;
+import com.newcord.articleservice.domain.posts.entity.Posts;
 import lombok.*;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
 
 // 게시글 편집자 관련 API 응답 DTO
 public class EditorResponse {
@@ -35,5 +38,21 @@ public class EditorResponse {
         private Long postId;
         private List<Long> userID;
     }
+
+    @Builder
+    @Getter
+    @Setter
+    public static class EditorPostResponseDTO {
+        private Editor postList;
+        private int likeCnt;
+        private int commentCnt;
+    }
+    @Builder
+    @Getter
+    public static class EditorPostListResponseDTO {
+        private List<EditorPostResponseDTO> editorPostResponseDTOS;
+    }
+
+
 
 }
