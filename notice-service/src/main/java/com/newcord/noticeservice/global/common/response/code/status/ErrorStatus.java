@@ -22,31 +22,6 @@ public enum ErrorStatus implements BaseErrorCode {
     // Message DTO 관련
     _BAD_REQUEST_DTO(HttpStatus.BAD_REQUEST, "COMMON400", "Request DTO 내용이 잘못되었습니다."),
 
-    _ARTICLE_NOT_FOUND(HttpStatus.NOT_FOUND, "ARTICLE_001", "존재하지 않는 게시글입니다."),
-    _ARTICLE_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "ARTICLE_002", "이미 존재하는 게시글입니다."),
-
-    //Block 관련
-    _BLOCK_NOT_FOUND(HttpStatus.NOT_FOUND, "BLOCK_001", "존재하지 않는 블록입니다."),
-    _BLOCK_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "BLOCK_002", "이미 존재하는 블록입니다."),
-
-    //Posts 관련
-    _POSTS_NOT_FOUND(HttpStatus.NOT_FOUND, "POSTS_001", "존재하지 않는 게시글입니다."),
-
-    //Editor 관련
-    _EDITOR_WITHOUT_PERMISSION(HttpStatus.BAD_REQUEST, "EDITOR_001", "편집 권한이 없습니다."),
-    _EDITOR_NOT_FOUND(HttpStatus.NOT_FOUND, "EDITOR_002", "존재하지 않는 편집자입니다."),
-
-    //Hashtags 관련
-    _HASHTAGS_NOT_FOUND(HttpStatus.NOT_FOUND, "HASHTAGS_001", "존재하지 않는 해시태그입니다."),
-    _HASHTAGS_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "HASHTAGS_002", "이미 존재하는 해시태그입니다."),
-
-    //Comments 관련
-    _COMMENT_NOT_FOUND(HttpStatus.NOT_FOUND,"COMMENTS_001","존재하지 않는 댓글입니다."),
-
-    //Report 관련
-    _REPORT_NOT_FOUND(HttpStatus.NOT_FOUND,"REPORT_001","신고 내역이 존재하지 않습니다."),
-    _REPORT_ALREADY_EXISTS(HttpStatus.BAD_REQUEST,"REPORT_002","같은 내용의 신고 내역이 존재합니다."),
-
     //Notice 관련
     _NOTICE_NOT_FOUND(HttpStatus.NOT_FOUND,"NOTICE_001","알림 내역이 존재하지 않습니다.");
 
