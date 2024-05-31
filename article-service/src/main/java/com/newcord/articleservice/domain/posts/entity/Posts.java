@@ -43,8 +43,15 @@ public class Posts extends BaseJPATimeEntity {
     @Default
     private Set<Hashtags> hashtags = new HashSet<>();
 
-    public void updateHashtagList(List<Hashtags> hashtag){
-        this.hashtags = new HashSet<>(hashtag);
+    public void updateHashtagList(List<Hashtags> hashtags){
+        this.hashtags = new HashSet<>(hashtags);
+    }
+    public void updateHashtagList(Set<Hashtags> hashtags){
+        this.hashtags = hashtags;
+    }
+
+    public void setTitle(String title){
+        this.title = title;
     }
 
     public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){
