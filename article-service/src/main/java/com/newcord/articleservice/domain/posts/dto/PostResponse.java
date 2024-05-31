@@ -7,6 +7,9 @@ import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.Builder;
@@ -52,6 +55,8 @@ public static class PostResponseDTO{
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
         private List<String> hashtags;
+        private LocalDateTime created;
+        private LocalDateTime updated;
     }
 
     @Builder
