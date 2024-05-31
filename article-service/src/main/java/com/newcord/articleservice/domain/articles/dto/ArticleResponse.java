@@ -5,6 +5,7 @@ import com.newcord.articleservice.domain.article_version.entity.OperationType;
 import com.newcord.articleservice.domain.block.entity.Block;
 import com.newcord.articleservice.domain.block.entity.BlockUpdatedBy;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -28,6 +29,19 @@ public class ArticleResponse {
         private OperationType operationType;    // Operation Type (TEXT_INSERT, TEXT_DELETE, TAG)
         private OperationEntityType entityType;  // Operation Entity Type
         private List<String> blockList;
+        private BlockUpdatedBy updated_by;      // 수정자
+    }
+
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class TitleUpdateResponseDTO {
+        private Long articleId;
+        private String articleVersion; // {version index}.{operation index} 형태
+        private OperationType operationType;    // Operation Type (TEXT_INSERT, TEXT_DELETE, TAG)
+        private OperationEntityType entityType;  // Operation Entity Type
+        private Long position;                  // 블럭 내에서 위치
+        private String content;                 // 내용               OperationType이 TEXT_INSERT, TEXT_DELETE인 경우 필수
         private BlockUpdatedBy updated_by;      // 수정자
     }
 

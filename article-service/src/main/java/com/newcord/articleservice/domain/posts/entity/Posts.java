@@ -47,6 +47,10 @@ public class Posts extends BaseJPATimeEntity {
         this.hashtags = new HashSet<>(hashtag);
     }
 
+    public void setTitle(String title){
+        this.title = title;
+    }
+
     public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){
         if (updateRequestDTO.getThumbnail() != null) this.thumbnail = updateRequestDTO.getThumbnail();
         if (updateRequestDTO.getTitle() != null) this.title = updateRequestDTO.getTitle();

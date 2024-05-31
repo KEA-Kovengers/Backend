@@ -40,6 +40,19 @@ public class PostsCommandServiceImpl implements PostsCommandService{
     }
 
     @Override
+    public Posts updateTitle(Long userID, Long postId, int position, String contnet) {
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
+                ErrorStatus._POSTS_NOT_FOUND));
+
+        String title = post.getTitle();
+        title = title.substring(0, position) + contnet + title.substring(position);
+        post.setTitle(title);
+
+        postsRepository.save(post);
+        return post;
+    }
+
+    @Override
     public Posts updateHashtags(Long postId, List<Hashtags> hashtags) {
         Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
                 ErrorStatus._POSTS_NOT_FOUND));
