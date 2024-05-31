@@ -4,6 +4,7 @@ import com.newcord.articleservice.domain.comments.dto.CommentsRequest.*;
 import com.newcord.articleservice.domain.comments.dto.CommentsResponse;
 import com.newcord.articleservice.domain.comments.entity.Comments;
 import com.newcord.articleservice.domain.comments.service.CommentsCommandService;
+import com.newcord.articleservice.domain.comments.service.CommentsComposeService;
 import com.newcord.articleservice.domain.comments.service.CommentsQueryService;
 import com.newcord.articleservice.global.annotation.UserID;
 import com.newcord.articleservice.global.common.response.ApiResponse;
@@ -23,6 +24,7 @@ import java.util.List;
 @RequestMapping("/articles/comment")
 public class CommentsController {
 
+    private final CommentsComposeService commentsComposeService;
     private final CommentsCommandService commentsCommandService;
     private final CommentsQueryService commentsQueryService;
 
@@ -38,11 +40,16 @@ public class CommentsController {
         return ApiResponse.onSuccess(commentsCommandService.createComment(userID,commentsCreateRequestDTO));
     }
 
-    @GetMapping("/commentlist/{postid}")
+    @GetMapping("/userlist/{postid}")
     @Operation(summary = "게시글 댓글 보기", description = "게시글 댓글 보기")
     public ApiResponse<List<Comments>> getCommentsList(@PathVariable Long postid){
         return ApiResponse.onSuccess(commentsQueryService.getCommentsList(postid));
     }
 
 
+    @GetMapping("/commentlist/{userid}")
+    @Operation(summary = "유저의 댓글 내역 조회",description = "유저 활동페이지 댓글 목록 조회")
+    public ApiResponse<List<CommentsResponse.CommentsUserResponseDTO>> getUsersCommentsList(@PathVariable Long userid){
+        return ApiResponse.onSuccess(commentsComposeService.getUserCommentesList(userid));
+    }
 }

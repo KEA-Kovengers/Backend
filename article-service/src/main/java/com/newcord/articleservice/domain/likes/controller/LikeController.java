@@ -44,7 +44,7 @@ public class LikeController {
     }
 
     @GetMapping("/likelist/{userid}")
-    @Operation(summary = "좋아요 내역 조회",description = "좋아요 목록 조회")
+    @Operation(summary = "유저의 좋아요 내역 조회",description = "유저 활동페이지 좋아요 목록 조회")
     public ApiResponse<List<LikeResponse.LikeResponseDTO>> getLikeList(@PathVariable Long userid){
         return ApiResponse.onSuccess(likeComposeService.getLikeList(userid));
     }
