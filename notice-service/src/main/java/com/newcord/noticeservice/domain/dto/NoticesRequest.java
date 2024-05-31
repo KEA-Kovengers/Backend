@@ -15,6 +15,5 @@ public class NoticesRequest {
         private Long user_id;
         private String body;
         private NoticeType type;
-        private LocalDateTime created_at;
     }
 }
