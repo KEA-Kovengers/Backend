@@ -45,7 +45,8 @@ dependencies {
 	//For Object Storage(AWS S3 API)
 	implementation platform('software.amazon.awssdk:bom:2.23.7')
 	implementation "software.amazon.awssdk:s3"
-	implementation 'ch.qos.logback:logback-classic:1.4.12' // try-catch문 Exception
+
+	implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'   // 로그백 for logstash json
 
 }
 
