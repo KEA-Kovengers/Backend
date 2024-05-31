@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,18 @@ public class EditorResponse {
 
     @Builder
     @Getter
+    public static class DraftEntity{
+        private Long postId;
+        private String title;
+        private LocalDateTime updatedAt;
+
+    }
+
+    @Builder
+    @Getter
+    public static class DraftsResponseDTO {
+        private List<DraftEntity> drafts;
+    }
     @Setter
     public static class EditorPostResponseDTO {
         private Editor postList;
@@ -52,7 +65,5 @@ public class EditorResponse {
     public static class EditorPostListResponseDTO {
         private List<EditorPostResponseDTO> editorPostResponseDTOS;
     }
-
-
 
 }

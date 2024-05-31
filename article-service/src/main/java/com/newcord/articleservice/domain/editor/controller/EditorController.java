@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -55,6 +56,12 @@ public class EditorController {
     @GetMapping("/list/{postId}")
     public ApiResponse<EditorListResponseDTO> getEditorList(@PathVariable Long postId) {
         return ApiResponse.onSuccess(editorQueryService.getAllEditorsByPostId(postId));
+    }
+
+    @Operation(summary = "임시 저장 게시물 조회 API", description = "유저의 임시 저장 목록을 조회합니다.")
+    @GetMapping("/drafts")
+    public ApiResponse<DraftsResponseDTO> getDraftList(@Schema(hidden = true) @UserID Long userID, @RequestParam Integer page, @RequestParam Integer size) {
+        return ApiResponse.onSuccess(editorComposeService.getDraftList(userID, page, size));
     }
 
 

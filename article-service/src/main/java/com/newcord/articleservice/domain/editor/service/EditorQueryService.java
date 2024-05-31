@@ -10,5 +10,4 @@ public interface EditorQueryService {
     EditorPostListResponseDTO getPostListByUserID(Long userID, Integer page, Integer size);     //편집자 게시글 목록 조회
     Editor getEditorByPostIdAndUserID(Long postId, Long userID);     //편집자 조회
     EditorListResponseDTO getAllEditorsByPostId(Long postId);     //게시글의 모든 편집자 조회
-
 }

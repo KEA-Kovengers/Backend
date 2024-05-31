@@ -12,5 +12,6 @@ import java.util.List;
 public interface EditorComposeService {
     EditorAddResponseDTO addEditor(Long userID, EditorAddRequestDTO editorAddDTO);       //편집자 추가
     DeleteEditorResponseDTO deleteEditor(Long userID, DeleteEditorRequestDTO deleteEditorRequestDTO);       //편집자 삭제
+    DraftsResponseDTO getDraftList(Long userID, int page, int size);       //임시 저장 게시물 조회
 
 }

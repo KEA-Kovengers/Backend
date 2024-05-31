@@ -20,11 +20,15 @@ import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.entity.Posts;
 
+import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import java.util.*;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -93,6 +97,18 @@ public class EditorComposeServiceImpl implements EditorComposeService{
         return deleteEditorResponseDTO;
     }
 
+    @Override
+    public DraftsResponseDTO getDraftList(Long userID, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Editor> editorList = editorRepository.findByUserID(userID, PostStatus.EDIT, pageable);
+        return DraftsResponseDTO.builder()
+            .drafts(editorList.getContent().stream().map(editor -> DraftEntity.builder()
+                .postId(editor.getPost().getId())
+                .title(editor.getPost().getTitle())
+                .updatedAt(editor.getUpdated_at())
+                .build()).toList())
+            .build();
+    }
 
 
 }
