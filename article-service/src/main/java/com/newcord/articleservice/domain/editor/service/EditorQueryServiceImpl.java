@@ -32,16 +32,21 @@ public class EditorQueryServiceImpl implements EditorQueryService{
     public PostListResponseDTO getPostListByUserID(Long userID, Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        Page<Editor> editors = editorRepository.findByUserID(userID, pageRequest);
-        List<Editor> filteredEditors = editors.getContent().stream()
-                .filter(editor -> editor.getPost().getStatus() == PostStatus.POST)
-                .collect(Collectors.toList());
+        Page<Editor> editors = editorRepository.findByUserID(userID,PostStatus.POST, pageRequest);
 
-        Page<Editor> filteredEditorsPage = new PageImpl<>(filteredEditors, pageRequest, filteredEditors.size());
 
         return PostListResponseDTO.builder()
-                .postList(filteredEditorsPage)
+                .postList(editors)
                 .build();
+//        Page<Editor> editors = editorRepository.findByUserID(userID,PostStatus.POST, pageRequest);
+//        List<Editor> filteredEditors = editors.getContent().stream()
+//                .collect(Collectors.toList());
+//
+//        Page<Editor> filteredEditorsPage = new PageImpl<>(filteredEditors, pageRequest, filteredEditors.size());
+//
+//        return PostListResponseDTO.builder()
+//                .postList(filteredEditorsPage)
+//                .build();
     }
 
     @Override

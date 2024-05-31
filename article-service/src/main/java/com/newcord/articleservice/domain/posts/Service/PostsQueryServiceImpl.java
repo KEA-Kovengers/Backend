@@ -34,10 +34,9 @@ public class PostsQueryServiceImpl implements PostsQueryService{
 @Override
 public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
-    Page<Posts> postsPage = postsRepository.findAll(pageRequest);
+    Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
 
     List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
-            .filter(post -> post.getStatus() == PostStatus.POST)
             .map(this::convertToDTO)
             .collect(Collectors.toList());
 
@@ -59,11 +58,27 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .build();
     }
 
-    @Override
-    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
-        PageRequest pageRequest = PageRequest.of(page, size);
+//    @Override
+//    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
+//        PageRequest pageRequest = PageRequest.of(page, size);
+//        return postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
+//    }
 
-        return postsRepository.findPostsByHashtagName(tag,pageRequest);
+    @Override
+    public SocialPostListDTO getPostbyHashTag(String tag, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Posts> postsPage = postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
+
+        List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+
+        Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
+
+        return SocialPostListDTO.builder()
+                .postsList(postResponseDTOPage)
+                .build();
     }
 
 }

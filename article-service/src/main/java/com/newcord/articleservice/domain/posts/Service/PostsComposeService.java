@@ -20,5 +20,5 @@ public interface PostsComposeService {
 
 
 
-    PostResponse.SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size);
+   // PostResponse.SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size);
 }

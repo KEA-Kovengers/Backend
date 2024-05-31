@@ -14,5 +14,5 @@ public interface PostsQueryService {
 
     PostResponse.SocialPostListDTO getPostList(Integer page, Integer size);
 
-    Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size);
+    PostResponse.SocialPostListDTO getPostbyHashTag(String tag, Integer page, Integer size);
 }
