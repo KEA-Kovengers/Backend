@@ -12,6 +12,7 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 //게시글 관련 API 응답 DTO
@@ -26,6 +27,7 @@ public class PostResponse {
 
 @Builder
 @Getter
+@Setter
 public static class PostResponseDTO{
         private Long id;
         private Long views;
@@ -33,6 +35,8 @@ public static class PostResponseDTO{
         private String body;
         private String thumbnail;
     private PostStatus status;
+    private int likeCnt;
+    private int commentCnt;
 
 }
     @Builder
@@ -52,13 +56,16 @@ public static class PostResponseDTO{
 
     @Builder
     @Getter
+    @Setter
     public static class PostListResponseDTO{
         private Page<Editor> postList;
+
     }
 
     @Builder
     @Getter
     public static class SocialPostListDTO{
         private Page<PostResponseDTO> postsList;
+
     }
 }
