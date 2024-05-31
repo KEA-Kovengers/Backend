@@ -7,11 +7,15 @@ import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import lombok.Builder;
 import lombok.Builder.Default;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.domain.Page;
 
 //게시글 관련 API 응답 DTO
@@ -26,6 +30,7 @@ public class PostResponse {
 
 @Builder
 @Getter
+@Setter
 public static class PostResponseDTO{
         private Long id;
         private Long views;
@@ -33,6 +38,8 @@ public static class PostResponseDTO{
         private String body;
         private String thumbnail;
     private PostStatus status;
+    private int likeCnt;
+    private int commentCnt;
 
 }
     @Builder
@@ -48,17 +55,22 @@ public static class PostResponseDTO{
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
         private List<String> hashtags;
+        private LocalDateTime created;
+        private LocalDateTime updated;
     }
 
     @Builder
     @Getter
+    @Setter
     public static class PostListResponseDTO{
         private Page<Editor> postList;
+
     }
 
     @Builder
     @Getter
     public static class SocialPostListDTO{
         private Page<PostResponseDTO> postsList;
+
     }
 }

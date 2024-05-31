@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import com.newcord.articleservice.domain.editor.entity.Editor;
+import com.newcord.articleservice.domain.posts.entity.Posts;
 import lombok.*;
 import org.bson.types.ObjectId;
+import org.springframework.data.domain.Page;
 
 // 게시글 편집자 관련 API 응답 DTO
 public class EditorResponse {
@@ -50,6 +53,17 @@ public class EditorResponse {
     @Getter
     public static class DraftsResponseDTO {
         private List<DraftEntity> drafts;
+    }
+    @Setter
+    public static class EditorPostResponseDTO {
+        private Editor postList;
+        private int likeCnt;
+        private int commentCnt;
+    }
+    @Builder
+    @Getter
+    public static class EditorPostListResponseDTO {
+        private List<EditorPostResponseDTO> editorPostResponseDTOS;
     }
 
 }

@@ -139,6 +139,8 @@ public class PostsComposeServiceImpl implements PostsComposeService {
                 .blockSequence(blockSequence)
                 .blockList(blockDTOList)
                 .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
+                .created(posts.getCreated_at())
+                .updated(posts.getUpdated_at())
                 .build();
     }
 
@@ -169,20 +171,6 @@ public class PostsComposeServiceImpl implements PostsComposeService {
         return makePostDetailResponseDTO(posts);
     }
 
-
-
-//    @Override
-//    public SocialPostListDTO getPostByHashTag(String TagName, Integer page, Integer size) {
-//        PageRequest pageRequest = PageRequest.of(page, size);
-//
-//        Page<Posts> posts = postsQueryService.getPostbyHashTag(TagName, page, size);
-//
-//        List<PostResponseDTO> postResponseDTOS = posts.getContent().stream().map(this::convertToDTO).collect(Collectors.toList());
-//        Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOS, pageRequest, posts.getTotalElements());
-//        return SocialPostListDTO.builder()
-//                .postsList(postResponseDTOPage)
-//                .build();
-//    }
 
     private PostResponseDTO convertToDTO(Posts post) {
         return PostResponseDTO.builder()
