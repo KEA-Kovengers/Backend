@@ -27,9 +27,21 @@ public class Hashtags extends BaseJPATimeEntity {
     private Long id;
     private String tagName;
 
-    @ManyToMany(mappedBy = "hashtags")
-    @JsonBackReference
-    @Default
-    private Set<Posts> posts = new HashSet<>();
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Hashtags hashtags = (Hashtags) obj;
+        return id.equals(hashtags.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }
 

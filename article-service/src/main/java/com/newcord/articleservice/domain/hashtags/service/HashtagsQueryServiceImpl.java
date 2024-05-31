@@ -23,9 +23,8 @@ public class HashtagsQueryServiceImpl implements HashtagsQueryService{
     }
 
     @Override
-    public Hashtags findByTagName(String tagName) {
-        return hashtagsRepository.findByTagName(tagName).orElseThrow(() -> new ApiException(
-            ErrorStatus._HASHTAGS_NOT_FOUND));
+    public Optional<Hashtags> findByTagName(String tagName) {
+        return hashtagsRepository.findByTagName(tagName);
     }
 
     //이거 왜 안됨?

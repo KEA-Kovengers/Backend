@@ -8,6 +8,7 @@ import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -58,6 +59,34 @@ public class PostsCommandServiceImpl implements PostsCommandService{
                 ErrorStatus._POSTS_NOT_FOUND));
 
         post.updateHashtagList(hashtags);
+        postsRepository.save(post);
+
+        return post;
+    }
+
+    @Override
+    public Posts addHashtags(Long postId, Hashtags hashtag) {
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
+                ErrorStatus._POSTS_NOT_FOUND));
+
+        Set<Hashtags> hashtags = post.getHashtags();
+        hashtags.add(hashtag);
+        post.updateHashtagList(hashtags);
+
+        postsRepository.save(post);
+
+        return post;
+    }
+
+    @Override
+    public Posts removeHashtags(Long postId, Hashtags hashtag) {
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
+            ErrorStatus._POSTS_NOT_FOUND));
+
+        Set<Hashtags> hashtags = post.getHashtags();
+        hashtags.remove(hashtag);
+        post.updateHashtagList(hashtags);
+
         postsRepository.save(post);
 
         return post;

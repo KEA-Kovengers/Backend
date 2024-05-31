@@ -45,4 +45,16 @@ public class ArticleResponse {
         private BlockUpdatedBy updated_by;      // 수정자
     }
 
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class HashtagUpdateResponseDTO {
+        private Long articleID;
+        private String articleVersion;
+        private OperationType operationType;
+        private OperationEntityType entityType;
+        private String tagName;
+        private BlockUpdatedBy updated_by;
+    }
+
 }

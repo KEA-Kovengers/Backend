@@ -46,4 +46,16 @@ public class ArticleRequest {
         }
     }
 
+    @Builder
+    @AllArgsConstructor
+    @Getter
+    public static class HashtagUpdateRequestDTO {
+        private Long articleID;
+        private String articleVersion;
+        private OperationType operationType;
+        private OperationEntityType entityType;
+        private String tagName;
+        private BlockUpdatedBy updated_by;
+    }
+
 }
