@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 public class Notices implements Serializable {
 
     @Id
-    private ObjectId id;
+    private String id;
     private Long user_id; // 알림 받는 유저 아이디
     private String body; // 알림 내용
     private NoticeType type; // 알림 종류
