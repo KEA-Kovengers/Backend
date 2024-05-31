@@ -1,29 +1,42 @@
 package com.newcord.articleservice.domain.editor.service;
 
+import com.newcord.articleservice.domain.article_version.entity.ArticleVersion;
+import com.newcord.articleservice.domain.article_version.entity.Version;
+import com.newcord.articleservice.domain.article_version.entity.VersionOperation;
+import com.newcord.articleservice.domain.article_version.service.ArticleVersionQueryService;
 import com.newcord.articleservice.domain.articles.entity.Article;
 import com.newcord.articleservice.domain.articles.service.ArticlesCommandService;
+import com.newcord.articleservice.domain.articles.service.ArticlesQueryService;
 import com.newcord.articleservice.domain.block.service.BlockCommandService;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.DeleteEditorRequestDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorRequest.EditorAddRequestDTO;
+import com.newcord.articleservice.domain.editor.dto.EditorResponse.*;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.DeleteEditorResponseDTO;
 import com.newcord.articleservice.domain.editor.dto.EditorResponse.EditorAddResponseDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
+import com.newcord.articleservice.domain.log.dto.LogResponse.*;
 import com.newcord.articleservice.domain.posts.Service.PostsCommandService;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.entity.Posts;
-import java.util.List;
+
+import java.util.*;
+
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EditorComposeServiceImpl implements EditorComposeService{
     private final EditorCommandService editorCommandService;
     private final EditorQueryService editorQueryService;
     private final PostsCommandService postsCommandService;
     private final PostsQueryService postsQueryService;
     private final ArticlesCommandService articlesCommandService;
+    private final ArticlesQueryService articlesQueryService;
     private final BlockCommandService blockCommandService;
 
 
@@ -79,4 +92,8 @@ public class EditorComposeServiceImpl implements EditorComposeService{
 
         return deleteEditorResponseDTO;
     }
+
+
+
 }
+

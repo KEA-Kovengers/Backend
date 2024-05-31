@@ -3,18 +3,26 @@ package com.newcord.articleservice.domain.block.controller;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockContentUpdateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockCreateRequestDTO;
 import com.newcord.articleservice.domain.block.dto.BlockRequest.BlockDeleteRequestDTO;
+import com.newcord.articleservice.domain.block.dto.BlockResponse;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockContentUpdateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockCreateResponseDTO;
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDeleteResponseDTO;
 import com.newcord.articleservice.domain.block.service.BlockComposeServiceImpl;
+import com.newcord.articleservice.domain.block.service.BlockQueryService;
 import com.newcord.articleservice.global.common.WSRequest;
+import com.newcord.articleservice.global.common.response.ApiResponse;
 import com.newcord.articleservice.global.common.response.WSResponse;
 import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -22,6 +30,7 @@ import org.springframework.stereotype.Controller;
 public class BlockController {
     private final RabbitMQService rabbitMQService;
     private final BlockComposeServiceImpl blockComposeServiceImpl;
+    private final BlockQueryService blockQueryService;
 
     @MessageMapping("/updateBlock/{postID}")
     public WSResponse<BlockContentUpdateResponseDTO> updateBlock(WSRequest<BlockContentUpdateRequestDTO> requestDTO, @DestinationVariable Long postID) {
@@ -52,4 +61,5 @@ public class BlockController {
 
         return response;
     }
+
 }

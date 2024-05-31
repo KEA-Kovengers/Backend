@@ -19,14 +19,13 @@ public class PostRequest {
         private String title;
         private String body;
         private List<String> hashtags;
-        private PostStatus status;
+
 
         public Posts toEntity(PostCreateRequestDTO dto){
             return Posts.builder()
                     .thumbnail(dto.getThumbnail())
                     .title(dto.getTitle())
                     .body(dto.getBody())
-                    .status(dto.getStatus())
                     .build();
         }
     }

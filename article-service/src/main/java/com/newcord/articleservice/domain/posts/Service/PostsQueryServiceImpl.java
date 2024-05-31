@@ -2,6 +2,7 @@ package com.newcord.articleservice.domain.posts.Service;
 
 import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
@@ -33,11 +34,12 @@ public class PostsQueryServiceImpl implements PostsQueryService{
 @Override
 public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
-    Page<Posts> postsPage = postsRepository.findAll(pageRequest);
+    Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
 
     List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
             .map(this::convertToDTO)
             .collect(Collectors.toList());
+
 
     Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
 
@@ -52,14 +54,31 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .title(post.getTitle())
                 .body(post.getBody())
                 .thumbnail(post.getThumbnail())
+                .status(post.getStatus())
                 .build();
     }
 
-    @Override
-    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
-        PageRequest pageRequest = PageRequest.of(page, size);
+//    @Override
+//    public Page<Posts> getPostbyHashTag(String tag, Integer page, Integer size){
+//        PageRequest pageRequest = PageRequest.of(page, size);
+//        return postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
+//    }
 
-        return postsRepository.findPostsByHashtagName(tag,pageRequest);
+    @Override
+    public SocialPostListDTO getPostbyHashTag(String tag, Integer page, Integer size){
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Posts> postsPage = postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
+
+        List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+
+
+        Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
+
+        return SocialPostListDTO.builder()
+                .postsList(postResponseDTOPage)
+                .build();
     }
 
 }

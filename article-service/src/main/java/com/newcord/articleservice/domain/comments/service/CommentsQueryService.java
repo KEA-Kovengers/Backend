@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CommentsQueryService {
     List<Comments> getCommentsList(Long postID);
+
+    List<Comments> getCommentUserid(Long userid);
 }
