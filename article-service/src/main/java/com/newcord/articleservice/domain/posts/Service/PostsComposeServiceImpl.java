@@ -139,6 +139,8 @@ public class PostsComposeServiceImpl implements PostsComposeService {
                 .blockSequence(blockSequence)
                 .blockList(blockDTOList)
                 .hashtags(posts.getHashtags().stream().map(Hashtags::getTagName).toList())
+                .created(posts.getCreated_at())
+                .updated(posts.getUpdated_at())
                 .build();
     }
 
