@@ -29,7 +29,8 @@ public class NoticesController {
     private final RabbitTemplate rabbitTemplate;
     private final static String EXCHANGE_NAME = "notice.exchange";
 
-    @MessageMapping("notice.message.{userId}")
+//    @MessageMapping("notice.message.{userId}")
+    @PostMapping("/send/{userId}")
     public void sendMessage(@Payload NoticesRequestDTO noticesRequestDTO, @DestinationVariable String userId) {
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "notice." + userId, noticesCommandService.addNotices(noticesRequestDTO));
     }
