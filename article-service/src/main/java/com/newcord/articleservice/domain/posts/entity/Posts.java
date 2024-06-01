@@ -24,7 +24,9 @@ public class Posts extends BaseJPATimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long id;
-    private String thumbnail;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "post_thumbnails", joinColumns = @JoinColumn(name = "post_id"))
+    private List<Thumbnail> thumbnails;
     private String title;
     private String body;
     @Default
@@ -59,7 +61,7 @@ public class Posts extends BaseJPATimeEntity {
     }
 
     public void updateByDTO(PostUpdateRequestDTO updateRequestDTO){
-        if (updateRequestDTO.getThumbnail() != null) this.thumbnail = updateRequestDTO.getThumbnail();
+        if (updateRequestDTO.getThumbnails() != null) this.thumbnails = updateRequestDTO.getThumbnails();
         if (updateRequestDTO.getTitle() != null) this.title = updateRequestDTO.getTitle();
         if (updateRequestDTO.getStatus() != null) this.status = updateRequestDTO.getStatus();
         super.update();

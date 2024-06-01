@@ -129,7 +129,7 @@ public class PostsComposeServiceImpl implements PostsComposeService {
 
         return PostDetailResponseDTO.builder()
                 .id(posts.getId())
-                .thumbnail(posts.getThumbnail())
+                .thumbnails(posts.getThumbnails())
                 .title(posts.getTitle())
                 .articleVersion(articleVersionCommandService.getLatestVersion(posts.getId()))
                 .body(posts.getBody())
@@ -206,7 +206,7 @@ public class PostsComposeServiceImpl implements PostsComposeService {
                 .views(post.getViews())
                 .title(post.getTitle())
                 .body(post.getBody())
-                .thumbnail(post.getThumbnail())
+                .thumbnails(post.getThumbnails())
                 .build();
     }
 }

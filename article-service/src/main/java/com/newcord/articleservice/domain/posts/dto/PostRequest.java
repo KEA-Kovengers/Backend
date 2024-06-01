@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.posts.dto;
 
 import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.domain.posts.entity.Thumbnail;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -15,7 +16,7 @@ public class PostRequest {
     @Builder
     @Getter
     public static class PostCreateRequestDTO {
-        private String thumbnail;
+        private List<Thumbnail> thumbnails;
         private String title;
         private String body;
         private List<String> hashtags;
@@ -23,7 +24,7 @@ public class PostRequest {
 
         public Posts toEntity(PostCreateRequestDTO dto){
             return Posts.builder()
-                    .thumbnail(dto.getThumbnail())
+                    .thumbnails(dto.getThumbnails())
                     .title(dto.getTitle())
                     .body(dto.getBody())
                     .build();
@@ -34,7 +35,7 @@ public class PostRequest {
     @Getter
     public static class PostUpdateRequestDTO{
         private Long id;
-        private String thumbnail;
+        private List<Thumbnail> thumbnails;
         private String title;
         @Enumerated(EnumType.ORDINAL)
         private PostStatus status;

@@ -2,18 +2,12 @@ package com.newcord.articleservice.domain.posts.dto;
 
 import com.newcord.articleservice.domain.block.dto.BlockResponse.BlockDTO;
 import com.newcord.articleservice.domain.editor.entity.Editor;
-import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
-import com.newcord.articleservice.domain.posts.entity.Posts;
+import com.newcord.articleservice.domain.posts.entity.Thumbnail;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.Page;
@@ -36,7 +30,7 @@ public static class PostResponseDTO{
         private Long views;
         private String title;
         private String body;
-        private String thumbnail;
+        private List<Thumbnail> thumbnails;
     private PostStatus status;
     private int likeCnt;
     private int commentCnt;
@@ -46,7 +40,7 @@ public static class PostResponseDTO{
     @Getter
     public static class PostDetailResponseDTO{
         private Long id;
-        private String thumbnail;
+        private List<Thumbnail> thumbnails;
         private String title;
         private String articleVersion;
         private String body;
