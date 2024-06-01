@@ -54,8 +54,8 @@ public class EditorResponse {
     public static class DraftsResponseDTO {
         private List<DraftEntity> drafts;
     }
-    @Setter
     @Builder
+    @Getter
     public static class EditorPostResponseDTO {
         private Editor postList;
         private int likeCnt;
