@@ -20,6 +20,9 @@ import com.newcord.articleservice.domain.posts.entity.Posts;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
 import com.newcord.articleservice.global.rabbitMQ.Service.RabbitMQService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -141,11 +144,36 @@ public class PostsComposeServiceImpl implements PostsComposeService {
     }
 
     @Override
-    public PostDetailResponseDTO getPostDetail(Long postId, String purpose) {
+    public PostDetailResponseDTO getPostDetail(Long postId, String purpose,
+        HttpServletRequest request, HttpServletResponse response) {
         Posts posts = postsQueryService.getPost(postId);
 
         if (purpose != null && purpose.equals("view")) {
-            posts = postsCommandService.increaseView(postId);
+            // 조회 수 중복 방지
+            Cookie oldCookie = null;
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("postView")) {
+                        oldCookie = cookie;
+                    }
+                }
+            }
+            if (oldCookie != null) {
+                if (!oldCookie.getValue().contains("["+ postId.toString() +"]")) {
+                    posts = postsCommandService.increaseView(postId);
+                    oldCookie.setValue(oldCookie.getValue() + "_[" + postId + "]");
+                    oldCookie.setPath("/");
+                    oldCookie.setMaxAge(60 * 60 * 24);
+                    response.addCookie(oldCookie);
+                }
+            } else {
+                posts = postsCommandService.increaseView(postId);
+                Cookie newCookie = new Cookie("postView", "[" + postId + "]");
+                newCookie.setPath("/");
+                newCookie.setMaxAge(60 * 60 * 24);
+                response.addCookie(newCookie);
+            }
         }
 
         return makePostDetailResponseDTO(posts);
