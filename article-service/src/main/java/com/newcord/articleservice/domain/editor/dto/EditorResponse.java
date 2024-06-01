@@ -63,6 +63,8 @@ public class EditorResponse {
     }
     @Builder
     @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class EditorPostListResponseDTO {
         private List<EditorPostResponseDTO> editorPostResponseDTOS;
     }
