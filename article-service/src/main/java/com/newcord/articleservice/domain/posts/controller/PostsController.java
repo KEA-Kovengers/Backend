@@ -18,6 +18,8 @@ import com.newcord.articleservice.global.common.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,8 +59,8 @@ public class PostsController {
 
     @Operation(summary = "게시글 조회", description = "게시글을 조회합니다.")
     @GetMapping("/{postID}")
-    public ApiResponse<PostDetailResponseDTO> getPost(@Schema(hidden = true) @UserID Long userID, @PathVariable Long postID) {
-        return ApiResponse.onSuccess(postsComposeService.getPostDetail(postID));
+    public ApiResponse<PostDetailResponseDTO> getPost(@Schema(hidden = true) @UserID Long userID, @PathVariable Long postID, @RequestParam(required = false) String purpose, HttpServletRequest request, HttpServletResponse response) {
+        return ApiResponse.onSuccess(postsComposeService.getPostDetail(postID, purpose, request, response));
     }
 
     @Operation(summary = "게시글 목록 조회", description = "유저의 게시글 목록을 조회합니다.")
