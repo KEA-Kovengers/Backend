@@ -98,4 +98,15 @@ public class PostsCommandServiceImpl implements PostsCommandService{
                 ErrorStatus._POSTS_NOT_FOUND));
         postsRepository.delete(post);
     }
+
+    @Override
+    public Posts increaseView(Long postId) {
+        Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
+                ErrorStatus._POSTS_NOT_FOUND));
+
+        post.increaseViews();
+        postsRepository.save(post);
+
+        return post;
+    }
 }
