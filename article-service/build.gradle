@@ -46,7 +46,7 @@ dependencies {
 	implementation platform('software.amazon.awssdk:bom:2.23.7')
 	implementation "software.amazon.awssdk:s3"
 
-	implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'   // 로그백 for logstash json
+	implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.4'
 
 }
 
