@@ -1,7 +1,9 @@
 package com.newcord.articleservice.domain.likes.service;
 
+import com.newcord.articleservice.domain.comments.repository.CommentsRepository;
 import com.newcord.articleservice.domain.likes.dto.LikeResponse.*;
 import com.newcord.articleservice.domain.likes.entity.Likes;
+import com.newcord.articleservice.domain.likes.repository.LikeRepository;
 import com.newcord.articleservice.domain.posts.Service.PostsQueryService;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,8 @@ public class LikeComposeServiceImpl implements LikeComposeService{
 
     private final LikeQueryService likeQueryService;
     private final PostsQueryService postsQueryService;
+    private final LikeRepository likeRepository;
+    private final CommentsRepository commentsRepository;
 
     @Override
     public List<LikeResponseDTO> getLikeList(Long userid){
@@ -27,6 +31,8 @@ public class LikeComposeServiceImpl implements LikeComposeService{
             LikeResponseDTO likeResponseDTO=LikeResponseDTO.builder()
                     .likes(likes1)
                     .posts(postsQueryService.getPost(likes1.getPost_id()))
+                    .likeCnt(likeRepository.findAllByPost_id(likes1.getPost_id()).size())
+                    .commentCnt(commentsRepository.findByPostId(likes1.getPost_id()).size())
                     .build();
             result.add(likeResponseDTO);
         }

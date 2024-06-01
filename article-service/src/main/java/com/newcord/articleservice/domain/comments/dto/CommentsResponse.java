@@ -43,6 +43,8 @@ public class CommentsResponse {
     public static class CommentsUserResponseDTO{
         Comments comments;
         Posts posts;
+        private int likeCnt;
+        private int commentCnt;
     }
 
 }
