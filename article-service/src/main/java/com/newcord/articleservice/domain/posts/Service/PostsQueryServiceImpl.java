@@ -63,7 +63,7 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .views(post.getViews())
                 .title(post.getTitle())
                 .body(post.getBody())
-                .thumbnail(post.getThumbnail())
+                .thumbnails(post.getThumbnails())
                 .status(post.getStatus())
                 .build();
     }
