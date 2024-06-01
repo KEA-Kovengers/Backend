@@ -57,8 +57,8 @@ public class PostsController {
 
     @Operation(summary = "게시글 조회", description = "게시글을 조회합니다.")
     @GetMapping("/{postID}")
-    public ApiResponse<PostDetailResponseDTO> getPost(@Schema(hidden = true) @UserID Long userID, @PathVariable Long postID) {
-        return ApiResponse.onSuccess(postsComposeService.getPostDetail(postID));
+    public ApiResponse<PostDetailResponseDTO> getPost(@Schema(hidden = true) @UserID Long userID, @PathVariable Long postID, @RequestParam(required = false) String purpose) {
+        return ApiResponse.onSuccess(postsComposeService.getPostDetail(postID, purpose));
     }
 
     @Operation(summary = "게시글 목록 조회", description = "유저의 게시글 목록을 조회합니다.")

@@ -24,11 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -145,8 +141,12 @@ public class PostsComposeServiceImpl implements PostsComposeService {
     }
 
     @Override
-    public PostDetailResponseDTO getPostDetail(Long postId) {
+    public PostDetailResponseDTO getPostDetail(Long postId, String purpose) {
         Posts posts = postsQueryService.getPost(postId);
+
+        if (purpose != null && purpose.equals("view")) {
+            posts = postsCommandService.increaseView(postId);
+        }
 
         return makePostDetailResponseDTO(posts);
     }

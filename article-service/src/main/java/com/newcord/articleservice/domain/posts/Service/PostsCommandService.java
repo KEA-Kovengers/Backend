@@ -15,4 +15,5 @@ public interface PostsCommandService {
     Posts addHashtags(Long postId, Hashtags hashtag);        //해시태그 추가
     Posts removeHashtags(Long postId, Hashtags hashtag);        //해시태그 삭제
     void deletePost(Long postId);        //게시글 삭제 (편집자 검증을 거치지 않음)
+    Posts increaseView(Long postId);        //게시글 조회수 증가
 }

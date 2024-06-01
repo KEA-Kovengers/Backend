@@ -15,7 +15,7 @@ public interface PostsComposeService {
     Posts updatePost(Long userID, PostUpdateRequestDTO postUpdateDTO);        //게시글 수정
     String createPostEditSession(String articleID);        //게시글 편집 세션 생성
     String deletePostEditSession(String articleID);        //게시글 편집 세션 삭제
-    PostDetailResponseDTO getPostDetail(Long postID);        //게시글 상세 검색 (ID 기반)
+    PostDetailResponseDTO getPostDetail(Long postID, String purpose);        //게시글 상세 검색 (ID 기반)
     PostDetailResponseDTO updateHashtags(Long userID, PostUpdateHashtagsRequestDTO postUpdateHashtagsRequestDTO);
 
 }
