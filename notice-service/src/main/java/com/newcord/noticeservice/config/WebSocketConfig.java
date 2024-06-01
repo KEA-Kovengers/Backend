@@ -39,8 +39,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .setClientLogin(RELAY_USERNAME)
                 .setClientPasscode(RELAY_PASSWORD)
                 .setVirtualHost(VIRTUAL_HOST);
-        // 클라이언트가 메시지를 보낼 때 사용할 prefix 설정 (/app -> @MessageMapping에 자동으로 매핑됨)
         //메시지 발행 url
         registry.setPathMatcher(new AntPathMatcher("."));
-        registry.setApplicationDestinationPrefixes("/pub");    }
+        registry.setApplicationDestinationPrefixes("/pub");
+    }
 }

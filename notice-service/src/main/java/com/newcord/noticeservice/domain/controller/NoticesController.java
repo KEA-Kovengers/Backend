@@ -10,13 +10,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.messaging.handler.annotation.MessageMapping;
 import com.newcord.noticeservice.global.common.response.ApiResponse;
 
 import java.util.List;
-
 
 @RestController
 @RequiredArgsConstructor
@@ -31,8 +30,14 @@ public class NoticesController {
 
 //    @MessageMapping("notice.message.{userId}")
     @PostMapping("/send/{userId}")
-    public void sendMessage(@Payload NoticesRequestDTO noticesRequestDTO, @DestinationVariable String userId) {
+    public void sendMessage(@RequestBody NoticesRequestDTO noticesRequestDTO, @PathVariable String userId) {
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "notice." + userId, noticesCommandService.addNotices(noticesRequestDTO));
+    }
+
+    @Operation(summary = "알림 저장", description = "유저가 받은 알림을 저장합니다.")
+    @PostMapping("/addNotice")
+    public ApiResponse<NoticesResponseDTO> addNotice(@RequestBody NoticesRequestDTO noticesRequestDTO) {
+        return ApiResponse.onSuccess(noticesCommandService.addNotices(noticesRequestDTO));
     }
 
     @Operation(summary = "알림 조회", description = "유저가 받은 알림 목록을 조회합니다.")

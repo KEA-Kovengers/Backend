@@ -34,6 +34,8 @@ public class RabbitMQConfig {
     private String USERNAME;
     @Value("${spring.rabbitmq.password}")
     private String PASSWORD;
+    @Value("${spring.rabbitmq.virtual-host}")
+    private String VIRTUAL_HOST;
 
     //Queue 등록
     @Bean
@@ -75,6 +77,7 @@ public class RabbitMQConfig {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory(HOSTNAME, PORT);
         connectionFactory.setUsername(USERNAME);
         connectionFactory.setPassword(PASSWORD);
+        connectionFactory.setVirtualHost(VIRTUAL_HOST);
         return connectionFactory;
     }
 
