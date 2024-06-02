@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Comment", description = "댓글 API")
-@RequestMapping("/articles/comment")
+@RequestMapping("/comment")
 public class CommentsController {
 
     private final CommentsComposeService commentsComposeService;

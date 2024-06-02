@@ -20,7 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Report", description = "신고 API")
-@RequestMapping("/articles/report")
+@RequestMapping("/report")
 public class ReportController {
     private final ReportCommandService reportCommandService;
     private final ReportQueryService reportQueryService;

@@ -2,6 +2,8 @@ package com.newcord.articleservice.global.common.response.code.status;
 
 import com.newcord.articleservice.global.common.response.code.BaseErrorCode;
 import com.newcord.articleservice.global.common.response.code.ErrorReasonDTO;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
