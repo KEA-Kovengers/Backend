@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.posts.Service;
 
 import com.newcord.articleservice.domain.comments.repository.CommentsRepository;
+import com.newcord.articleservice.domain.editor.repository.EditorRepository;
 import com.newcord.articleservice.domain.likes.repository.LikeRepository;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
 import com.newcord.articleservice.domain.posts.entity.Posts;
@@ -26,6 +27,7 @@ public class PostsQueryServiceImpl implements PostsQueryService{
     private final PostsRepository postsRepository;
 private final LikeRepository likeRepository;
 private final CommentsRepository commentsRepository;
+private final EditorRepository editorRepository;
     @Override
     public Posts getPost(Long postId) {
         Posts posts = postsRepository.findById(postId).orElse(null);
@@ -39,9 +41,9 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
     Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
 
-    List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+    List<SocialPostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
             .map(post -> {
-                PostResponseDTO dto = convertToDTO(post);
+                SocialPostResponseDTO dto = convertToDTO(post);
                 int likeCnt = likeRepository.findAllByPost_id(post.getId()).size();
                 int commentCnt=commentsRepository.findByPostId(post.getId()).size();
                 dto.setCommentCnt(commentCnt);
@@ -51,20 +53,24 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
             .collect(Collectors.toList());
 
 
-    Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
+    Page<SocialPostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
 
     return SocialPostListDTO.builder()
             .postsList(postResponseDTOPage)
             .build();
 }
-    private PostResponseDTO convertToDTO(Posts post) {
-        return PostResponseDTO.builder()
+    private SocialPostResponseDTO convertToDTO(Posts post) {
+
+        return SocialPostResponseDTO.builder()
                 .id(post.getId())
                 .views(post.getViews())
                 .title(post.getTitle())
                 .body(post.getBody())
                 .thumbnails(post.getThumbnails())
                 .status(post.getStatus())
+                .created(post.getCreated_at())
+                .updated(post.getUpdated_at())
+               .userId(editorRepository.finduserByPostId(post.getId()).getUserID())
                 .build();
     }
 
@@ -73,9 +79,9 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<Posts> postsPage = postsRepository.findPostsByHashtagName(tag,PostStatus.POST,pageRequest);
 
-        List<PostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
+        List<SocialPostResponseDTO> postResponseDTOList = postsPage.getContent().stream()
                 .map(post -> {
-                    PostResponseDTO dto = convertToDTO(post);
+                    SocialPostResponseDTO dto = convertToDTO(post);
                     int likeCnt = likeRepository.findAllByPost_id(post.getId()).size();
                     int commentCnt=commentsRepository.findByPostId(post.getId()).size();
                     dto.setCommentCnt(commentCnt);
@@ -85,7 +91,7 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .collect(Collectors.toList());
 
 
-        Page<PostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
+        Page<SocialPostResponseDTO> postResponseDTOPage = new PageImpl<>(postResponseDTOList, pageRequest, postsPage.getTotalElements());
 
         return SocialPostListDTO.builder()
                 .postsList(postResponseDTOPage)

@@ -21,4 +21,7 @@ public interface EditorRepository extends JpaRepository<Editor, Long> {
     List<Editor> findByPostId(Long postId);
     List<Editor> findAllByPostId(Long postId);
 
+    @Query("select c from Editor c where c.post.id =:postId")
+    Editor finduserByPostId(Long postId);
+
 }
