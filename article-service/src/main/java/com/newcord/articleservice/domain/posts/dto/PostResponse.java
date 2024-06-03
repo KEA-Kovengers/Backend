@@ -47,7 +47,7 @@ public static class PostResponseDTO{
         private Long views;
         private String title;
         private String body;
-        private String thumbnail;
+        private List<Thumbnail> thumbnails;
         private PostStatus status;
         private LocalDateTime created;
         private LocalDateTime updated;
