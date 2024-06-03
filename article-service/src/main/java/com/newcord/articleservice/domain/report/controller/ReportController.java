@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.report.controller;
 
 import com.newcord.articleservice.domain.report.dto.ReportRequest.*;
+import com.newcord.articleservice.domain.report.dto.ReportResponse;
 import com.newcord.articleservice.domain.report.entity.Report;
 import com.newcord.articleservice.domain.report.service.ReportCommandService;
 import com.newcord.articleservice.domain.report.service.ReportQueryService;
@@ -39,7 +40,7 @@ public class ReportController {
 
     @GetMapping("/reportlist/{type}")
     @Operation(summary = "신고 종류별로 조회하기",description = "type에 COMMENT or POST")
-    public ApiResponse<List<Report>> getEachReportList(@PathVariable ReportType type){
+    public ApiResponse<List<ReportResponse.ReportResponseDTO>> getEachReportList(@PathVariable ReportType type){
         return ApiResponse.onSuccess(reportQueryService.getEachReportList(type));
     }
 

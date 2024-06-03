@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.report.service;
 
+import com.newcord.articleservice.domain.report.dto.ReportResponse;
 import com.newcord.articleservice.domain.report.entity.Report;
 import com.newcord.articleservice.domain.report.type.ReportType;
 
@@ -13,5 +14,5 @@ public interface ReportQueryService {
 
     Report getReportDetail(Long id);
 
-    List<Report> getEachReportList(ReportType type);
+    List<ReportResponse.ReportResponseDTO> getEachReportList(ReportType type);
 }
