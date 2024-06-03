@@ -1,5 +1,6 @@
 package com.newcord.articleservice.config;
 
+import com.newcord.articleservice.global.jwt.JwtFilter;
 import com.newcord.articleservice.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 @RequiredArgsConstructor
@@ -17,6 +20,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
     private final CorsConfig corsConfig;
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,14 +35,10 @@ public class WebSecurityConfig {
             .sessionManagement((sessionManagement) ->
                 sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
-            // 회원가입, 로그인 관련 API는 Jwt 인증 없이 접근 가능
-//            .authorizeHttpRequests((requests) ->
-//                requests.requestMatchers("/users/auth/**","/users/auth/login","/","/index.html","/v3/api-docs/**","/swagger-ui/index.html","/swagger-ui/**", "/swagger-resources/**").permitAll()
-//                    // 나머지 모든 API는 Jwt 인증 필요
-//                    .anyRequest().authenticated())
-            .addFilter(corsConfig.corsFilter()) ;//CorsFilter 등록
-            // Http 요청에 대한 Jwt 유효성 선 검사, 이 부분은 유저서비스에 REST API 요청으로 구현할 예정
-//            .addFilterBefore(new JwtAuthFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+            // 인증 필요한 경로 설정
+            .addFilter(corsConfig.corsFilter())//CorsFilter 등록
+             //Http 요청에 대한 Jwt 유효성 선 검사, 이 부분은 유저서비스에 REST API 요청으로 구현할 예정
+            .addFilterBefore(new JwtFilter(jwtTokenProvider, restTemplate()), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
