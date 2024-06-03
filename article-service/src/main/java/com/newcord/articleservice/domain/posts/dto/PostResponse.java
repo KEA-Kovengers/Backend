@@ -44,6 +44,24 @@ public static class PostResponseDTO{
     private int commentCnt;
 
 }
+
+    @Builder
+    @Getter
+    @Setter
+    public static class SocialPostResponseDTO{
+        private Long id;
+        private Long views;
+        private String title;
+        private String body;
+        private String thumbnail;
+        private PostStatus status;
+        private LocalDateTime created;
+        private LocalDateTime updated;
+        private int likeCnt;
+        private int commentCnt;
+        private Long userId;
+
+    }
     @Builder
     @Getter
     public static class PostDetailResponseDTO{
@@ -71,6 +89,6 @@ public static class PostResponseDTO{
     @Builder
     @Getter
     public static class SocialPostListDTO{
-        private Page<PostResponseDTO> postsList;
+        private Page<SocialPostResponseDTO> postsList;
     }
 }
