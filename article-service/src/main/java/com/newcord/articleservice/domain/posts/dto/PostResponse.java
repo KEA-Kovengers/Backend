@@ -38,6 +38,8 @@ public static class PostResponseDTO{
         private String body;
         private String thumbnail;
     private PostStatus status;
+    private LocalDateTime created;
+    private LocalDateTime updated;
     private int likeCnt;
     private int commentCnt;
 
@@ -64,13 +66,11 @@ public static class PostResponseDTO{
     @Setter
     public static class PostListResponseDTO{
         private Page<Editor> postList;
-
     }
 
     @Builder
     @Getter
     public static class SocialPostListDTO{
         private Page<PostResponseDTO> postsList;
-
     }
 }

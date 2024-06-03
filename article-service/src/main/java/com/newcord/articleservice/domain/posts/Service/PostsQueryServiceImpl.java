@@ -65,6 +65,8 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .body(post.getBody())
                 .thumbnail(post.getThumbnail())
                 .status(post.getStatus())
+                .created(post.getCreated_at())
+                .updated(post.getUpdated_at())
                 .build();
     }
 
