@@ -50,7 +50,7 @@ public class JwtTokenProvider {
                 .setClaims(claims) // 정보 저장
                 .setIssuer("kovengers")
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(System.currentTimeMillis() + (accessTokenValiditySeconds * 100 * 1000))) // 토큰 유효시각 설정 (50시간)
+                .setExpiration(new Date(System.currentTimeMillis() + (accessTokenValiditySeconds * 100000 * 1000))) // 토큰 유효시각 설정 (50시간)
                 .signWith(SignatureAlgorithm.HS256, secretKey)  // 암호화 알고리즘과, secret 값
                 .compact();
     }
@@ -63,7 +63,7 @@ public class JwtTokenProvider {
                 .setClaims(claims)
                 .setIssuer("kovengers")
                 .setIssuedAt(now)
-                .setExpiration(new Date(System.currentTimeMillis()+ (refreshTokenValiditySeconds * 1000))) // 리프레시 토큰 유효시각 설정 (1주일)
+                .setExpiration(new Date(System.currentTimeMillis()+ (refreshTokenValiditySeconds * 100000 * 1000))) // 리프레시 토큰 유효시각 설정 (1주일)
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
     }
