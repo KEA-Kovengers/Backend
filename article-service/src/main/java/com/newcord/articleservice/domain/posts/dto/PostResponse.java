@@ -53,7 +53,7 @@ public static class PostResponseDTO{
         private LocalDateTime updated;
         private int likeCnt;
         private int commentCnt;
-        private Long userId;
+        private List<Long> userId;
 
     }
     @Builder
