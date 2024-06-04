@@ -13,7 +13,9 @@ public class NoticesRequest {
     @Setter
     public static class NoticesRequestDTO {
         private Long user_id;
-        private String body;
+        private Long from_id;
+        private Long post_id;
+        private Long comment_id;
         private NoticeType type;
     }
 }

@@ -15,7 +15,9 @@ public class NoticesResponse {
     public static class NoticesResponseDTO {
         private String id;
         private Long user_id;
-        private String body;
+        private Long from_id;
+        private Long post_id;
+        private Long comment_id;
         private NoticeType type;
         private StatusType status;
         private LocalDateTime created_at;

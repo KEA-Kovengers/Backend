@@ -13,8 +13,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -24,6 +27,9 @@ public class FriendCommandServiceImpl implements FriendCommandService{
 
     private final UsersRepository usersRepository;
     private final FriendRepository friendRepository;
+
+    private final WebClient webClient = WebClient.builder().build();
+
 
     @Override
     public FriendResponseDTO createFriendship(Long fromID, CreateFriendRequestDTO createfriendRequestDTO){
@@ -60,7 +66,6 @@ public class FriendCommandServiceImpl implements FriendCommandService{
                 .isFrom(false)
                 .build();
 
-
         // 저장
         friendRepository.save(friendshipTo);
         friendRepository.save(friendshipFrom);
@@ -69,6 +74,19 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         friendshipTo.setCounterpartId(friendshipFrom.getId());
         friendshipFrom.setCounterpartId(friendshipTo.getId());
 
+        // 알림 API 요청
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("user_id", toID);
+        requestBody.put("from_id", fromID);
+        requestBody.put("post_id", "");
+        requestBody.put("comment_id", "");
+        requestBody.put("type", "FRIEND_REQUEST");
+        webClient.post()
+                .uri("http://newcord.kro.kr/notices/addNotice")
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
 
         return FriendResponseDTO.builder()
                         .userID(toID)
@@ -89,6 +107,21 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         // 둘다 상태를 ACCEPT로 변경함
         friendship.acceptFriendshipRequest();
         counterFriendship.acceptFriendshipRequest();
+
+        // 알림 API 요청
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("user_id", friendship.getFriendID());
+        requestBody.put("from_id", friendship.getUserID());
+        requestBody.put("post_id", "");
+        requestBody.put("comment_id", "");
+        requestBody.put("type", "FREIEND_RESPONSE");
+        webClient.post()
+                .uri("http://newcord.kro.kr/notices/addNotice")
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
+
 
         //승인한 친구 정보
         return FriendResponseDTO.builder()

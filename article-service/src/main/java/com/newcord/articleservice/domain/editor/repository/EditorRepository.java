@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -20,6 +21,8 @@ public interface EditorRepository extends JpaRepository<Editor, Long> {
     Optional<Editor> findByPostIdAndUserID(Long postId, Long userID);
     List<Editor> findByPostId(Long postId);
     List<Editor> findAllByPostId(Long postId);
+    @Query("SELECT e.userID FROM Editor e WHERE e.post.id = :postId")
+    List<Long> findUserIdsByPostId(@Param("postId") Long postId);
 
     @Query("select c from Editor c where c.post.id =:postId")
     Editor finduserByPostId(Long postId);
