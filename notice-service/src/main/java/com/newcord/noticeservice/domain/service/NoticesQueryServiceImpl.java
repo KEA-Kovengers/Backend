@@ -28,20 +28,6 @@ public class NoticesQueryServiceImpl implements NoticesQueryService {
 
     @Override
     public List<NoticesResponseDTO> getNoticeList(Long userId) {
-
-        //알림 발생
-        RestTemplate restTemplate = new RestTemplate();
-        NoticesRequest.NoticesRequestDTO noticesRequestDTO = NoticesRequest.NoticesRequestDTO.builder()
-                .user_id(userId)
-                .body("message")
-                .type(LIKE)
-                .build();
-        String url = "http://localhost:8081/send/" + userId;
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<NoticesRequest.NoticesRequestDTO> request = new HttpEntity<>(noticesRequestDTO, headers);
-        restTemplate.exchange(url, HttpMethod.POST, request, Void.class);
-
         List<Notices> savedNotices = noticesRepository.findByUser_id(userId);
         if (savedNotices.isEmpty()) {
             throw new ApiException(ErrorStatus._NOTICE_NOT_FOUND);
