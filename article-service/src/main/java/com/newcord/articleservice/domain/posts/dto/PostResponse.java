@@ -5,6 +5,8 @@ import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.posts.entity.Thumbnail;
 import com.newcord.articleservice.domain.posts.enums.PostStatus;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -49,8 +51,8 @@ public static class PostResponseDTO{
         private String body;
         private List<Thumbnail> thumbnails;
         private PostStatus status;
-        private LocalDateTime created;
-        private LocalDateTime updated;
+        private Timestamp created;
+        private Timestamp updated;
         private int likeCnt;
         private int commentCnt;
         private List<Long> userId;
@@ -69,8 +71,8 @@ public static class PostResponseDTO{
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
         private List<String> hashtags;
-        private LocalDateTime created;
-        private LocalDateTime updated;
+        private Timestamp created;
+        private Timestamp updated;
     }
 
     @Builder

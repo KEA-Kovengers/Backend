@@ -1,5 +1,6 @@
 package com.newcord.articleservice.domain.editor.dto;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -45,7 +46,7 @@ public class EditorResponse {
     public static class DraftEntity{
         private Long postId;
         private String title;
-        private LocalDateTime updatedAt;
+        private Timestamp updatedAt;
 
     }
 
