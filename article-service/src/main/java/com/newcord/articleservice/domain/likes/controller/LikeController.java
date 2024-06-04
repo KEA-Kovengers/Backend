@@ -38,9 +38,10 @@ public class LikeController {
     }
 
     @DeleteMapping("/delete")
-    @Operation(summary = "좋아요 취소",description = "취소할 좋아요의 id를 입력")
-    public ApiResponse<String> deleteLike(@RequestBody Long id){
-        return ApiResponse.onSuccess(likeCommandService.deleteLike(id));
+    @Operation(summary = "좋아요 취소",description = "취소할 postid, 본인 userid 넣기")
+    public ApiResponse<String> deleteLike(@RequestBody DeleteLikeRequestDTO deleteLikeRequestDTO){
+        System.out.println("userid = " + deleteLikeRequestDTO);
+        return ApiResponse.onSuccess(likeCommandService.deleteLike(deleteLikeRequestDTO));
     }
 
     @GetMapping("/likelist/{userid}")
