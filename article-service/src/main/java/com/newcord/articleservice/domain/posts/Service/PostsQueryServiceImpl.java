@@ -1,6 +1,7 @@
 package com.newcord.articleservice.domain.posts.Service;
 
 import com.newcord.articleservice.domain.comments.repository.CommentsRepository;
+import com.newcord.articleservice.domain.editor.entity.Editor;
 import com.newcord.articleservice.domain.editor.repository.EditorRepository;
 import com.newcord.articleservice.domain.likes.repository.LikeRepository;
 import com.newcord.articleservice.domain.posts.dto.PostResponse.*;
@@ -70,7 +71,7 @@ public SocialPostListDTO getPostList(Integer page, Integer size){
                 .status(post.getStatus())
                 .created(post.getCreated_at())
                 .updated(post.getUpdated_at())
-               .userId(editorRepository.finduserByPostId(post.getId()).getUserID())
+               .userId(editorRepository.findByPostId(post.getId()).stream().map(Editor::getUserID).toList())
                 .build();
     }
 
