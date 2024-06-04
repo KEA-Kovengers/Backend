@@ -31,7 +31,7 @@ public class NoticesController {
 //    @MessageMapping("notice.message.{userId}")
     @PostMapping("/send/{userId}")
     public void sendMessage(@RequestBody NoticesRequestDTO noticesRequestDTO, @PathVariable String userId) {
-        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "notice." + userId, noticesCommandService.addNotices(noticesRequestDTO));
+        rabbitTemplate.convertAndSend(EXCHANGE_NAME, "notice." + userId, noticesRequestDTO);
     }
 
     @Operation(summary = "알림 저장", description = "유저가 받은 알림을 저장합니다.")
