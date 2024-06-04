@@ -26,4 +26,13 @@ public class LikeRequest {
 
     }
 
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class DeleteLikeRequestDTO{
+        private Long userID;
+        private Long postID;
+    }
+
 }

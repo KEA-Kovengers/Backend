@@ -17,4 +17,9 @@ public interface LikeRepository extends JpaRepository<Likes,Long> {
     @Query("SELECT c FROM Likes c WHERE c.post_id =:postID")
     List<Likes> findAllByPost_id(Long postID);
 
+
+    @Query("select c from Likes c where c.user_id=:userID and c.post_id=:postID")
+    Likes findByUser_idAndPost_id(Long userID,Long postID);
+
+
 }
