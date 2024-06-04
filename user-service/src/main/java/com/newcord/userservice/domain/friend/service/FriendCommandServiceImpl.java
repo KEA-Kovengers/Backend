@@ -82,7 +82,7 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         requestBody.put("comment_id", "");
         requestBody.put("type", "FRIEND_REQUEST");
         webClient.post()
-                .uri("http://newcord.kro.kr/notices/addNotice")
+                .uri("http://newcord.kro.kr/notices/send/{userId}", toID)
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(Void.class)
@@ -116,7 +116,7 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         requestBody.put("comment_id", "");
         requestBody.put("type", "FREIEND_RESPONSE");
         webClient.post()
-                .uri("http://newcord.kro.kr/notices/addNotice")
+                .uri("http://newcord.kro.kr/notices/send/{userId}", friendship.getFriendID())
                 .bodyValue(requestBody)
                 .retrieve()
                 .bodyToMono(Void.class)

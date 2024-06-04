@@ -40,10 +40,11 @@ public class LikeCommandServiceImpl implements LikeCommandService{
             requestBody.put("user_id", editorUserId);
             requestBody.put("from_id", userID);
             requestBody.put("post_id", createLikeRequestDTO.getPost_id());
+            requestBody.put("comment_id", "");
             requestBody.put("type", "LIKE");
 
             webClient.post()
-                    .uri("http://newcord.kro.kr/notices/addNotice")
+                    .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(Void.class)

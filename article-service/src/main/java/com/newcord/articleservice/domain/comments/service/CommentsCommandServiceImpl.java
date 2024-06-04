@@ -61,7 +61,7 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
             }
 
             webClient.post()
-                    .uri("http://newcord.kro.kr/notices/addNotice")
+                    .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
                     .bodyValue(requestBody)
                     .retrieve()
                     .bodyToMono(Void.class)
@@ -79,7 +79,7 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
                 requestBody.put("type", "RECOMMENT");
 
                 webClient.post()
-                        .uri("http://newcord.kro.kr/notices/addNotice")
+                        .uri("http://newcord.kro.kr/notices/send/{userId}", parentUserId)
                         .bodyValue(requestBody)
                         .retrieve()
                         .bodyToMono(Void.class)
