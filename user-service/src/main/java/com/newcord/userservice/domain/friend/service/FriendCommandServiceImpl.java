@@ -78,6 +78,8 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("user_id", toID);
         requestBody.put("from_id", fromID);
+        requestBody.put("post_id", "");
+        requestBody.put("comment_id", "");
         requestBody.put("type", "FRIEND_REQUEST");
         webClient.post()
                 .uri("http://newcord.kro.kr/notices/addNotice")
@@ -110,6 +112,8 @@ public class FriendCommandServiceImpl implements FriendCommandService{
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("user_id", friendship.getFriendID());
         requestBody.put("from_id", friendship.getUserID());
+        requestBody.put("post_id", "");
+        requestBody.put("comment_id", "");
         requestBody.put("type", "FREIEND_RESPONSE");
         webClient.post()
                 .uri("http://newcord.kro.kr/notices/addNotice")
