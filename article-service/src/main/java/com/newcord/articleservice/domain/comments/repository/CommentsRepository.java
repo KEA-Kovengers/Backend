@@ -21,5 +21,5 @@ public interface CommentsRepository extends JpaRepository<Comments,Long> {
 
     //List<Comments> findByPostIdOrderByComment_idAsc(Long postId);
 
-    @Query("SELECT c FROM Comments c WHERE c.comment_id = :commentId")
+    @Query("SELECT c FROM Comments c WHERE c.id = :commentId")
     Optional<Comments> findByCommentId(@Param("commentId") Long commentId);}

@@ -45,7 +45,6 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
 
         // post_id에 해당하는 모든 user_id 가져오기
         List<Long> userIds = editorRepository.findUserIdsByPostId(commentsCreateRequestDTO.getPostID());
-
         // 알림 API 요청
         for (Long editorUserId : userIds) {
             Map<String, Object> requestBody = new HashMap<>();
@@ -75,8 +74,8 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
                 Map<String, Object> requestBody = new HashMap<>();
                 requestBody.put("user_id", parentUserId);
                 requestBody.put("from_id", userID);
-                requestBody.put("post_id", commentsCreateRequestDTO.getPostID());
-                requestBody.put("comment_id", commentsCreateRequestDTO.getCommentID());
+                requestBody.put("post_id", comments.getId());
+                requestBody.put("comment_id", parentComment.getId());
                 requestBody.put("type", "RECOMMENT");
 
                 webClient.post()
