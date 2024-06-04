@@ -56,8 +56,10 @@ public class LikeCommandServiceImpl implements LikeCommandService{
 
     //좋아요 취소
     @Override
-    public String deleteLike(Long id){
-        likeRepository.deleteById(id);
+    public String deleteLike(DeleteLikeRequestDTO deleteLikeRequestDTO){
+        Likes likes=likeRepository.findByUser_idAndPost_id(deleteLikeRequestDTO.getUserID(), deleteLikeRequestDTO.getPostID());
+        System.out.println("likes = " + likes);
+        likeRepository.deleteById(likes.getId());
         return "좋아요가 취소되었습니다";
     }
 }
