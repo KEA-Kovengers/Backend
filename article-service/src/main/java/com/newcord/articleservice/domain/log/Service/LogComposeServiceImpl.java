@@ -46,7 +46,8 @@ public class LogComposeServiceImpl implements LogComposeService{
             List<VersionOperation> operations = version.getOperations();
             for (VersionOperation operation : operations) {
                 for (Long userId : userIds) {
-                    if (operation.getUpdated_by().getUpdater_id().equals(userId)) {
+                    if (operation.getUpdated_by().getUpdater_id().equals(userId) && operation.getId()!=null) {
+
                         EditorLogResponseDTO editorLogResponseDTO = EditorLogResponseDTO.builder()
                                 .userID(userId)
                                 .blockId(operation.getId().toString())
@@ -54,6 +55,7 @@ public class LogComposeServiceImpl implements LogComposeService{
 
                         uniqueResults.add(editorLogResponseDTO);
                     }
+
                 }
             }
         }
