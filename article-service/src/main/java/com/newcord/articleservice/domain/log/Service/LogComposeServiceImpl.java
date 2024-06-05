@@ -82,8 +82,10 @@ public class LogComposeServiceImpl implements LogComposeService{
 
     @Override
     public List<BlockCreatorDataResponseDTO> getBlockCreatorData(Long post_id) {
+        System.out.println("post_id = " + post_id);
         List<Editor> editors = editorRepository.findByPostId(post_id);
         Optional<Article> articleOpt = articlesRepository.findById(post_id);
+
         if (!articleOpt.isPresent()) {
             throw new ApiException(ErrorStatus._ARTICLE_NOT_FOUND);  // 예외 처리
         }

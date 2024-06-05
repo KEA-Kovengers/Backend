@@ -38,8 +38,8 @@ public class LogController {
 
     @Operation(summary = "공동 작업자들이 각자 생성한 블럭 조회 API",description = "작업자와 생성한 블럭 아이디를 반환합니다")
     @GetMapping("/{postID}")
-    public ApiResponse<List<BlockCreatorDataResponseDTO>> getCreatorBlock(Long postid){
-        return ApiResponse.onSuccess(logComposeService.getBlockCreatorData(postid));
+    public ApiResponse<List<BlockCreatorDataResponseDTO>> getCreatorBlock(@PathVariable Long postID){
+        return ApiResponse.onSuccess(logComposeService.getBlockCreatorData(postID));
     }
 
 }
