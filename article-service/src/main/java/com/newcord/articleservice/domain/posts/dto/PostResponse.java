@@ -51,8 +51,8 @@ public static class PostResponseDTO{
         private String body;
         private List<Thumbnail> thumbnails;
         private PostStatus status;
-        private Timestamp created;
-        private Timestamp updated;
+        private LocalDateTime created;
+        private LocalDateTime updated;
         private int likeCnt;
         private int commentCnt;
         private List<Long> userId;
@@ -71,8 +71,8 @@ public static class PostResponseDTO{
         private List<String> blockSequence;
         private List<BlockDTO> blockList;
         private List<String> hashtags;
-        private Timestamp created;
-        private Timestamp updated;
+        private LocalDateTime created;
+        private LocalDateTime updated;
     }
 
     @Builder

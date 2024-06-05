@@ -46,7 +46,7 @@ public class EditorResponse {
     public static class DraftEntity{
         private Long postId;
         private String title;
-        private Timestamp updatedAt;
+        private LocalDateTime updatedAt;
 
     }
 
