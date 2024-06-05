@@ -34,13 +34,13 @@ public class NoticesController {
         rabbitTemplate.convertAndSend(EXCHANGE_NAME, "notice." + userId, noticesCommandService.addNotices(noticesRequestDTO));
     }
 
-    @Operation(summary = "알림 저장", description = "유저가 받은 알림을 저장합니다.")
+    @Operation(summary = "알림 저장", description = "INVITE,COMMENT,RECOMMENT,LIKE,FRIEND_REQUEST,FREIEND_RESPONSE : 유저가 받은 알림을 저장합니다.")
     @PostMapping("/addNotice")
     public ApiResponse<NoticesResponseDTO> addNotice(@RequestBody NoticesRequestDTO noticesRequestDTO) {
         return ApiResponse.onSuccess(noticesCommandService.addNotices(noticesRequestDTO));
     }
 
-    @Operation(summary = "알림 조회", description = "유저가 받은 알림 목록을 조회합니다.")
+    @Operation(summary = "알림 조회", description = "INVITE,COMMENT,RECOMMENT,LIKE,FRIEND_REQUEST,FREIEND_RESPONSE : 유저가 받은 알림 목록을 조회합니다.")
     @GetMapping("/view/{userId}")
     public ApiResponse<List> getNoticeList(@PathVariable Long userId) {
         return ApiResponse.onSuccess(noticesQueryService.getNoticeList(userId));
