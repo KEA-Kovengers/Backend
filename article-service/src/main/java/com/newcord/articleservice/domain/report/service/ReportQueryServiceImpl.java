@@ -61,18 +61,20 @@ public class ReportQueryServiceImpl implements ReportQueryService {
                         .title(comments.get().getBody())
                         .build();
             result.add(reportResponse);
-            return result;
+            //return result;
             }
         }
-        for(Report r: report) {
-            Optional<Posts> posts=postsRepository.findById(r.getContentID());
-            ReportResponseDTO reportResponseDTO=ReportResponseDTO.builder()
-                    .report(r)
-                    .title(posts.get().getTitle())
-                    .build();
+        if(type==ReportType.POST){
+            for(Report r: report) {
+                Optional<Posts> posts=postsRepository.findById(r.getContentID());
+                ReportResponseDTO reportResponseDTO=ReportResponseDTO.builder()
+                        .report(r)
+                        .title(posts.get().getTitle())
+                        .build();
 
-            result.add(reportResponseDTO);
+                result.add(reportResponseDTO);
 
+            }
         }
         return result;
     }
