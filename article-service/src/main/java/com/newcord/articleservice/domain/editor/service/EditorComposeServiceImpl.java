@@ -31,6 +31,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 @Service
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class EditorComposeServiceImpl implements EditorComposeService{
 
 
     private final EditorRepository editorRepository;
+    private final WebClient webClient = WebClient.builder().build();
 
     @Override
     public EditorAddResponseDTO addEditor(Long userID, EditorAddRequestDTO editorAddDTO) {
@@ -58,6 +60,20 @@ public class EditorComposeServiceImpl implements EditorComposeService{
 
         // 에디터 추가
         Editor newEditor = editorCommandService.addEditor(posts, editorAddDTO);
+
+        // 알림 API 요청
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("user_id", editorAddDTO.getUserID());
+        requestBody.put("from_id", userID);
+        requestBody.put("post_id", editorAddDTO.getPostId());
+        requestBody.put("comment_id", "");
+        requestBody.put("type", "INVITE");
+        webClient.post()
+                .uri("http://newcord.kro.kr/notices/send/{userId}", editorAddDTO.getUserID())
+                .bodyValue(requestBody)
+                .retrieve()
+                .bodyToMono(Void.class)
+                .block();
 
         return EditorAddResponseDTO.builder()
             .postId(newEditor.getPost().getId())

@@ -31,46 +31,47 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
     // 댓글은 commentID가 id
     // 대댓글은 commentID에 부모 댓글의 id
     @Override
-    public Comments createComment(Long userID,CommentsCreateRequestDTO commentsCreateRequestDTO){
-        Comments comments=Comments.builder().
-                comment_id(commentsCreateRequestDTO.getCommentID())
+    public Comments createComment(Long userID, CommentsCreateRequestDTO commentsCreateRequestDTO) {
+        Comments comments = Comments.builder()
+                .comment_id(commentsCreateRequestDTO.getCommentID())
                 .postId(commentsCreateRequestDTO.getPostID())
                 .user_id(userID)
                 .isDeleted(false)
                 .body((commentsCreateRequestDTO.getBody()))
-        .build();
+                .build();
         log.info(String.valueOf(comments.getComment_id()));
         commentsRepository.save(comments);
-
 
         // post_id에 해당하는 모든 user_id 가져오기
         List<Long> userIds = editorRepository.findUserIdsByPostId(commentsCreateRequestDTO.getPostID());
         // 알림 API 요청
         for (Long editorUserId : userIds) {
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("user_id", editorUserId);
-            requestBody.put("from_id", userID);
-            requestBody.put("post_id", commentsCreateRequestDTO.getPostID());
-            requestBody.put("comment_id", commentsCreateRequestDTO.getCommentID());
+            if (!editorUserId.equals(userID)) {
+                Map<String, Object> requestBody = new HashMap<>();
+                requestBody.put("user_id", editorUserId);
+                requestBody.put("from_id", userID);
+                requestBody.put("post_id", commentsCreateRequestDTO.getPostID());
+                requestBody.put("comment_id", commentsCreateRequestDTO.getCommentID());
 
-            // Comments의 id와 comment_id가 같으면 type COMMENT, 다르면 type RECOMMENT로 설정
-            if (comments.getId().equals(comments.getComment_id())) {
-                requestBody.put("type", "COMMENT");
-            } else {
-                requestBody.put("type", "RECOMMENT");
+                // Comments의 id와 comment_id가 같으면 type COMMENT, 다르면 type RECOMMENT로 설정
+                if (comments.getId().equals(comments.getComment_id())) {
+                    requestBody.put("type", "COMMENT");
+                } else {
+                    requestBody.put("type", "RECOMMENT");
+                }
+
+                webClient.post()
+                        .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
+                        .bodyValue(requestBody)
+                        .retrieve()
+                        .bodyToMono(Void.class)
+                        .block();
             }
-
-            webClient.post()
-                    .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .bodyToMono(Void.class)
-                    .block();
         }
         // comment_id를 id로 가진 Comments 객체의 user_id에도 알림 보내기
         commentsRepository.findByCommentId(comments.getComment_id()).ifPresent(parentComment -> {
             Long parentUserId = parentComment.getUser_id();
-            if (!userIds.contains(parentUserId)) {
+            if (!userIds.contains(parentUserId) && !parentUserId.equals(userID)) {
                 Map<String, Object> requestBody = new HashMap<>();
                 requestBody.put("user_id", parentUserId);
                 requestBody.put("from_id", userID);
@@ -88,6 +89,7 @@ public class CommentsCommandServiceImpl implements CommentsCommandService{
         });
         return comments;
     }
+
 
     @Override
     public Comments deleteComment(CommentsRequestDTO commentsRequestDTO){

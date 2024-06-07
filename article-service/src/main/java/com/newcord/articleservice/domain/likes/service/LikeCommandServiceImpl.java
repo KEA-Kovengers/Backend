@@ -26,8 +26,8 @@ public class LikeCommandServiceImpl implements LikeCommandService{
 
     //좋아요
     @Override
-    public Likes createLike(Long userID,CreateLikeRequestDTO createLikeRequestDTO){
-        Likes likes=Likes.builder()
+    public Likes createLike(Long userID, CreateLikeRequestDTO createLikeRequestDTO) {
+        Likes likes = Likes.builder()
                 .user_id(userID)
                 .post_id(createLikeRequestDTO.getPost_id())
                 .build();
@@ -36,19 +36,21 @@ public class LikeCommandServiceImpl implements LikeCommandService{
         List<Long> userIds = editorRepository.findUserIdsByPostId(createLikeRequestDTO.getPost_id());
         // 알림 API 요청
         for (Long editorUserId : userIds) {
-            Map<String, Object> requestBody = new HashMap<>();
-            requestBody.put("user_id", editorUserId);
-            requestBody.put("from_id", userID);
-            requestBody.put("post_id", createLikeRequestDTO.getPost_id());
-            requestBody.put("comment_id", "");
-            requestBody.put("type", "LIKE");
+            if (!editorUserId.equals(userID)) {
+                Map<String, Object> requestBody = new HashMap<>();
+                requestBody.put("user_id", editorUserId);
+                requestBody.put("from_id", userID);
+                requestBody.put("post_id", createLikeRequestDTO.getPost_id());
+                requestBody.put("comment_id", "");
+                requestBody.put("type", "LIKE");
 
-            webClient.post()
-                    .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
-                    .bodyValue(requestBody)
-                    .retrieve()
-                    .bodyToMono(Void.class)
-                    .block();
+                webClient.post()
+                        .uri("http://newcord.kro.kr/notices/send/{userId}", editorUserId)
+                        .bodyValue(requestBody)
+                        .retrieve()
+                        .bodyToMono(Void.class)
+                        .block();
+            }
         }
 
         likeRepository.save(likes);
