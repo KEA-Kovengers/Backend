@@ -45,6 +45,9 @@ dependencies {
 	//For Object Storage(AWS S3 API)
 	implementation platform('software.amazon.awssdk:bom:2.23.7')
 	implementation "software.amazon.awssdk:s3"
+	//caching
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.ehcache:ehcache'
 
 	implementation group: 'org.fluentd', name: 'fluent-logger', version: '0.3.4'
 
