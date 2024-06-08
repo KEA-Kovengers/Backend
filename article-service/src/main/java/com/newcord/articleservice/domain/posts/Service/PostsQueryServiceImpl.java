@@ -10,7 +10,7 @@ import com.newcord.articleservice.domain.posts.enums.PostStatus;
 import com.newcord.articleservice.domain.posts.repository.PostsRepository;
 import com.newcord.articleservice.global.common.exception.ApiException;
 import com.newcord.articleservice.global.common.response.code.status.ErrorStatus;
-
+import org.springframework.cache.annotation.Cacheable;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,6 +38,7 @@ private final EditorRepository editorRepository;
     }
 
 @Override
+@Cacheable(value = "postList", key = "#page")
 public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
     Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
