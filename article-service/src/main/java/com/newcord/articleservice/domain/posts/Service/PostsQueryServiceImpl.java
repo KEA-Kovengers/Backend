@@ -38,7 +38,6 @@ private final EditorRepository editorRepository;
     }
 
 @Override
-@Cacheable(value = "postList", key = "#page")
 public SocialPostListDTO getPostList(Integer page, Integer size){
         PageRequest pageRequest = PageRequest.of(page, size);
     Page<Posts> postsPage = postsRepository.findPosts(PostStatus.POST,pageRequest);
