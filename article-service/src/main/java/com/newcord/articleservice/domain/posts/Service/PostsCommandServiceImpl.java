@@ -1,5 +1,7 @@
 package com.newcord.articleservice.domain.posts.Service;
 
+import com.newcord.articleservice.domain.article_version.entity.OperationType;
+import com.newcord.articleservice.domain.articles.dto.ArticleRequest.TitleUpdateRequestDTO;
 import com.newcord.articleservice.domain.hashtags.entity.Hashtags;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostCreateRequestDTO;
 import com.newcord.articleservice.domain.posts.dto.PostRequest.PostUpdateRequestDTO;
@@ -41,12 +43,31 @@ public class PostsCommandServiceImpl implements PostsCommandService{
     }
 
     @Override
-    public Posts updateTitle(Long userID, Long postId, int position, String contnet) {
+    public Posts updateTitle(Long userID, Long postId, TitleUpdateRequestDTO titleUpdateRequestDTO) {
         Posts post = postsRepository.findById(postId).orElseThrow(() -> new ApiException(
                 ErrorStatus._POSTS_NOT_FOUND));
 
         String title = post.getTitle();
-        title = title.substring(0, position) + contnet + title.substring(position);
+
+        if(titleUpdateRequestDTO.getOperationType().equals(OperationType.INSERT)){
+            StringBuffer sb = new StringBuffer(title);
+            if(sb.length() < titleUpdateRequestDTO.getPosition().intValue()){
+                sb.setLength(titleUpdateRequestDTO.getPosition().intValue());
+                //문자열 연결하는데 인덱스 범위 초과하니 오류가 발생함
+            }
+            sb.insert(titleUpdateRequestDTO.getPosition().intValue(), titleUpdateRequestDTO.getContent());
+            title = sb.toString();
+        }
+        else {
+            StringBuffer sb = new StringBuffer(title);
+            if(sb.length() < titleUpdateRequestDTO.getPosition().intValue()){
+                sb.setLength(titleUpdateRequestDTO.getPosition().intValue());
+                //문자열 연결하는데 인덱스 범위 초과하니 오류가 발생함
+            }
+            sb.delete(titleUpdateRequestDTO.getPosition().intValue(), titleUpdateRequestDTO.getPosition().intValue() + titleUpdateRequestDTO.getContent().length());
+            title = sb.toString();
+        }
+
         post.setTitle(title);
 
         postsRepository.save(post);

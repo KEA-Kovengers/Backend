@@ -81,7 +81,8 @@ public class ArticleComposeServiceImpl implements ArticleComposeService{
             .updated_by(titleUpdateRequestDTO.getUpdated_by())
             .build(), titleUpdateRequestDTO.getArticleVersion(), articleID);
         //====
-        postsCommandService.updateTitle(userID, articleID, titleUpdateRequestDTO.getPosition().intValue(), titleUpdateRequestDTO.getContent());
+        titleUpdateRequestDTO.setPosition(versionOperation.getPosition());
+        postsCommandService.updateTitle(userID, articleID, titleUpdateRequestDTO);
 
 
         //===========
