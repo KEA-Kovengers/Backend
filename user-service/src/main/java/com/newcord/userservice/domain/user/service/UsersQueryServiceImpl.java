@@ -17,7 +17,7 @@ public class UsersQueryServiceImpl implements UsersQueryService {
     private final UsersRepository usersRepository;
 
     @Override
-    @Cacheable(value = "userInfo", key = "#id")
+//    @Cacheable(value = "userInfo", key = "#id")
     public UsersResponseDTO getUserInfo(Long id) {
         Users user = usersRepository.findById(id).orElseThrow(() -> new ApiException(ErrorStatus._USER_NOT_FOUND));
         return UsersResponseDTO.builder()
